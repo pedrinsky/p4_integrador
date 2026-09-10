@@ -15,17 +15,86 @@ body {
 /* 1. Header superior */
 .top-header {
     display: flex;
-    background-color: rgb(176, 179, 56);
+    background-color: rgb(179, 95, 56);
     color: white;
-    justify-content: end; /*Ponemos el logo a la derecha*/
+    justify-content: flex-end; /*Ponemos el logo a la derecha*/
+    align-items: center;
     height: 100px;
 }
 
 img.logo-muni-header {
-    height: 70%;
+    height: 100px;
     width: auto;
+    margin: 10px;
 }
+/* 2. Contenedor del layout (flexbox en fila) */
 .main-layout {
     display: flex; /* Coloca la barra lateral y el main lado a lado */
     flex: 1; /* Ocupa todo el alto restante de la pantalla */
+}
+/* 3. Barra lateral */
+.lat-bar {
+    width: 20rem; /* Ancho fijo de la barra */
+    background-color: lightblue;
+    padding: 0;
+}
+
+.lat-bar ul {
+    list-style: none;
+}
+
+/* Cada item ppal sirve de ancla relativa*/
+.menu-item {
+    position: relative;
+}
+
+/* ESTILO EXCLUSIVO para los enlaces principales (hijos directos de menu-item) */
+.menu-item > a {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 20px;
+    display: block;
+    color: rgb(238, 31, 31);
+    text-decoration: none;
+    padding: 12px 20px;
+    transition: background-color 0.2s;
+}
+
+.menu-item > a:hover {
+    background-color: rgb(121, 80, 175);
+}
+
+/* Quitamos viñetas por defecto */
+.nav-list, .submenu {
+    list-style: none;
+}
+
+/* Submenu flotante */
+.submenu {
+    display: none; /* Oculto por defecto */
+    position: absolute; /* Se posiciona relativo a .menu-item*/
+    top: 0; /*Alineado al tope superior del boton*/
+    left: 100%; /*Se empuja al borde derecho de lat-bar*/
+    width: 200px; /*Ancho del panel desplegable*/
+    background-color: #ffffff /*Color de fondo del cuadro*/
+    box-shadow: 2px 2px 8px red; /*Color de la sombra del cuadro*/
+    z-index: 10; /*Se asegura que quede por encima del fondo*/
+}
+
+/* Al pasar el cursor sobre el li, se despliega la lista */
+.menu-item:hover .submenu{
+    display: block;
+}
+
+/* Estilo para los links internos del submenú */
+.submenu a {
+    display: block;
+    text-decoration: none;
+    font-size: 16px;
+    color: #333333;
+    padding: 10px 15px;
+    transition: background-color 0.2s;
+}
+
+.submenu a:hover {
+    background-color: #f0f0f0;
 }
