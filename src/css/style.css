@@ -1,0 +1,31 @@
+/*Reset para eliminar márgenes por defecto en todos los elementos*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column; /* Apila el header arriba y el contenido abajo*/
+    min-height: 100vh;
+    background-color: #c5b8bc;
+}
+
+/* 1. Header superior */
+.top-header {
+    display: flex;
+    background-color: rgb(176, 179, 56);
+    color: white;
+    justify-content: end; /*Ponemos el logo a la derecha*/
+    height: 100px;
+}
+
+img.logo-muni-header {
+    height: 70%;
+    width: auto;
+}
+.main-layout {
+    display: flex; /* Coloca la barra lateral y el main lado a lado */
+    flex: 1; /* Ocupa todo el alto restante de la pantalla */
+}
