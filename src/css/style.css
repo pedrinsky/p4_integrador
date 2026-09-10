@@ -9,17 +9,22 @@ body {
     display: flex;
     flex-direction: column; /* Apila el header arriba y el contenido abajo*/
     min-height: 100vh;
-    background-color: #c5b8bc;
+    background-color: #9facaf4f;
 }
 
-/* 1. Header superior */
+ul {
+    padding-left: 0;
+}
+
+/* Header superior */
 .top-header {
     display: flex;
-    background-color: rgb(179, 95, 56);
+    background-color: rgb(119, 224, 154);
     color: white;
     justify-content: flex-end; /*Ponemos el logo a la derecha*/
     align-items: center;
     height: 100px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 img.logo-muni-header {
@@ -27,15 +32,15 @@ img.logo-muni-header {
     width: auto;
     margin: 10px;
 }
-/* 2. Contenedor del layout (flexbox en fila) */
+/* Contenedor del layout (flexbox en fila) */
 .main-layout {
     display: flex; /* Coloca la barra lateral y el main lado a lado */
     flex: 1; /* Ocupa todo el alto restante de la pantalla */
 }
-/* 3. Barra lateral */
+/* Barra lateral */
 .lat-bar {
     width: 20rem; /* Ancho fijo de la barra */
-    background-color: lightblue;
+    background-color: rgb(205, 223, 194);
     padding: 0;
 }
 
@@ -43,24 +48,25 @@ img.logo-muni-header {
     list-style: none;
 }
 
-/* Cada item ppal sirve de ancla relativa*/
+/* Cada item ppal sirve de ancla relativa para el submenu*/
 .menu-item {
     position: relative;
 }
 
 /* ESTILO EXCLUSIVO para los enlaces principales (hijos directos de menu-item) */
+/* Usamos el selector > para indicar que es EXCLUSIVO para los hijos directos de menu-item*/
 .menu-item > a {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 20px;
     display: block;
-    color: rgb(238, 31, 31);
+    color: rgb(0, 0, 0);
     text-decoration: none;
     padding: 12px 20px;
     transition: background-color 0.2s;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .menu-item > a:hover {
-    background-color: rgb(121, 80, 175);
+    background-color: rgb(118, 165, 104);
 }
 
 /* Quitamos viñetas por defecto */
@@ -70,19 +76,30 @@ img.logo-muni-header {
 
 /* Submenu flotante */
 .submenu {
-    display: none; /* Oculto por defecto */
     position: absolute; /* Se posiciona relativo a .menu-item*/
     top: 0; /*Alineado al tope superior del boton*/
     left: 100%; /*Se empuja al borde derecho de lat-bar*/
     width: 200px; /*Ancho del panel desplegable*/
-    background-color: #ffffff /*Color de fondo del cuadro*/
-    box-shadow: 2px 2px 8px red; /*Color de la sombra del cuadro*/
+    background-color: #afcfac; /*Color de fondo del cuadro*/
+    box-shadow: 2px 2px 8px rgb(0, 0, 0); /*Color de la sombra del cuadro*/
     z-index: 10; /*Se asegura que quede por encima del fondo*/
+    padding: 0;
+    margin: 0;
+
+    /*Oculto por defecto*/
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px); /*Lo movemos ligeramente a la izquierda*/
+
+    /*Definimos la transición suave*/
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
 /* Al pasar el cursor sobre el li, se despliega la lista */
 .menu-item:hover .submenu{
-    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0); /*Acá se desliza a la posición que corresponde*/
 }
 
 /* Estilo para los links internos del submenú */
@@ -93,8 +110,20 @@ img.logo-muni-header {
     color: #333333;
     padding: 10px 15px;
     transition: background-color 0.2s;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .submenu a:hover {
-    background-color: #f0f0f0;
+    background-color: #74b678;
+}
+
+.cuerpo {
+    display: flex;
+    flex: 1;
+    padding: 5px 10px;
+    flex-direction: column;
+}
+
+.cuerpo button {
+    width: 10rem;
 }
