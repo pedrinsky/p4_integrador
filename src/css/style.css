@@ -45,14 +45,20 @@ img.logo-muni-header {
 
 /* Barra lateral */
 .lat-bar {
+    display: flex;
+    flex-direction: column;
     width: 20rem;
     /* Ancho fijo de la barra */
     background-color: rgb(205, 223, 194);
-    padding: 0;
 }
 
-.lat-bar ul {
+.lat-bar ul.nav-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 /* Cada item ppal sirve de ancla relativa para el submenu*/
@@ -62,7 +68,7 @@ img.logo-muni-header {
 
 /* ESTILO EXCLUSIVO para los enlaces principales (hijos directos de menu-item) */
 /* Usamos el selector > para indicar que es EXCLUSIVO para los hijos directos de menu-item*/
-.menu-item>a {
+.menu-item > a {
     font-size: 20px;
     display: block;
     color: rgb(0, 0, 0);
@@ -141,6 +147,23 @@ img.logo-muni-header {
     flex-direction: column;
 }
 
+.menu-ppal {
+    margin-top: auto;
+}
+
+.menu-ppal > a {
+    font-size: 20px;
+    display: block;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    padding: 12px 20px;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.menu-ppal > a:hover {
+    background-color: rgb(118, 165, 104);
+}
 .cuerpo button {
     width: 10rem;
 }
