@@ -1,0 +1,184 @@
+/*Reset para eliminar márgenes por defecto en todos los elementos*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    /* Apila el header arriba y el contenido abajo*/
+    min-height: 100vh;
+    background-color: #9facaf4f;
+}
+
+ul {
+    padding-left: 0;
+}
+
+/* Header superior */
+.top-header {
+    display: flex;
+    background-color: rgb(139, 195, 74);
+    color: white;
+    justify-content: flex-start;
+    /*Ponemos el logo a la izquierda*/
+    align-items: center;
+    height: 100px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.301);
+}
+
+img.logo-muni-header {
+    height: 100px;
+    width: auto;
+    margin: 10px;
+}
+
+/* Contenedor del layout (flexbox en fila) */
+.main-layout {
+    display: flex;
+    /* Coloca la barra lateral y el main lado a lado */
+    flex: 1;
+    /* Ocupa todo el alto restante de la pantalla */
+}
+
+/* Barra lateral */
+.lat-bar {
+    width: 20rem;
+    /* Ancho fijo de la barra */
+    background-color: rgb(191, 192, 190);
+    border-right: 1px solid #d1e3d8;
+    padding: 0;
+}
+
+.lat-bar ul {
+    list-style: none;
+}
+
+/* Hacemos que la lista ocupe el 100% del alto disponible */
+.nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Cada item ppal sirve de ancla relativa para el submenu*/
+.menu-item {
+    position: relative;
+}
+
+/* ESTILO EXCLUSIVO para los enlaces principales (hijos directos de menu-item) */
+/* Usamos el selector > para indicar que es EXCLUSIVO para los hijos directos de menu-item*/
+.menu-item>a {
+    font-size: 20px;
+    display: block;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f0f0f0;
+    border-left: 4px solid transparent;
+    /* Preparado para el hover */
+}
+
+.menu-item>a:hover {
+    background-color: rgb(94, 158, 38);
+}
+
+.logout-item {
+    margin-top: auto;
+    border-top: 2px solid #f0f0f0;
+}
+
+.logout-item>a:hover {
+    color: red;
+    background-color: rgb(191, 192, 190);
+    ;
+}
+
+/* Quitamos viñetas por defecto */
+.nav-list,
+.submenu {
+    list-style: none;
+}
+
+/* Submenu flotante */
+.submenu {
+    position: absolute;
+    /* Se posiciona relativo a .menu-item*/
+    top: 0;
+    /*Alineado al tope superior del boton*/
+    left: 100%;
+    /*Se empuja al borde derecho de lat-bar*/
+    width: 200px;
+    /*Ancho del panel desplegable*/
+    background-color: rgb(173, 180, 165);
+    /*Color de fondo del cuadro*/
+    box-shadow: 2px 2px 8px rgb(0, 0, 0);
+    /*Color de la sombra del cuadro*/
+    z-index: 10;
+    /*Se asegura que quede por encima del fondo*/
+    padding: 0;
+    margin: 0;
+
+    /*Oculto por defecto*/
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    /*Lo movemos ligeramente a la izquierda*/
+
+    /*Definimos la transición suave*/
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+/* Al pasar el cursor sobre el li, se despliega la lista */
+.menu-item:hover .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    /*Acá se desliza a la posición que corresponde*/
+}
+
+/* Estilo para los links internos del submenú */
+.submenu a {
+    display: block;
+    text-decoration: none;
+    font-size: 16px;
+    color: #ffffff;
+    padding: 10px 15px;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.submenu a:hover {
+    background-color: #74b678;
+}
+
+.cuerpo {
+    display: flex;
+    flex: 1;
+    padding: 5px 10px;
+    flex-direction: column;
+}
+
+.cuerpo h1 {
+    margin-bottom: 10px;
+}
+
+.cuerpo p {
+    color: #666;
+    font-size: 16px;
+}
+
+.cuerpo button {
+    width: 10rem;
+}
+
+.menu-item>a:hover,
+.menu-item.active>a {
+    background-color: rgb(94, 158, 38);
+    /* Efecto hover / activo */
+    font-weight: 600;
+}
