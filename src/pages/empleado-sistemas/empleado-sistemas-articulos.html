@@ -1,47 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Articulos</title>
-    <link rel="stylesheet" href="../../css/stylesis.css">
-    </link>
+    <title>Incidencias</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- Link al css de bootstrap -->
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
-
 <body>
     <header class="top-header">
-        <div class="logo-container">
-            <img class="logo-muni-header" src="../../../assets/logo-muni-black.png" alt="Logo">
+        <div class="logo-muni-header">
+            <img class= "logo-muni-header" src="../../../assets/logo-muni-black.png" alt="Logo">
         </div>
     </header>
     <div class="main-layout">
+        <!-- Inicio  de la barra lateral -->
         <aside class="lat-bar">
             <ul class="nav-list">
-                <ul class="menu-item">
-                    <a href="empleado-sistemas-incidencias.html"> Incidencias asignadas</a>
-                </ul>
-                <ul class="menu-item active">
-                    <a href="empleado-sistemas-articulos.html"> Articulos</a>
-                </ul>
-                <ul class="menu-item">
-                    <a href="empleado-sistemas-categorias.html"> Categorias</a>
-                </ul>
-                <li class="menu-item logout-item">
-                    <a href="../../../index.html"> Cerrar sesión</a>
+                <li class="menu-item">
+                    <a href="empleado-sistemas-incidencias.html">Mis incidencias</a>
+                </li>
+                <li class="menu-item">
+                    <a class="activo">Articulos</a>
+                </li>
+                <li class="menu-item">
+                    <a href="empleado-sistemas-categorias.html">Categorias</a>
+                </li>
+                <li class="menu-item" id="cerrar-sesion">
+                    <a href="../../../index.html">Cerrar sesion</a>
                 </li>
             </ul>
         </aside>
+        <!-- Fin de la barra lateral -->
         <main class="cuerpo">
-            <h1>Articulos</h1>
-            <div class="content-card">
-                <div class="filtros-container">
-
-                </div>
-            </div>
         </main>
     </div>
-
 </body>
 
 </html>
