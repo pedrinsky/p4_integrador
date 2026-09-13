@@ -88,6 +88,17 @@ img.logo-muni-header {
     list-style: none;
 }
 
+/* Item de lista alejado de los demas para "Cerrar sesion" */
+#cerrar-sesion{
+    margin-top: auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);    
+}
+
+/* Mantener resaltada la opcion elegida en la barra lateral */
+.menu-item>a.activo{
+    background-color: rgb(118, 165, 104);
+}
+
 /* Submenu flotante */
 .submenu {
     position: absolute;
@@ -168,11 +179,7 @@ img.logo-muni-header {
     width: 10rem;
 }
 
-#cerrar-sesion{
-    margin-top: auto;
-    border-top: 1px solid rgba(0, 0, 0, 0.2);    
-}
-
-.menu-item>a.activo{
-    background-color: rgb(118, 165, 104);
+/* Boton de agregar */
+.cuerpo>button.agregar{
+    margin-left: auto;
 }

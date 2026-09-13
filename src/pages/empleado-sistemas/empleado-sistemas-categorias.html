@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../../css/style.css">
     <!-- Link al css de bootstrap -->
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
 </head>
 <body>
     <header class="top-header">
@@ -19,21 +20,49 @@
         <aside class="lat-bar">
             <ul class="nav-list">
                 <li class="menu-item">
-                    <a href="empleado-sistemas-incidencias.html">Mis incidencias</a>
+                    <a href="empleado-sistemas-incidencias.html">
+                        <i class="bi bi-journal-text"></i>
+                        Mis incidencias
+                    </a>
                 </li>
                 <li class="menu-item">
-                    <a href="empleado-sistemas-articulos.html">Articulos</a>
+                    <a href="empleado-sistemas-articulos.html">
+                        <i class="bi bi-pc-display"></i>
+                        Articulos
+                    </a>
                 </li>
                 <li class="menu-item">
-                    <a class="activo">Categorias</a>
+                    <a class="activo">
+                        <i class="bi bi-kanban-fill"></i>
+                        Categorias
+                    </a>
                 </li>
                 <li class="menu-item" id="cerrar-sesion">
-                    <a href="../../../index.html">Cerrar sesion</a>
+                    <a href="../../../index.html">
+                        <i class="bi bi-box-arrow-in-left"></i>
+                        Cerrar sesion
+                    </a>
                 </li>
             </ul>
         </aside>
         <!-- Fin de la barra lateral -->
         <main class="cuerpo">
+            <!-- Inicio de tabla de categorias -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Descrición</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <!-- Inicio de tabla de categorias -->
+            <button type="button" class="btn btn-primary agregar">
+                <i class="bi bi-plus-lg"></i>
+            </button>
         </main>
     </div>
 </body>
