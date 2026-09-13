@@ -217,7 +217,7 @@ img.logo-muni-header {
 }
 
 .btn-buscar {
-    background-color: #18336d;
+    background-color: #5ca532;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -259,7 +259,7 @@ img.logo-muni-header {
 }
 
 .tabla-incidencias tbody tr:hover {
-    background-color: #f9fcfb;
+    background-color: #a9c7a8a2;
 }
 
 /* Etiquetas (Badges) para Prioridad y Estado */
@@ -274,7 +274,7 @@ img.logo-muni-header {
 
 /* Colores de Prioridad */
 .badge.prio-alta {
-    background-color: #fee2e2;
+    background-color: #e5bcbc;
     color: #b91c1c;
 }
 
@@ -290,7 +290,7 @@ img.logo-muni-header {
 
 /* Colores de Estado */
 .badge.est-pendiente {
-    background-color: #dbeafe;
+    background-color: #bfcee2;
     color: #1916a3;
 }
 
@@ -310,21 +310,15 @@ img.logo-muni-header {
 }
 
 .btn-accion {
-    background-color: #f1f5f9;
-    color: #334155;
-    border: 1px solid #cbd5e1;
+    background-color: #378b26;
+    color: #ffffff;
+    border: 1px solid #67ac91;
     padding: 6px 12px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
     transition: all 0.2s;
-}
-
-.btn-accion:hover {
-    background-color: #2E7D5B;
-    color: white;
-    border-color: #2E7D5B;
 }
 
 .tabla-resultados {

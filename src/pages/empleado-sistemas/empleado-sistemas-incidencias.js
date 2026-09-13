@@ -81,7 +81,6 @@ function renderizarTabla(incidencias) {
     }
 }
 
-
 const formulario = document.getElementById('form-filtro');
 
 function filtrarDatos(event) {
