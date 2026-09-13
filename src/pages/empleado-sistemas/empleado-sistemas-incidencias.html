@@ -12,7 +12,7 @@
 <body>
     <header class="top-header">
         <div class="logo-container">
-            <img class="logo-muni-header" src="../../../assets/logo-muni-black.png" alt="Logo">
+            <img class="logo-muni-header" src="../../../assets/logo-muni.png" alt="Logo">
         </div>
     </header>
     <div class="main-layout">
@@ -34,13 +34,57 @@
         </aside>
         <main class="cuerpo">
             <h1>Incidencias</h1>
-            <div class="content-card">
-                <div class="filtros-container">
+            <div class="tarjeta-contenedora">
+                <div class="container-filtro">
+                    <div class="filtro-grupo">
+                        <label for="filtro-estado">Estado</label>
+                        <select id="filtro-estado"> <!--Acá cambiaria al nombre que tenga en la base de datos-->
+                            <option value="">Todos los Estados</option>
+                            <option value="asignada">Asignada</option>
+                            <option value="en_proceso">En Proceso</option>
+                            <option value="finalizada">Finalizada</option>
+                        </select>
+                    </div>
+                    <div class="filtro-grupo">
+                        <label for="filtro-prioridad">Prioridad</label>
+                        <select id="filtro-prioridad">
+                            <option value="">Todas las Prioridades</option>
+                            <option value="1">Alta</option>
+                            <option value="2">Media</option>
+                            <option value="3">Baja</option>
+                        </select>
+                    </div>
+                    <div class="filtro-grupo">
+                        <label for="filtro-nro-articulo"> Descripción</label>
+                        <input type="text" id="filtro-nro-articulo" placeholder="N° Incidencia o Artículo">
 
+                    </div>
+
+                    <button class="btn-buscar">Filtrar</button>
+                </div>
+
+                <div class="tabla-resultados">
+                    <table class="tabla-incidencias">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Artículo</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Prioridad</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-incidencias">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
     </div>
+    <script type="module" src="../../main.js"></script>
+    <script type="module" src="./empleado-sistemas-incidencias.js"></script>
 
 </body>
 
