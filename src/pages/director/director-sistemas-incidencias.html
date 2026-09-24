@@ -1,22 +1,368 @@
 <!doctype html>
-<html lang="es"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gestión de Incidencias | Municipalidad de Concordia</title>
-<link rel="icon" type="image/png" href="../../../assets/logo-muni-azul.png">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"><link rel="stylesheet" href="../../css/style.css">
-</head><body class="dashboard-page incidences-page">
-<aside class="municipal-sidebar d-flex flex-column" aria-label="Navegación principal">
-<a class="brand concordia-brand d-flex align-items-center gap-3 text-white text-decoration-none" href="director-sistemas-dashboard.html"><img src="../../../assets/logo-muni.png" alt="Escudo del Municipio"></a>
-<nav class="nav flex-column gap-1 mt-4" aria-label="Secciones del sistema"><a class="nav-link" href="director-sistemas-dashboard.html"><i class="bi bi-house-door"></i>Dashboard</a><a class="nav-link active" aria-current="page" href="director-sistemas-incidencias.html"><i class="bi bi-exclamation-triangle"></i>Incidencias</a><a class="nav-link" href="reportes.html"><i class="bi bi-bar-chart-line"></i>Reportes</a><a class="nav-link" href="articulos.html"><i class="bi bi-box-seam"></i>Artículos</a><a class="nav-link" href="categorias.html"><i class="bi bi-tag"></i>Categorías</a></nav>
-<a class="nav-link logout mt-auto" href="../../../index.html"><i class="bi bi-box-arrow-right"></i>Cerrar sesión</a></aside>
-<main class="dashboard-main"><header class="topbar d-flex align-items-center justify-content-between gap-3 px-3 px-lg-4" aria-label="Barra superior"><div class="d-flex align-items-center gap-3"><button class="btn btn-link menu-button p-0" type="button" aria-label="Menú"><i class="bi bi-list"></i></button><h1 class="topbar-title mb-0">Gestión de Incidencias</h1></div><div class="d-flex align-items-center gap-2 user-profile"><span class="profile-avatar"><i class="bi bi-person-fill"></i></span><span><strong class="d-block">María García</strong><small>Directora de Sistemas</small></span><i class="bi bi-chevron-down ms-2"></i></div></header>
-<section class="container-fluid p-3 p-lg-4" aria-labelledby="incidencias-title"><div class="mb-4"><h2 id="incidencias-title" class="page-heading mb-1">Incidencias</h2><p class="subtitle mb-0">Administrá y realizá el seguimiento de las solicitudes del municipio.</p></div>
-<section class="panel-card filter-card mb-4" aria-labelledby="filter-title"><div class="d-flex align-items-center gap-2 mb-3"><i class="bi bi-funnel filter-icon"></i><h3 id="filter-title">Filtros de búsqueda</h3></div><form><div class="row g-3 align-items-end"><div class="col-12 col-sm-6 col-lg-2"><label for="estado" class="form-label">Estado</label><select id="estado" class="form-select"><option selected>Todos los estados</option><option>Pendiente</option><option>Asignada</option><option>Finalizada</option><option>Cancelada</option></select></div><div class="col-12 col-sm-6 col-lg-2"><label for="prioridad" class="form-label">Prioridad</label><select id="prioridad" class="form-select"><option selected>Todas las prioridades</option><option>Baja</option><option>Media</option><option>Alta</option></select></div><div class="col-12 col-sm-6 col-lg-2"><label for="area" class="form-label">Área</label><select id="area" class="form-select"><option selected>Todas las áreas</option><option>Recursos Humanos</option><option>Hacienda</option><option>Obras Públicas</option><option>Atención al Vecino</option></select></div><div class="col-12 col-sm-6 col-lg-3"><label for="texto" class="form-label">Buscar</label><div class="input-group"><span class="input-group-text"><i class="bi bi-search"></i></span><input id="texto" class="form-control" type="search" placeholder="ID, artículo o descripción"></div></div><div class="col-12 col-lg-3 d-flex gap-2"><button class="btn btn-primary flex-grow-1" type="submit"><i class="bi bi-funnel-fill me-2"></i>Filtrar</button><button class="btn btn-outline-secondary" type="reset">Limpiar filtros</button></div></div></form></section>
-<section class="panel-card incidents-table-panel" aria-labelledby="table-title"><div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3"><div><h3 id="table-title">Listado de incidencias</h3><p class="table-subtitle mb-0">Gestioná las asignaciones y consultá el estado de cada solicitud.</p></div><span class="badge bg-primary rounded-pill px-3 py-2">150 incidencias</span></div><div class="table-responsive"><table class="table align-middle mb-0"><caption class="visually-hidden">Listado de incidencias del municipio</caption><thead><tr><th>ID</th><th>Fecha</th><th>Artículo</th><th>Área solicitante</th><th>Creado por</th><th>Prioridad</th><th>Estado</th><th>Técnico asignado</th><th class="text-center">Acciones</th></tr></thead><tbody>
-<tr><td>#001</td><td>10/04/2026<br><small>09:32</small></td><td><strong>Impresora</strong><br><small>No imprime correctamente</small></td><td>Recursos Humanos</td><td>Lucía Pérez</td><td><span class="badge bg-danger">Alta</span></td><td><span class="badge bg-warning text-dark">Pendiente</span></td><td><select class="form-select form-select-sm technician-select" aria-label="Asignar técnico a incidencia 001"><option selected>Asignar técnico</option><option>Carlos López</option><option>Ana Torres</option><option>Lucas Fernández</option></select></td><td class="text-center"><div class="action-stack"><button class="btn btn-sm btn-primary" type="button"><i class="bi bi-person-plus me-1"></i>Asignar</button><button class="btn btn-sm btn-danger" type="button"><i class="bi bi-x-circle me-1"></i>Cancelar</button></div></td></tr>
-<tr><td>#002</td><td>08/04/2026<br><small>14:20</small></td><td><strong>Computadora</strong><br><small>Error en el sistema</small></td><td>Hacienda</td><td>Martín Sosa</td><td><span class="badge bg-warning text-dark">Media</span></td><td><span class="badge bg-primary">Asignada</span></td><td><span class="technician-name"><i class="bi bi-person-check me-1"></i>Carlos López</span></td><td class="text-center"><div class="action-stack"><button class="btn btn-sm btn-outline-primary" type="button"><i class="bi bi-arrow-repeat me-1"></i>Reasignar</button><button class="btn btn-sm btn-outline-secondary" type="button" aria-label="Ver detalle de incidencia 002"><i class="bi bi-eye"></i></button></div></td></tr>
-<tr><td>#003</td><td>05/04/2026<br><small>11:15</small></td><td><strong>Silla</strong><br><small>Rota en sala de reuniones</small></td><td>Obras Públicas</td><td>Ana Ruiz</td><td><span class="badge bg-success">Baja</span></td><td><span class="badge bg-success">Finalizada</span></td><td><span class="technician-name"><i class="bi bi-person-check me-1"></i>Ana Torres</span></td><td class="text-center"><button class="btn btn-sm btn-outline-success" type="button"><i class="bi bi-file-earmark-text me-1"></i>Ver resolución</button></td></tr>
-<tr><td>#004</td><td>02/04/2026<br><small>16:45</small></td><td><strong>Proyector</strong><br><small>No enciende</small></td><td>Atención al Vecino</td><td>Javier Gómez</td><td><span class="badge bg-warning text-dark">Media</span></td><td><span class="badge bg-danger">Cancelada</span></td><td><span class="text-muted">Sin asignar</span></td><td class="text-center"><button class="btn btn-sm btn-outline-secondary" type="button" aria-label="Ver detalle de incidencia 004"><i class="bi bi-eye me-1"></i>Ver detalle</button></td></tr>
-<tr><td>#005</td><td>01/04/2026<br><small>10:22</small></td><td><strong>Escritorio</strong><br><small>Daños en la superficie</small></td><td>Desarrollo Social</td><td>Paula Díaz</td><td><span class="badge bg-danger">Alta</span></td><td><span class="badge bg-primary">Asignada</span></td><td><span class="technician-name"><i class="bi bi-person-check me-1"></i>Lucas Fernández</span></td><td class="text-center"><div class="action-stack"><button class="btn btn-sm btn-outline-primary" type="button"><i class="bi bi-arrow-repeat me-1"></i>Reasignar</button><button class="btn btn-sm btn-outline-secondary" type="button" aria-label="Ver detalle de incidencia 005"><i class="bi bi-eye"></i></button></div></td></tr>
-</tbody></table></div><div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 pt-3"><p class="records-count mb-0">Mostrando 1 a 5 de 150 incidencias</p><nav aria-label="Paginación de incidencias"><ul class="pagination pagination-sm mb-0"><li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li><li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li><li class="page-item"><a class="page-link" href="#">2</a></li><li class="page-item"><a class="page-link" href="#">3</a></li><li class="page-item"><a class="page-link" href="#">Siguiente</a></li></ul></nav></div></section></section></main></body></html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gestión de Incidencias | Municipalidad de Concordia</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="../../../assets/logo-muni-azul.png"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="../../css/style.css" />
+  </head>
+  <body class="dashboard-page incidences-page">
+    <aside
+      class="municipal-sidebar d-flex flex-column"
+      aria-label="Navegación principal"
+    >
+      <a
+        class="brand concordia-brand d-flex align-items-center gap-3 text-white text-decoration-none"
+        href="director-sistemas-dashboard.html"
+        ><img src="../../../assets/logo-muni.png" alt="Escudo del Municipio"
+      /></a>
+      <nav
+        class="nav flex-column gap-1 mt-4"
+        aria-label="Secciones del sistema"
+      >
+        <a class="nav-link" href="director-sistemas-dashboard.html"
+          ><i class="bi bi-house-door"></i>Dashboard</a
+        ><a
+          class="nav-link active"
+          aria-current="page"
+          href="director-sistemas-incidencias.html"
+          ><i class="bi bi-exclamation-triangle"></i>Incidencias</a
+        ><a class="nav-link" href="reportes.html"
+          ><i class="bi bi-bar-chart-line"></i>Reportes</a
+        ><a class="nav-link" href="articulos.html"
+          ><i class="bi bi-box-seam"></i>Artículos</a
+        ><a class="nav-link" href="categorias.html"
+          ><i class="bi bi-tag"></i>Categorías</a
+        >
+      </nav>
+      <a class="nav-link logout mt-auto" href="../../../index.html"
+        ><i class="bi bi-box-arrow-right"></i>Cerrar sesión</a
+      >
+    </aside>
+    <main class="dashboard-main">
+      <header
+        class="topbar d-flex align-items-center justify-content-between gap-3 px-3 px-lg-4"
+        aria-label="Barra superior"
+      >
+        <div class="d-flex align-items-center gap-3">
+          <button
+            class="btn btn-link menu-button p-0"
+            type="button"
+            aria-label="Menú"
+          >
+            <i class="bi bi-list"></i>
+          </button>
+          <h1 class="topbar-title mb-0">Gestión de Incidencias</h1>
+        </div>
+        <div class="d-flex align-items-center gap-2 user-profile">
+          <span class="profile-avatar"><i class="bi bi-person-fill"></i></span
+          ><span
+            ><strong class="d-block">María García</strong
+            ><small>Directora de Sistemas</small></span
+          ><i class="bi bi-chevron-down ms-2"></i>
+        </div>
+      </header>
+      <section
+        class="container-fluid p-3 p-lg-4"
+        aria-labelledby="incidencias-title"
+      >
+        <div class="mb-4">
+          <h2 id="incidencias-title" class="page-heading mb-1">Incidencias</h2>
+          <p class="subtitle mb-0">
+            Administrá y realizá el seguimiento de las solicitudes del
+            municipio.
+          </p>
+        </div>
+        <section
+          class="panel-card filter-card mb-4"
+          aria-labelledby="filter-title"
+        >
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="bi bi-funnel filter-icon"></i>
+            <h3 id="filter-title">Filtros de búsqueda</h3>
+          </div>
+          <form>
+            <div class="row g-3 align-items-end">
+              <div class="col-12 col-sm-6 col-lg-2">
+                <label for="estado" class="form-label">Estado</label
+                ><select id="estado" class="form-select">
+                  <option selected>Todos los estados</option>
+                  <option>Pendiente</option>
+                  <option>Asignada</option>
+                  <option>Finalizada</option>
+                  <option>Cancelada</option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-2">
+                <label for="prioridad" class="form-label">Prioridad</label
+                ><select id="prioridad" class="form-select">
+                  <option selected>Todas las prioridades</option>
+                  <option>Baja</option>
+                  <option>Media</option>
+                  <option>Alta</option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-2">
+                <label for="area" class="form-label">Área</label
+                ><select id="area" class="form-select">
+                  <option selected>Todas las áreas</option>
+                  <option>Recursos Humanos</option>
+                  <option>Hacienda</option>
+                  <option>Obras Públicas</option>
+                  <option>Atención al Vecino</option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-3">
+                <label for="texto" class="form-label">Buscar</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="bi bi-search"></i></span
+                  ><input
+                    id="texto"
+                    class="form-control"
+                    type="search"
+                    placeholder="ID, artículo o descripción"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-lg-3 d-flex gap-2">
+                <button class="btn btn-primary flex-grow-1" type="submit">
+                  <i class="bi bi-funnel-fill me-2"></i>Filtrar</button
+                ><button class="btn btn-outline-secondary" type="reset">
+                  Limpiar filtros
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+        <section
+          class="panel-card incidents-table-panel"
+          aria-labelledby="table-title"
+        >
+          <div
+            class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3"
+          >
+            <div>
+              <h3 id="table-title">Listado de incidencias</h3>
+              <p class="table-subtitle mb-0">
+                Gestioná las asignaciones y consultá el estado de cada
+                solicitud.
+              </p>
+            </div>
+            <span class="badge bg-primary rounded-pill px-3 py-2"
+              >150 incidencias</span
+            >
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <caption class="visually-hidden">
+                Listado de incidencias del municipio
+              </caption>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Artículo</th>
+                  <th>Área solicitante</th>
+                  <th>Creado por</th>
+                  <th>Prioridad</th>
+                  <th>Estado</th>
+                  <th>Técnico asignado</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#001</td>
+                  <td>10/04/2026<br /><small>09:32</small></td>
+                  <td>
+                    <strong>Impresora</strong><br /><small
+                      >No imprime correctamente</small
+                    >
+                  </td>
+                  <td>Recursos Humanos</td>
+                  <td>Lucía Pérez</td>
+                  <td><span class="badge bg-danger">Alta</span></td>
+                  <td>
+                    <span class="badge bg-warning text-dark">Pendiente</span>
+                  </td>
+                  <td>
+                    <select
+                      class="form-select form-select-sm technician-select"
+                      aria-label="Asignar técnico a incidencia 001"
+                    >
+                      <option selected>Asignar técnico</option>
+                      <option>Carlos López</option>
+                      <option>Ana Torres</option>
+                      <option>Lucas Fernández</option>
+                    </select>
+                  </td>
+                  <td class="text-center">
+                    <div class="action-stack">
+                      <button class="btn btn-sm btn-primary" type="button">
+                        <i class="bi bi-person-plus me-1"></i>Asignar</button
+                      ><button class="btn btn-sm btn-danger" type="button">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#002</td>
+                  <td>08/04/2026<br /><small>14:20</small></td>
+                  <td>
+                    <strong>Computadora</strong><br /><small
+                      >Error en el sistema</small
+                    >
+                  </td>
+                  <td>Hacienda</td>
+                  <td>Martín Sosa</td>
+                  <td><span class="badge bg-warning text-dark">Media</span></td>
+                  <td><span class="badge bg-primary">Asignada</span></td>
+                  <td>
+                    <span class="technician-name"
+                      ><i class="bi bi-person-check me-1"></i>Carlos López</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <div class="action-stack">
+                      <button
+                        class="btn btn-sm btn-outline-primary"
+                        type="button"
+                      >
+                        <i class="bi bi-arrow-repeat me-1"></i>Reasignar</button
+                      ><button
+                        class="btn btn-sm btn-outline-secondary"
+                        type="button"
+                        aria-label="Ver detalle de incidencia 002"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#003</td>
+                  <td>05/04/2026<br /><small>11:15</small></td>
+                  <td>
+                    <strong>Silla</strong><br /><small
+                      >Rota en sala de reuniones</small
+                    >
+                  </td>
+                  <td>Obras Públicas</td>
+                  <td>Ana Ruiz</td>
+                  <td><span class="badge bg-success">Baja</span></td>
+                  <td><span class="badge bg-success">Finalizada</span></td>
+                  <td>
+                    <span class="technician-name"
+                      ><i class="bi bi-person-check me-1"></i>Ana Torres</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <button
+                      class="btn btn-sm btn-outline-success"
+                      type="button"
+                    >
+                      <i class="bi bi-file-earmark-text me-1"></i>Ver resolución
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#004</td>
+                  <td>02/04/2026<br /><small>16:45</small></td>
+                  <td>
+                    <strong>Proyector</strong><br /><small>No enciende</small>
+                  </td>
+                  <td>Atención al Vecino</td>
+                  <td>Javier Gómez</td>
+                  <td><span class="badge bg-warning text-dark">Media</span></td>
+                  <td><span class="badge bg-danger">Cancelada</span></td>
+                  <td><span class="text-muted">Sin asignar</span></td>
+                  <td class="text-center">
+                    <button
+                      class="btn btn-sm btn-outline-secondary"
+                      type="button"
+                      aria-label="Ver detalle de incidencia 004"
+                    >
+                      <i class="bi bi-eye me-1"></i>Ver detalle
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>#005</td>
+                  <td>01/04/2026<br /><small>10:22</small></td>
+                  <td>
+                    <strong>Escritorio</strong><br /><small
+                      >Daños en la superficie</small
+                    >
+                  </td>
+                  <td>Desarrollo Social</td>
+                  <td>Paula Díaz</td>
+                  <td><span class="badge bg-danger">Alta</span></td>
+                  <td><span class="badge bg-primary">Asignada</span></td>
+                  <td>
+                    <span class="technician-name"
+                      ><i class="bi bi-person-check me-1"></i>Lucas
+                      Fernández</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <div class="action-stack">
+                      <button
+                        class="btn btn-sm btn-outline-primary"
+                        type="button"
+                      >
+                        <i class="bi bi-arrow-repeat me-1"></i>Reasignar</button
+                      ><button
+                        class="btn btn-sm btn-outline-secondary"
+                        type="button"
+                        aria-label="Ver detalle de incidencia 005"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 pt-3"
+          >
+            <p class="records-count mb-0">Mostrando 1 a 5 de 150 incidencias</p>
+            <nav aria-label="Paginación de incidencias">
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#">Anterior</a>
+                </li>
+                <li class="page-item active" aria-current="page">
+                  <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">Siguiente</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
