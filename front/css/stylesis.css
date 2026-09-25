@@ -12,9 +12,12 @@ body {
   flex-direction: column;
   /* Apila el header arriba y el contenido abajo*/
   min-height: 100vh;
-  background-color: #9facaf4f;
+  background: linear-gradient(
+    135deg,
+    #e5e9e7 0%,
+    #a6cfb8 100%
+  ); /*crea un efecto de degradado en el fondo*/
 }
-
 ul {
   padding-left: 0;
 }

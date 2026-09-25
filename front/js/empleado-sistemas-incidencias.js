@@ -1,4 +1,4 @@
-import { incidencias } from '../../../datos/incidencias.js';
+import { incidencias } from '../datos';
 
 const badgesEstado = {
     1: '<span class="badge est-pendiente">Pendiente</span>',
@@ -17,13 +17,6 @@ const badgesPrioridad = {
 // ESPERO A QUE LA PAGINA HTML SE DESCARGUE Y SE CONSTRUYA POR COMPLETO
 document.addEventListener('DOMContentLoaded', () => {
     renderizarTabla(incidencias);
-
-    const botonMenu = document.getElementById('btn-menu');
-    const barraLateral = document.querySelector('.lat-bar');
-
-    botonMenu.addEventListener('click', function() {
-        barraLateral.classList.toggle('oculta');
-    });
 });
 
 
