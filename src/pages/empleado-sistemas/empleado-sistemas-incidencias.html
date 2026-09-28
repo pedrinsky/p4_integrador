@@ -1,92 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>incidencias</title>
-    <link rel="stylesheet" href="../../css/style.css">
-    </link>
+    <title>Gestión Incidencias</title>
+    <link rel="icon" type="image/png" href="../../../assets/logo-muni-azul.png">
+    <!-- Bootstrap CSS desde node_modules -->
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="../../css/style.css"></link>
+    <script defer src="./empleado-sistemas-incidencias.js"></script>
 </head>
-
 <body>
-    <header class="top-header">
+    <header class="top-header"> 
         <div class="logo-container">
-            <img class="logo-muni-header" src="../../../assets/logo-muni.png" alt="Logo">
+            <img class= "logo-muni-header" src="../../../assets/logo-muni-black.png" alt="Logo Municipalidad">
+        </div>
+        <div class="open-menu">
+            
         </div>
     </header>
     <div class="main-layout">
         <aside class="lat-bar">
             <ul class="nav-list">
-                <ul class="menu-item  active">
-                    <a href="empleado-sistemas-incidencias.html"> Incidencias asignadas</a>
-                </ul>
-                <ul class="menu-item">
-                    <a href="empleado-sistemas-articulos.html"> Articulos</a>
-                </ul>
-                <ul class="menu-item">
-                    <a href="empleado-sistemas-categorias.html"> Categorias</a>
-                </ul>
-                <li class="menu-item  logout-item">
-                    <a href="../../../index.html"> Cerrar sesión</a>
+                <li class="menu-item">
+                    <a href="#">Empleado Municipal</a>
+                    <!-- Lista flotante secundaria, al "hoverear" -->
+                    <ul class="submenu">
+                        <li><a href="/src/pages/empleado-municipal/empleado-municipal-articulos.html">Articulos</a></li>
+                        <li><a href="/src/pages/empleado-municipal/empleado-municipal-incidencias.html">Incidencias</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a href="#">Empleado Sistemas</a>
+                    <ul class="submenu">
+                        <li><a href="/src/pages/empleado-sistemas/empleado-sistemas-articulos.html">Articulos</a></li>
+                        <li><a href="/src/pages/empleado-sistemas/empleado-sistemas-categorias.html">Categorias</a></li>
+                        <li><a href="/src/pages/empleado-sistemas/empleado-sistemas-incidencias.html">Incidencias</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a href="#">Director</a>
+                    <ul class="submenu">
+                        <li><a href="/src/pages/director/director-sistemas-dashboard.html">Dashboard/Resumen</a></li>
+                        <li><a href="/src/pages/director/director-sistemas-incidencias.html">Incidencias</a></li>
+                    </ul>
+                </li>
+                <li class="menu-ppal">
+                    <a href="index.html">Menú Principal</a>
                 </li>
             </ul>
         </aside>
+        <!-- A PARTIR DE ACÁ CAMBIA  -->
         <main class="cuerpo">
-            <h1>Incidencias</h1>
-            <div class="tarjeta-contenedora">
-                <div class="container-filtro">
-                    <div class="filtro-grupo">
-                        <label for="filtro-estado">Estado</label>
-                        <select id="filtro-estado"> <!--Acá cambiaria al nombre que tenga en la base de datos-->
-                            <option value="">Todos los Estados</option>
-                            <option value="asignada">Asignada</option>
-                            <option value="enproceso">En Proceso</option>
-                            <option value="resuelta">Resuelta</option>
-                            <option value="cancelada">Cancelada</option>
-                        </select>
+            <div class="container my-4" id="container-tabla">
+                <!-- Tarjeta del Filtro de Búsqueda -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">Filtrar Incidencias</h5>
                     </div>
-                    <div class="filtro-grupo">
-                        <label for="filtro-prioridad">Prioridad</label>
-                        <select id="filtro-prioridad">
-                            <option value="">Todas las Prioridades</option>
-                            <option value="1">Alta</option>
-                            <option value="2">Media</option>
-                            <option value="3">Baja</option>
-                        </select>
-                    </div>
-                    <div class="filtro-grupo">
-                        <label for="filtro-nro-articulo"> Descripción</label>
-                        <input type="text" id="filtro-nro-articulo" placeholder="N° Incidencia o Artículo">
+                    <div class="card-body">
+                        <form id="form-filtro" class="row g-3 align-items-end">
+                            <fieldset>
+                                <!-- Campo de entrada de texto -->
+                                <div class="col-md-8 col-12">
+                                    <label for="articuloFiltro" class="form-label">Buscar por Artículo:</label>
+                                    <input 
+                                        type="text" 
+                                        id="articuloFiltro" 
+                                        name="articuloFiltro" 
+                                        class="form-control" 
+                                        placeholder="Ej: Impresora, Notebook, Mouse..."
+                                    >
+                                </div>
 
+                                <!-- Botones de acción -->
+                                <div class="col-md-4 col-12 d-flex gap-2 mt-3">
+                                    <button type="submit" class="btn btn-info w-100">
+                                        Buscar
+                                    </button>
+                                    <button type="button" id="btn-limpiar" class="btn btn-secondary">
+                                        Borrar
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </form>
                     </div>
-
-                    <button class="btn-buscar">Filtrar</button>
                 </div>
-
-                <div class="tabla-resultados">
-                    <table class="tabla-incidencias">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Artículo</th>
-                                <th scope="col">Descripción</th>
-                                <th scope="col">Prioridad</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-incidencias">
-                        </tbody>
-                    </table>
-                </div>
+        
+                <table class="table table-hover align-middle w-100">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Creado</th>
+                            <th scope="col">Artículo</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Prioridad</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-incidencias">
+                    </tbody>
+                </table>
             </div>
         </main>
+        <aside>
+            
+        </aside>
     </div>
-    <script type="module" src="../../main.js"></script>
-    <script type="module" src="./empleado-sistemas-incidencias.js"></script>
-
+    
 </body>
-
 </html>
