@@ -1,0 +1,16 @@
+# Dependencias de Node.js
+node_modules/
+back/node_modules/
+front/node_modules/
+
+# Archivos de entorno (variables sensibles)
+.env
+.env.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# json
+ package-lock.json

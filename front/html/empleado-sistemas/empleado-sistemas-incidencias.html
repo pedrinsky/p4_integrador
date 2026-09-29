@@ -42,26 +42,28 @@
             </ul>
         </aside>
         <main class="cuerpo">
-            <h1>Incidencias</h1>
             <div class="tarjeta-contenedora">
+                <div style="padding: 10px;"> 
+                    <button id="btn-historial-resueltas" class="btn-buscar">Mis Resueltas</button>
+
+                </div>
                 <div class="container-filtro">
                     <div class="filtro-grupo">
                         <label for="filtro-estado">Estado</label>
-                        <select id="filtro-estado"> <!--Acá cambiaria al nombre que tenga en la base de datos-->
+                        <select id="filtro-estado"> 
                             <option value="">Todos los Estados</option>
-                            <option value="asignada">Asignada</option>
-                            <option value="enproceso">En Proceso</option>
-                            <option value="resuelta">Resuelta</option>
-                            <option value="cancelada">Cancelada</option>
+                            <option value="1">Pendiente</option>
+                            <option value="2">En Proceso</option>
+                            <option value="4">Cancelada</option>
                         </select>
                     </div>
                     <div class="filtro-grupo">
                         <label for="filtro-prioridad">Prioridad</label>
                         <select id="filtro-prioridad">
                             <option value="">Todas las Prioridades</option>
-                            <option value="1">Alta</option>
+                            <option value="3">Alta</option>
                             <option value="2">Media</option>
-                            <option value="3">Baja</option>
+                            <option value="1">Baja</option>
                         </select>
                     </div>
                     <div class="filtro-grupo">
@@ -70,7 +72,8 @@
 
                     </div>
 
-                    <button class="btn-buscar">Buscar</button>
+                    <button id="btn-buscar" class="btn-buscar">Buscar</button>
+                    
                 </div>
 
                 <div class="tabla-resultados">
@@ -90,6 +93,7 @@
                         </tbody>
                     </table>
                 </div>
+                
             </div>
         </main>
     </div>

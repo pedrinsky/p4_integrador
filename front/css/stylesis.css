@@ -236,19 +236,8 @@ img.logo-muni-header {
   /* Igual que los inputs */
 }
 
-.filtro-prioridad {
-}
-
-.filtro-estado {
-}
-
-.filtro-nro-articulo {
-}
-
-.tarjeta-contenedora {
-}
-
-.container-filtro {
+.btn-buscar:hover {
+  background-color: #22728a;
 }
 
 .tabla-incidencias {
@@ -262,16 +251,17 @@ img.logo-muni-header {
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid #eee;
+  background-color: #b9d3c3fd;
 }
 
 .tabla-incidencias th {
   background-color: #f1f5f3;
-  color: #333;
   font-weight: 600;
 }
 
-.tabla-incidencias tbody tr:hover {
-  background-color: #a9c7a8a2;
+.tabla-incidencias tbody tr:hover td {
+  background-color: #698373de;
+  color: white;
 }
 
 /* Etiquetas (Badges) para Prioridad y Estado */
@@ -331,6 +321,10 @@ img.logo-muni-header {
   font-size: 13px;
   font-weight: 600;
   transition: all 0.2s;
+}
+
+.btn-accion:hover {
+  background-color: #1a7894;
 }
 
 .tabla-resultados {
@@ -415,4 +409,12 @@ img.logo-muni-header {
 .contenedor-perfil-usuario {
   border-color: #666;
   border-radius: 8px;
+}
+
+.historial-activo {
+  background-color: #125326 !important;
+  padding: 10px;
+}
+.historial-activo:hover {
+  background-color: #1a7894 !important;
 }
