@@ -18,6 +18,14 @@ app.get('/', (req, res) => {
 //INCIDENCIAS
 app.get('/api/v1/incidencias', async (req, res) => {
     try {
+        //Paginación
+        //Leemos los parámetros de la URL (si no vienen, asignamos valores por defecto después del OR)
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 2;
+
+        //Calculamos el desplazamiento
+        const offset = (page - 1) * limit;
+
         const sql = 
         `SELECT 
             i.id_incidencia, 
@@ -37,12 +45,27 @@ app.get('/api/v1/incidencias', async (req, res) => {
         WHERE 
             i.id_estado != 4
         ORDER BY 
-            i.id_incidencia DESC;`;
+            i.id_incidencia DESC
+        LIMIT $1 OFFSET $2;
+        `;
     
-        const { rows } = await pool.query(sql);
-        console.log(rows);
+        const { rows } = await pool.query(sql, [limit, offset]);
         
-        res.status(200).json({'incidencias':rows});
+        //Consultar el total de registros para armar los botones de paginado
+        const totalQuery = await pool.query('SELECT COUNT(*) FROM incidencias WHERE id_estado != 4;');
+        const totalRegistros = parseInt(totalQuery.rows[0].count, 10);
+        const totalPaginas = Math.ceil(totalRegistros / limit);
+        
+        res.status(200).json({
+            incidencias: rows,
+            paginacion: {
+                totalRegistros,
+                totalPaginas,
+                paginaActual: page,
+                limitePorPagina: limit
+            }
+        });
+
     } catch(error) {
         console.log(`Paso algo -> ${error}`);
         res.status(500).json({
@@ -92,6 +115,7 @@ app.listen(port, () => {
 
 // CATEGORIAS - BREAD
 
+//BROWSE
 app.get('api/v1/categorias', async(req, res) => {
     try{
         const sql = 

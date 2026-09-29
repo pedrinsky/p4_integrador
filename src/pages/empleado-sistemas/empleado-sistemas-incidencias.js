@@ -1,7 +1,7 @@
 //Voy a hacer el objeto que contenga las incidencias que traiga FETCH
 let incidencias = [];
 
-const URL_API = 'http://localhost:3000/api/v1/incidencias';
+const URL_API_INCIDENCIAS = 'http://localhost:3000/api/v1/incidencias';
 
 const badgesEstado = {
     1: '<span class="badge est-pendiente">Pendiente</span>',
@@ -16,38 +16,31 @@ const badgesPrioridad = {
     3: '<span class="badge prio-alta">Alta</span>'
 };
 
-// FORMATEAR FECHA
-function formatearFecha(fechaCruda) {
-    if (!fechaCruda) return '-';
-    const fecha = new Date(fechaCruda);
-    if (isNaN(fecha.getTime())) return fechaCruda; // Si ya viene formateada desde SQL, la deja igual
-
-    const dia = String(fecha.getDate()).padStart(2, '0');
-    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-    const anio = fecha.getFullYear();
-    const horas = String(fecha.getHours()).padStart(2, '0');
-    const mins = String(fecha.getMinutes()).padStart(2, '0');
-
-    return `${dia}-${mes}-${anio} ${horas}:${mins}`;
-}
-
-//OBTENER INCIDENCIAS DE LA BASE DE DATOS A TRAVÉS DE FETCH
-async function cargarIncidencias() {
+// OBTENER INCIDENCIAS DE LA BASE DE DATOS A TRAVÉS DE FETCH
+async function cargarIncidencias(pagina = 1) {
     try {
-        const res = await fetch(URL_API);
+        // Enviamos el número de página solicitado
+        //limit siendo la cantidad de filas en la página
+        const res = await fetch(`${URL_API_INCIDENCIAS}?page=${pagina}&limit=10`);
 
-        //Corroboramos si la respuesta vino bien o no
+        // Corroboramos si la respuesta vino bien o no
         if (!res.ok) {
             throw new Error(`Error en la petición: ${res.status}`);
         }
 
-        data = await res.json(); //Guardamos el array de incidencias devuelto por Express
+        const data = await res.json(); 
         
         incidencias = Array.isArray(data) ? data : (data.incidencias || []);
-        
-        console.log('Datos recibidos de la API:', incidencias);
+
+        //Dibujamos la tabla con los registros de la página actual
         renderizarTabla(incidencias);
-    } catch(e) {
+
+        //Dibujamos los botones de paginación si el backend devolvió datos
+        if (data.paginacion) {
+            renderizarPaginacion(data.paginacion, 'paginacionIncidencias', cargarIncidencias);
+        }
+
+    } catch (e) {
         console.error('Fallo al conectar con el servidor:', e);
     }
 }
@@ -59,7 +52,7 @@ async function finalizarIncidencia(incidencia){
             return;
         }
 
-        const res = await fetch(`${URL_API}/${incidencia}`, {
+        const res = await fetch(`${URL_API_INCIDENCIAS}/${incidencia}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
