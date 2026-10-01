@@ -1,5 +1,7 @@
 //Voy a hacer el objeto que contenga las incidencias que traiga FETCH
 let incidencias = [];
+let textoFiltro = '';
+let debounceTimer = null; //usamos debouncer para que el usuario pueda escribir en tiempo real sin mandar una consulta por cada letra tipeada
 
 const URL_API_INCIDENCIAS = 'http://localhost:3000/api/v1/incidencias';
 
@@ -21,7 +23,13 @@ async function cargarIncidencias(pagina = 1) {
     try {
         // Enviamos el número de página solicitado
         //limit siendo la cantidad de filas en la página
-        const res = await fetch(`${URL_API_INCIDENCIAS}?page=${pagina}&limit=10`);
+        let url = `${URL_API_INCIDENCIAS}?page=${pagina}&limit=2`;
+
+        if (textoFiltro) {
+            url += `&search=${encodeURIComponent(textoFiltro)}`;
+        }
+
+        const res = await fetch(url);
 
         // Corroboramos si la respuesta vino bien o no
         if (!res.ok) {
@@ -75,28 +83,19 @@ async function finalizarIncidencia(incidencia){
 document.addEventListener('DOMContentLoaded', () => {
     cargarIncidencias();
 
+    //Elementos del filtro
     const formulario = document.getElementById('form-filtro');
     const inputFiltro = document.getElementById('articuloFiltro');
     const btnLimpiar = document.getElementById('btn-limpiar');
 
-    //FILTRADO EN TIEMPO REAL 
+    //FILTRADO EN TIEMPO REAL CON DEBOUNCE
     if (inputFiltro) {
         inputFiltro.addEventListener('input', () => {
-            const busqueda = inputFiltro.value.toLowerCase().trim();
-
-            // Si el campo quedó vacío
-            if (busqueda === '') {
-                renderizarTabla(incidencias);
-                return;
-            }
-
-            // Filtramos la lista completa original
-            const filtrados = incidencias.filter(inc => {
-                const desc = (inc.articulo_descripcion || '').toLowerCase();
-                return desc.includes(busqueda);
-            });
-
-            renderizarTabla(filtrados);
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                textoFiltro = inputFiltro.value.trim();
+                cargarIncidencias(1); // Regresamos a la primera página con el filtro
+            }, 700);
         });
     }
 
@@ -105,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formulario.addEventListener('submit', (e) => e.preventDefault());
     }
 
-    // 3. Botón Borrar
+    // BOTON LIMPIAR
     if (btnLimpiar) {
         btnLimpiar.addEventListener('click', () => {
             if (inputFiltro){
@@ -140,14 +139,12 @@ function renderizarTabla(incidencias) {
 
         const tdArticulo = document.createElement('td');
         tdArticulo.textContent = inc.articulo_descripcion;
-        tdArticulo.className = 'text-truncate';
-        tdArticulo.style.maxWidth = '50px';
+        tdArticulo.className = 'text-truncate col-acortada';;
         row.appendChild(tdArticulo);
 
         const tdDescripcion = document.createElement('td');
         tdDescripcion.textContent = inc.descripcion_pedido;
-        tdDescripcion.className = 'text-truncate';
-        tdDescripcion.style.maxWidth = '50px';
+        tdDescripcion.className = 'text-truncate col-acortada';
         row.appendChild(tdDescripcion);
 
         const tdPrioridad = document.createElement('td');
@@ -183,28 +180,6 @@ function renderizarTabla(incidencias) {
         tbody.appendChild(row);
     }
 }
-
-
-
-function filtrarDatos(event) {
-    // EVITO EL COMPORTAMIENTO POR DEFECTO DEL BOTON submit
-    event.preventDefault();
-    const filtro = document.getElementById('articuloFiltro');
-    const valorOriginal = filtro ? filtro.value : '';
-    const busquedaNormalizada = valorOriginal.toLowerCase().trim();
-
-    if (busquedaNormalizada === ''){
-        renderizarTabla(incidencias);
-        return;
-    }
-    const resultadosFiltrados = incidencias.filter(inc => {
-        const descripcionNormalizada = (inc.articulo_descripcion || '').toLowerCase();
-        return descripcionNormalizada.includes(busquedaNormalizada);
-    });
-    // RENDERIZO LA TABLA CON LOS DATOS FILTRADOS
-    renderizarTabla(resultadosFiltrados);
-}
-
 
 
 

@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS desde node_modules -->
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <!-- <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="../../css/style.css"></link>
+    <link rel="stylesheet" href="../../css/style.css">
     <script defer src="../../config/util.js"></script>
     <script defer src="./empleado-sistemas-incidencias.js"></script>
 </head>
@@ -61,51 +61,38 @@
                         <h5 class="card-title mb-0">Filtrar Incidencias</h5>
                     </div>
                     <div class="card-body">
-                        <form id="form-filtro" class="row g-3 align-items-end">
-                            <fieldset>
-                                <!-- Campo de entrada de texto -->
+                        <form id="form-filtro">
+                            <fieldset class="row g-3 align-items-end border-0 p-0 m-0">
                                 <div class="col-md-8 col-12">
                                     <label for="articuloFiltro" class="form-label">Buscar por Artículo:</label>
-                                    <input 
-                                        type="text" 
-                                        id="articuloFiltro" 
-                                        name="articuloFiltro" 
-                                        class="form-control" 
-                                        placeholder="Ej: Impresora, Notebook, Mouse..."
-                                    >
+                                    <input type="text" id="articuloFiltro" class="form-control" placeholder="Ej: Impresora, Notebook, Mouse...">
                                 </div>
-
-                                <!-- Botones de acción -->
-                                <div class="col-md-4 col-12 d-flex gap-2 mt-3">
-                                    <button type="submit" class="btn btn-info w-100">
-                                        Buscar
-                                    </button>
-                                    <button type="button" id="btn-limpiar" class="btn btn-secondary">
-                                        Borrar
-                                    </button>
+                                <div class="col-md-4 col-12 d-flex gap-2">
+                                    <button type="button" id="btn-limpiar" class="btn btn-secondary">Borrar</button>
                                 </div>
                             </fieldset>
                         </form>
                     </div>
                 </div>
-        
-                <table class="table table-hover align-middle w-100">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Creado</th>
-                            <th scope="col">Artículo</th>
-                            <th scope="col">Descripción</th>
-                            <th scope="col">Prioridad</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-incidencias">
-                    </tbody>
-                </table>
+                <div class="table-responsive"> <!--Barra navegación lateral para responsiveness -->
+                    <table class="table table-hover align-middle w-100">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Creado</th>
+                                <th scope="col">Artículo</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Prioridad</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-incidencias">
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <nav aria-label="Navegación de páginas" class="d-flex justify-content-center mt-3">
+            <nav aria-label="Navegación de páginas" class="contenedor-paginacion">
                 <ul class="pagination" id="paginacionIncidencias"></ul>
             </nav>
         </main>

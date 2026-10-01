@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Categorías</title>
+    <link rel="icon" type="image/png" href="../../../assets/logo-muni-azul.png">
+    
+    <!-- CSS de Bootstrap y Estilos propios (las rutas relativas que ya te funcionaban) -->
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <!-- JS de Bootstrap (para que window.bootstrap exista y los modales funcionen) -->
+    <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Scripts de la app -->
+    <script defer src="../../config/util.js"></script>
+    <script defer src="./empleado-sistemas-categorias.js"></script>
+</head>
+<body>
+    <header class="top-header"> 
+        <div class="logo-container">
+            <img class= "logo-muni-header" src="../../../assets/logo-muni-black.png" alt="Logo Municipalidad">
+        </div>
+        <div class="open-menu">
+            
+        </div>
+    </header>
+    <div class="main-layout">
+        <aside class="lat-bar">
+            <ul class="nav-list">
+                <li class="menu-item">
+                    <a href="#">Empleado Municipal</a>
+                    <!-- Lista flotante secundaria, al "hoverear" -->
+                    <ul class="submenu">
+                        <li><a href="/src/pages/empleado-municipal/empleado-municipal-articulos.html">Articulos</a></li>
+                        <li><a href="/src/pages/empleado-municipal/empleado-municipal-incidencias.html">Incidencias</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a href="#">Empleado Sistemas</a>
+                    <ul class="submenu">
+                        <li><a href="/src/pages/empleado-sistemas/empleado-sistemas-articulos.html">Articulos</a></li>
+                        <li><a href="/src/pages/empleado-sistemas/empleado-sistemas-categorias.html">Categorias</a></li>
+                        <li><a href="/src/pages/empleado-sistemas/empleado-sistemas-incidencias.html">Incidencias</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a href="#">Director</a>
+                    <ul class="submenu">
+                        <li><a href="/src/pages/director/director-sistemas-dashboard.html">Dashboard/Resumen</a></li>
+                        <li><a href="/src/pages/director/director-sistemas-incidencias.html">Incidencias</a></li>
+                    </ul>
+                </li>
+                <li class="menu-ppal">
+                    <a href="index.html">Menú Principal</a>
+                </li>
+            </ul>
+        </aside>
+        <!-- A PARTIR DE ACÁ CAMBIA  -->
+        <main class="cuerpo">
+            <div class="container my-4" id="container-tabla">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Gestión de Categorías</h5>
+                        
+                    </div>
+                    <div class="card-body">
+                        <form id="form-filtro">
+                            <fieldset class="row g-3 align-items-end border-0 p-0 m-0">
+                                <!-- Campo de búsqueda -->
+                                <div class="col-md-8 col-12">
+                                    <label for="filtroCategoria" class="form-label">Buscar Categoría:</label>
+                                    <input 
+                                        type="text" 
+                                        id="filtroCategoria" 
+                                        class="form-control" 
+                                        placeholder="Ej: Periféricos, Redes, Notebooks..."
+                                    >
+                                </div>
+
+                                <!-- Botones del filtro -->
+                                <div class="col-md-4 col-12 d-flex gap-2">
+                                    <button type="button" id="btn-limpiar" class="btn btn-secondary">Borrar</button>
+                                    <button type="button" class="btn btn-success" id="btn-nueva-categoria">+ Nueva Categoría</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+            </div>
+                <div class="table-responsive"> <!--Barra navegación lateral para responsiveness -->
+                    <table class="table table-hover align-middle w-100">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-categorias">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <nav aria-label="Navegación de páginas" class="contenedor-paginacion">
+                <ul class="pagination" id="paginacionCategorias"></ul>
+            </nav>
+        </main>
+        <aside>
+            
+        </aside>
+    </div>
+    <!-- Modal Crear / Editar Categoría -->
+    <div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="modalTitulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitulo">Nueva Categoría</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <form id="form-modal-categoria">
+                    <div class="modal-body">
+                        <!-- Campo oculto para guardar la ID si estamos editando -->
+                        <input type="hidden" id="categoria-id">
+
+                        <div class="mb-3">
+                            <label for="categoria-descripcion" class="form-label">Descripción</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="categoria-descripcion" 
+                                required 
+                                placeholder="Ej: Periféricos, Servidores, etc."
+                            >
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-guardar-modal">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
