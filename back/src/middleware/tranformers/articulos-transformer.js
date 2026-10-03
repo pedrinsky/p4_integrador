@@ -1,4 +1,4 @@
-import { getAllArticulosSchema } from "../../schemas/articulosSchema.js";
+import { getAllArticulosSchema } from "../../schemas/articulos-schema.js";
 
 export const getAllTransform = (req, res, next) => {
     const schema = getAllArticulosSchema.safeParse(req.query)
