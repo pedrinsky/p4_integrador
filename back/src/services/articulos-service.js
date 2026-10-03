@@ -37,4 +37,22 @@ export class ArticulosService{
         return rows;
     }
 
+    static async getByID(input){
+        const {id_articulo} = input;
+        console.log("Service");
+        console.log(id_articulo);
+        const sql = `
+            SELECT id_articulo, id_area, id_categoria, descripcion, activo
+            FROM articulos
+            WHERE id_articulo = $1;
+        `;
+
+        console.log(sql);
+
+        const {rows} = await pool.query(sql, [id_articulo]);
+        console.log(rows);
+        return rows;
+
+    }
+
 }

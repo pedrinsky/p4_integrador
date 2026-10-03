@@ -1,6 +1,9 @@
 import {Router} from 'express';
-import { getAllTransform as getAllTransformArticulos } from '../middleware/tranformers/articulos-transformer.js';
-import { ArticulosService } from '../services/articulos-service.js';
+import { getAllTransform as getAllTransformArticulos
+    ,getByIDTransform as getByIDArticulosTransform} 
+    from '../middleware/tranformers/articulos-transformer.js';
+
+// import { ArticulosService } from '../services/articulos-service.js';
 import { ArticulosController } from '../controller/articulos-controller.js';
 
 export const createArticulosRouter = ({articulosService}) => {
@@ -9,6 +12,8 @@ export const createArticulosRouter = ({articulosService}) => {
     const articulosController = new ArticulosController({articulosService : articulosService});
 
     router.get("/", getAllTransformArticulos, articulosController.getAll);
+
+    router.get("/:id_articulo", getByIDArticulosTransform, articulosController.getByID);
 
     return router;
 }

@@ -10,4 +10,12 @@ export class ArticulosController{
         console.log(result);
         res.json(result);
     }
+
+    getByID = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.articulosService.getByID(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
 }

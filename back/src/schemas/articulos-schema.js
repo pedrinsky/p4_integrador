@@ -34,6 +34,11 @@ export const getAllArticulosSchema = z.object({
         .nonnegative({message: "Offset debe ser un entero igual o mayor a 0"})
 });
 
+export const getByIDArticulosSchema = z.object({
+    "id_articulo": z.coerce
+        .number()
+        .int({message: "id_articulo debe ser un entero"})
+})
 
 export const createArticulosSchema = z.object({
     "id_area": z.number()

@@ -1,3 +1,3 @@
 ###GET de todos los articulos
 
-GET http://localhost:3000/articulos?order=id_area
+GET http://localhost:3000/articulos?order_column=id_area&&asc=true&&limit=10&&offset=0&&id_area=1&&id_categoria=1&&descripcion=not
