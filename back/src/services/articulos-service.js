@@ -19,17 +19,32 @@ export class ArticulosService{
             condiciones.push(`${column} = $${valores.length}`);
         }
 
-        const sql = `
-            SELECT id_articulo, id_area, id_categoria
-            , descripcion, activo
-            FROM articulos
-            WHERE ${condiciones.join(" AND ")}
-            ORDER BY $1 ${direction}
-            LIMIT $2 OFFSET $3;
-        `;
-        console.log(sql);
-        console.log(valores);
-        
+        let sql;
+
+        if(condiciones.length === 0){
+            sql = `
+                SELECT id_articulo, id_area, id_categoria
+                , descripcion, activo
+                FROM articulos
+                ORDER BY $1 ${direction}
+                LIMIT $2 OFFSET $3;
+            `;
+            
+            console.log(sql);
+            console.log(valores);
+        }else{
+            sql = `
+                SELECT id_articulo, id_area, id_categoria
+                , descripcion, activo
+                FROM articulos
+                WHERE ${condiciones.join(" AND ")}
+                ORDER BY $1 ${direction}
+                LIMIT $2 OFFSET $3;
+            `;
+            console.log(sql);
+            console.log(valores);
+        }
+
         const {rows} = await pool.query(sql, valores);
         
         console.log(rows);
@@ -52,6 +67,40 @@ export class ArticulosService{
         const {rows} = await pool.query(sql, [id_articulo]);
         console.log(rows);
         return rows;
+
+    }
+
+    static async update(input){
+        console.log("service");
+        console.log(input);
+
+        const {id_articulo, ...entradas} = input;
+        console.log(id_articulo);
+        console.log(entradas);
+
+        const cambios = [];
+        const valores = [id_articulo];
+
+        for(let campo in entradas){
+            valores.push(entradas[campo]);
+            cambios.push(` ${campo} = $${valores.length}`);
+        }
+        
+        const sql = `
+            UPDATE articulos
+            SET ${cambios.join(", ")}
+            WHERE id_articulo = $1
+            RETURNING *;
+        `
+        console.log(sql);
+        console.log(valores);
+
+        const {rows} = await pool.query(sql, valores);
+
+        console.log(rows);
+
+        return rows;
+
 
     }
 

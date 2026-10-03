@@ -1,3 +1,28 @@
-###GET de todos los articulos
+###GET de todos los articulos. Se debe de pasar por query params:
+#order_column: La columna por la que se ordenara.
+#asc: "ASC" si la query es rellenada, "DESC" si esta  vacia
+#limit.
+#offset.
+
+GET http://localhost:3000/articulos?order_column=id_area&&asc=true&&limit=10&&offset=0
+
+
+###GET de articulos, agregando filtros extra (id_area, id_categoria, descripcion)
 
 GET http://localhost:3000/articulos?order_column=id_area&&asc=true&&limit=10&&offset=0&&id_area=1&&id_categoria=1&&descripcion=not
+
+###GET de articulos por id
+#Se pasa por route params el id
+
+GET http://localhost:3000/articulos/2
+
+
+###Actualizar articulo por id
+#Se pasan por body los campos a cambiar
+#Por ahora da error enviar el body vacio...
+PATCH http://localhost:3000/articulos/1
+Content-Type: application/json
+
+{
+    "id_area": 2
+}

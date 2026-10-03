@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import { getAllTransform as getAllTransformArticulos
-    ,getByIDTransform as getByIDArticulosTransform} 
+    ,getByIDTransform as getByIDArticuloTransform
+    ,updateTransform as updateArticuloTransform} 
     from '../middleware/tranformers/articulos-transformer.js';
 
 // import { ArticulosService } from '../services/articulos-service.js';
@@ -13,7 +14,9 @@ export const createArticulosRouter = ({articulosService}) => {
 
     router.get("/", getAllTransformArticulos, articulosController.getAll);
 
-    router.get("/:id_articulo", getByIDArticulosTransform, articulosController.getByID);
+    router.get("/:id_articulo", getByIDArticuloTransform, articulosController.getByID);
+
+    router.patch("/:id_articulo", updateArticuloTransform, articulosController.update);
 
     return router;
 }
