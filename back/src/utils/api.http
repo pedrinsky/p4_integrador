@@ -1,0 +1,3 @@
+###GET de todos los articulos
+
+GET http://localhost:3000/articulos?order=id_area
