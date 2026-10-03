@@ -6,8 +6,8 @@ export class ArticulosController{
     getAll = async (req, res) => {
         console.log("Controller");
         console.log(req.criteria);
-        const {rows} = await this.articulosService.getAll({...req.criteria});
-        console.log(rows);
-        res.json(rows);
+        const result = await this.articulosService.getAll(req.criteria);
+        console.log(result);
+        res.json(result);
     }
 }
