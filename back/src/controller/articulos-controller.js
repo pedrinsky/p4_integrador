@@ -26,4 +26,20 @@ export class ArticulosController{
         console.log(result);
         res.json(result);
     }
+
+    create = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.articulosService.create(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+
+    delete = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.articulosService.delete(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
 }

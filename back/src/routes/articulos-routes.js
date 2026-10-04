@@ -1,7 +1,9 @@
 import {Router} from 'express';
 import { getAllTransform as getAllTransformArticulos
     ,getByIDTransform as getByIDArticuloTransform
-    ,updateTransform as updateArticuloTransform} 
+    ,updateTransform as updateArticuloTransform
+    ,createTransform as createArticuloTransform
+    ,deleteTransform as deleteArticuloTransform} 
     from '../middleware/tranformers/articulos-transformer.js';
 
 // import { ArticulosService } from '../services/articulos-service.js';
@@ -17,6 +19,10 @@ export const createArticulosRouter = ({articulosService}) => {
     router.get("/:id_articulo", getByIDArticuloTransform, articulosController.getByID);
 
     router.patch("/:id_articulo", updateArticuloTransform, articulosController.update);
+
+    router.post("/", createArticuloTransform, articulosController.create);
+
+    router.delete("/:id_articulo", deleteArticuloTransform, articulosController.delete);
 
     return router;
 }

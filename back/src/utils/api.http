@@ -4,12 +4,28 @@
 #limit.
 #offset.
 
-GET http://localhost:3000/articulos?order_column=id_area&&asc=true&&limit=10&&offset=0
+GET http://localhost:3000/articulos?order_column=id_area&&direction=DESC&&limit=10&&offset=0
 
 
 ###GET de articulos, agregando filtros extra (id_area, id_categoria, descripcion)
+###por area:
 
-GET http://localhost:3000/articulos?order_column=id_area&&asc=true&&limit=10&&offset=0&&id_area=1&&id_categoria=1&&descripcion=not
+GET http://localhost:3000/articulos?order_column=id_area&&direction=desc&&limit=10&&offset=0&&id_area=1
+
+###Por categoria:
+
+GET http://localhost:3000/articulos?order_column=id_area&&direction=asc&&limit=10&&offset=0&&id_categoria=1
+
+###Por descripcion:
+
+GET http://localhost:3000/articulos?order_column=id_area&&direction=desc&&limit=10&&offset=0&&descripcion=not
+
+###Por todo a la vez:
+
+GET http://localhost:3000/articulos?order_column=id_area&&direction=ASC&&limit=10&&offset=0&&id_area=1&&id_categoria=1&&descripcion=not
+
+
+
 
 ###GET de articulos por id
 #Se pasa por route params el id
@@ -26,3 +42,20 @@ Content-Type: application/json
 {
     "id_area": 2
 }
+
+
+###POST
+#Se pasan por body todos los valores (id_area, id_categoria, descripcion y activo)
+POST http://localhost:3000/articulos
+Content-Type: application/json
+
+{
+    "id_area": 2,
+    "id_categoria": 9,
+    "descripcion": "Luces led",
+    "activo": 1
+}
+
+####DELETE
+#Se borra logicamente el articulo segun el id
+DELETE http://localhost:3000/articulos/4

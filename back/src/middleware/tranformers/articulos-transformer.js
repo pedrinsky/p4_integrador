@@ -1,5 +1,5 @@
 import { getAllArticulosSchema, getByIDArticulosSchema
-    ,updateArticulosSchema} from "../../schemas/articulos-schema.js";
+    ,updateArticulosSchema, createArticulosSchema} from "../../schemas/articulos-schema.js";
 
 export const getAllTransform = (req, res, next) => {
     const schema = getAllArticulosSchema.safeParse(req.query)
@@ -33,5 +33,26 @@ export const updateTransform = (req, res, next) => {
         ...idSchema.data,
         ...bodySchema.data};
     console.log(req.criteria);
+    next();
+}
+
+export const createTransform = (req, res, next) => {
+    console.log("Transformer");
+    const schema = createArticulosSchema.safeParse(req.body);
+    if(schema.error) res.status(400).json({error: JSON.parse(schema.error.message)});
+    console.log(schema.data);
+    req.criteria = schema.data;
+    console.log(req.criteria);
+    next();
+}
+
+export const deleteTransform = (req, res, next) => {
+    console.log("Transformer");
+    console.log(req.params);
+    const schema = getByIDArticulosSchema.safeParse(req.params);
+    
+    if(schema.error) res.status(400).json({error: JSON.parse(schema.error.message)});
+    console.log(schema.data);
+    req.criteria = schema.data;
     next();
 }

@@ -1,51 +1,29 @@
 import { pool } from "../config/db.js";
 
 export class ArticulosService{
+
     static async getAll(input){
-        const {order_column, asc, limit, offset, ...entradas} = input;
+        console.log("Service");
 
-        const direction  = asc ? "ASC" : "DESC";
+        const {id_articulo, id_area, id_categoria, descripcion
+            , activo, order_column, direction, limit, offset} = input;
 
-        console.log("entradas: ", entradas);
-        const condiciones = [];
-        const valores = [order_column, limit, offset];
+        const sql = `
+            SELECT id_articulo, id_area, id_categoria, descripcion, activo
+            FROM articulos
+            WHERE ($1::text IS NULL OR id_articulo = $1::int)
+            AND ($2::text IS NULL OR id_area = $2::int)
+            AND ($3::text IS NULL OR id_categoria = $3::int)
+            AND ($4::text IS NULL OR descripcion ILIKE '%' || $4::text || '%')
+            AND ($5::text IS NULL OR activo = $5::int)
+            ORDER BY $6 ${direction}
+            LIMIT $7 OFFSET $8;
+        `;
+        console.log(sql);
 
-        for(let column in entradas){
-            valores.push(entradas[column]);
-            if(column === "descripcion"){
-                condiciones.push(`descripcion ILIKE '%'||$${valores.length}||'%'`);
-                continue
-            }
-            condiciones.push(`${column} = $${valores.length}`);
-        }
-
-        let sql;
-
-        if(condiciones.length === 0){
-            sql = `
-                SELECT id_articulo, id_area, id_categoria
-                , descripcion, activo
-                FROM articulos
-                ORDER BY $1 ${direction}
-                LIMIT $2 OFFSET $3;
-            `;
-            
-            console.log(sql);
-            console.log(valores);
-        }else{
-            sql = `
-                SELECT id_articulo, id_area, id_categoria
-                , descripcion, activo
-                FROM articulos
-                WHERE ${condiciones.join(" AND ")}
-                ORDER BY $1 ${direction}
-                LIMIT $2 OFFSET $3;
-            `;
-            console.log(sql);
-            console.log(valores);
-        }
-
-        const {rows} = await pool.query(sql, valores);
+        const {rows} = await pool.query(sql, [id_articulo ?? null, id_area ?? null
+            , id_categoria ?? null, descripcion ?? null, activo ?? null, order_column
+            , limit, offset]);
         
         console.log(rows);
 
@@ -85,7 +63,6 @@ export class ArticulosService{
             valores.push(entradas[campo]);
             cambios.push(` ${campo} = $${valores.length}`);
         }
-        
         const sql = `
             UPDATE articulos
             SET ${cambios.join(", ")}
@@ -96,12 +73,43 @@ export class ArticulosService{
         console.log(valores);
 
         const {rows} = await pool.query(sql, valores);
+        console.log(rows);
+        return rows;
+    }
 
+    static async create(input){
+        console.log("Service");
+        const {id_area, id_categoria, descripcion, activo} = input;
+
+        const sql = `
+            INSERT INTO articulos(id_area, id_categoria, descripcion, activo)
+            VALUES ($1, $2, $3, $4)
+            RETURNING *;
+        `;
+        console.log(sql);
+        const {rows} = await pool.query(sql, [id_area, id_categoria, descripcion, activo]);
+        console.log(rows);
+        return rows;
+    }
+
+    static async delete(input){
+        console.log("Service");
+
+        const {id_articulo} = input;
+        console.log(id_articulo);
+
+        const sql = `
+            UPDATE articulos
+            SET activo = 2
+            WHERE id_articulo = $1
+            RETURNING *;
+        `;
+        console.log(sql);
+
+        const {rows} = await pool.query(sql, [id_articulo]);
         console.log(rows);
 
         return rows;
-
-
+        
     }
-
 }

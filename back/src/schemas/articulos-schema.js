@@ -22,8 +22,7 @@ export const getAllArticulosSchema = z.object({
         .max(32,767, {message: "activo debe ser un entero de 2 bytes"})
         .optional(),
     "order_column": z.enum(order, {message: "Valor invalido para el orden"}),
-    "asc": z.coerce
-    .boolean({message: "Direction debe ser un booleano"}),
+    "direction": z.enum(["ASC", "asc", "DESC", "desc"], {message: "Valor no valido"}),
     "limit": z.coerce
         .number()
         .int()
@@ -63,22 +62,6 @@ export const updateArticulosSchema = z.object({
 
 
 export const createArticulosSchema = z.object({
-    "id_area": z.number()
-        .int()
-        .min(-2147483648)
-        .max(2147483647, {message: "id_area debe ser un entero de 4 bytes"}),
-    "id_categoria":z.number()
-        .int()
-        .min(-2147483648)
-        .max(2147483647, {message: "id_categoria debe ser un entero de 4 bytes"}),
-    "descripcion": z.string({message: "Descripcion debe ser un string"}),
-    "activo": z.number()
-        .int()
-        .min(-32,768)
-        .max(32,767, {message: "activo debe ser un entero de 2 bytes"})
-});
-
-export const patchArticulosSchema = z.object({
     "id_area": z.number()
         .int()
         .min(-2147483648)
