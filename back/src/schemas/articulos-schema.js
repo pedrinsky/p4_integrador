@@ -7,12 +7,14 @@ export const getAllArticulosSchema = z.object({
         .number()
         .int()
         .min(-2147483648)
-        .max(2147483647, {message: "id_area debe ser un entero de 4 bytes"}).optional(),
+        .max(2147483647, {message: "id_area debe ser un entero de 4 bytes"})
+        .optional(),
     "id_categoria":z.coerce
         .number()
         .int()
         .min(-2147483648)
-        .max(2147483647, {message: "id_categoria debe ser un entero de 4 bytes"}).optional(),
+        .max(2147483647, {message: "id_categoria debe ser un entero de 4 bytes"})
+        .optional(),
     "descripcion": z.string({message: "Descripcion debe ser un string"})
         .optional(),
     "activo": z.coerce

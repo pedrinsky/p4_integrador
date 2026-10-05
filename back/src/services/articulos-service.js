@@ -2,34 +2,6 @@ import { pool } from "../config/db.js";
 
 export class ArticulosService{
 
-    // static async getAll(input){
-    //     console.log("Service");
-
-    //     const {id_articulo, id_area, id_categoria, descripcion
-    //         , activo, order_column, direction, limit, offset} = input;
-
-    //     const sql = `
-    //         SELECT id_articulo, id_area, id_categoria, descripcion, activo
-    //         FROM articulos
-    //         WHERE ($1::text IS NULL OR id_articulo = $1::int)
-    //         AND ($2::text IS NULL OR id_area = $2::int)
-    //         AND ($3::text IS NULL OR id_categoria = $3::int)
-    //         AND ($4::text IS NULL OR descripcion ILIKE '%' || $4::text || '%')
-    //         AND ($5::text IS NULL OR activo = $5::int)
-    //         ORDER BY $6 ${direction}
-    //         LIMIT $7 OFFSET $8;
-    //     `;
-    //     console.log(sql);
-
-    //     const {rows} = await pool.query(sql, [id_articulo ?? null, id_area ?? null
-    //         , id_categoria ?? null, descripcion ?? null, activo ?? null, order_column
-    //         , limit, offset]);
-        
-    //     console.log(rows);
-
-    //     return rows;
-    // }
-
     static async getAll(input){
         console.log("Service");
 
@@ -62,24 +34,6 @@ export class ArticulosService{
 
         return rows;
     }
-
-    // static async getByID(input){
-    //     const {id_articulo} = input;
-    //     console.log("Service");
-    //     console.log(id_articulo);
-    //     const sql = `
-    //         SELECT id_articulo, id_area, id_categoria, descripcion, activo
-    //         FROM articulos
-    //         WHERE id_articulo = $1;
-    //     `;
-
-    //     console.log(sql);
-
-    //     const {rows} = await pool.query(sql, [id_articulo]);
-    //     console.log(rows);
-    //     return rows;
-
-    // }
 
     static async getByID(input){
         const {id_articulo} = input;
@@ -156,7 +110,7 @@ export class ArticulosService{
 
         const sql = `
             UPDATE articulos
-            SET activo = 2
+            SET activo = 0
             WHERE id_articulo = $1
             RETURNING *;
         `;
