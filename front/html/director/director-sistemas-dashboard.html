@@ -1,645 +1,151 @@
-```html
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Dashboard de incidencias | Municipio</title>
-
-    <link rel="icon" type="image/png" href="../../images/logo-muni-azul.png" />
-
-    <!-- Bootstrap -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-
-    <!-- Bootstrap Icons -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Municipalidad</title>
+    <!-- Solo importamos los iconos, NO el framework bootstrap -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
-
-    <!-- CSS propio -->
     <link rel="stylesheet" href="../../css/style.css" />
   </head>
 
-  <body class="dashboard-page">
-    <!-- Sidebar -->
-    <aside
-      class="municipal-sidebar d-flex flex-column"
-      aria-label="Navegación principal"
-    >
-      <!-- Logo -->
-      <a
-        class="brand d-flex align-items-center gap-3 text-white text-decoration-none"
-        href="#dashboard"
-      >
-        <img src="../../images/logo-muni.png" alt="Escudo del Municipio" />
-      </a>
+  <body>
+    <header class="top-header">
+      <div class="header-izq">
+        <button id="btn-menu" class="btn-barra">☰</button>
+        <img
+          class="logo-muni-header"
+          src="../../images/logo-muni.png"
+          alt="Logo"
+        />
+      </div>
 
-      <!-- Navegación -->
-      <nav
-        class="nav flex-column gap-1 mt-4"
-        aria-label="Secciones del sistema"
-      >
-        <a class="nav-link active" aria-current="page" href="#dashboard">
-          <i class="bi bi-house-door"></i>
-          Dashboard
-        </a>
-
-        <a class="nav-link" href="#incidencias">
-          <i class="bi bi-exclamation-triangle"></i>
-          Incidencias
-          <i class="bi bi-chevron-right ms-auto"></i>
-        </a>
-
-        <a class="nav-link" href="#reportes">
-          <i class="bi bi-bar-chart-line"></i>
-          Reportes
-        </a>
-
-        <a class="nav-link" href="#categorias">
-          <i class="bi bi-tag"></i>
-          Categorías
-        </a>
-
-        <a class="nav-link" href="#articulos">
-          <i class="bi bi-box-seam"></i>
-          Artículos
-        </a>
-      </nav>
-
-      <!-- Cerrar sesión -->
-      <a class="nav-link logout mt-auto" href="../../index.html">
-        <i class="bi bi-box-arrow-right"></i>
-        Cerrar sesión
-      </a>
-    </aside>
-
-    <!-- Contenido principal -->
-    <main class="dashboard-main" id="dashboard">
-      <!-- Barra superior -->
-      <header
-        class="topbar d-flex align-items-center gap-3 px-3 px-lg-4"
-        aria-label="Barra superior"
-      >
-        <!-- Botón menú -->
-        <button
-          class="btn btn-link menu-button p-0"
-          type="button"
-          aria-label="Menú"
-        >
-          <i class="bi bi-list"></i>
-        </button>
-
-        <!-- Buscador -->
-        <form class="search-box mx-auto" role="search">
-          <label class="visually-hidden" for="buscar">
-            Buscar en el sistema
-          </label>
-
-          <i class="bi bi-search"></i>
-
-          <input
-            id="buscar"
-            type="search"
-            placeholder="Buscar en el sistema..."
-          />
-        </form>
-
-        <!-- Notificaciones -->
-        <button
-          class="btn position-relative notification-button"
-          type="button"
-          aria-label="Notificaciones"
-        >
-          <i class="bi bi-bell"></i>
-
-          <span
-            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-          >
-            3
-
-            <span class="visually-hidden"> notificaciones nuevas </span>
-          </span>
-        </button>
-
-        <!-- Perfil -->
-        <div class="d-none d-sm-flex align-items-center gap-2 user-profile">
-          <span class="profile-avatar">
-            <i class="bi bi-person-fill"></i>
-          </span>
-
-          <span>
-            <strong class="d-block">María García</strong>
-            <small>Director</small>
-          </span>
-
-          <i class="bi bi-chevron-down ms-2"></i>
+      <div class="perfil-usuario">
+        <div class="avatar-circulo">algo</div>
+        <div class="textos-usuario">
+          <span class="nombre-usuario"> Probando que onda</span>
+          <span class="rol-usuario"> Director de Sistemas </span>
         </div>
-      </header>
+      </div>
+    </header>
+    <div class="main-layout">
+      <aside class="lat-bar">
+        <ul class="nav-list">
+          <ul class="menu-item">
+            <a href="director-sistemas-incidencias.html"> Incidencias</a>
+          </ul>
+          <ul class="menu-item active">
+            <a href="director-sistemas-dashboard.html"> Dashboard</a>
+          </ul>
 
-      <!-- Dashboard -->
-      <section class="container-fluid p-3 p-lg-4" aria-labelledby="page-title">
-        <!-- Encabezado -->
-        <div
-          class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4"
-        >
-          <div>
-            <h1 id="page-title" class="mb-1">Dashboard</h1>
+          <li class="menu-item logout-item">
+            <a href="../../index.html"> Cerrar sesión</a>
+          </li>
+        </ul>
+      </aside>
+      <main class="cuerpo">
+        <div class="tarjeta-contenedora">
+          <h1 class="titulo-dashboard">
+            Resumen de estado de las incidencias del sistema.
+          </h1>
 
-            <p class="subtitle mb-0">
-              Resumen general de incidencias del sistema
-            </p>
-          </div>
-
-          <button class="btn period-button" type="button">
-            <i class="bi bi-calendar3 me-2"></i>
-            Últimos 30 días
-            <i class="bi bi-chevron-down ms-4"></i>
-          </button>
-        </div>
-
-        <!-- Métricas -->
-        <section aria-label="Métricas de incidencias" class="mb-3">
-          <div
-            class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-6"
-          >
-            <!-- Total de incidencias -->
-            <div class="col">
-              <article class="metric-card">
-                <span class="metric-icon icon-blue">
-                  <i class="bi bi-clipboard-check"></i>
-                </span>
-
-                <h2>Total de incidencias</h2>
-
-                <p class="metric-number">150</p>
-
-                <p class="metric-change positive">
-                  <i class="bi bi-arrow-up"></i>
-                  +12%
-
-                  <span> respecto al período anterior </span>
-                </p>
-              </article>
-            </div>
-
-            <!-- Pendientes -->
-            <div class="col">
-              <article class="metric-card">
-                <span class="metric-icon icon-orange">
-                  <i class="bi bi-clock"></i>
-                </span>
-
-                <h2>Pendientes</h2>
-
-                <p class="metric-number">35</p>
-
-                <p class="metric-change positive">
-                  <i class="bi bi-arrow-up"></i>
-                  +5%
-
-                  <span> respecto al período anterior </span>
-                </p>
-              </article>
-            </div>
-
-            <!-- Asignadas -->
-            <div class="col">
-              <article class="metric-card">
-                <span class="metric-icon icon-blue">
-                  <i class="bi bi-person"></i>
-                </span>
-
-                <h2>Asignadas</h2>
-
-                <p class="metric-number">40</p>
-
-                <p class="metric-change positive">
-                  <i class="bi bi-arrow-up"></i>
-                  +8%
-
-                  <span> respecto al período anterior </span>
-                </p>
-              </article>
-            </div>
-
-            <!-- Finalizadas -->
-            <div class="col">
-              <article class="metric-card">
-                <span class="metric-icon icon-green">
-                  <i class="bi bi-check2-circle"></i>
-                </span>
-
-                <h2>Finalizadas</h2>
-
-                <p class="metric-number">60</p>
-
-                <p class="metric-change positive">
-                  <i class="bi bi-arrow-up"></i>
-                  +15%
-
-                  <span> respecto al período anterior </span>
-                </p>
-              </article>
-            </div>
-
-            <!-- Canceladas -->
-            <div class="col">
-              <article class="metric-card">
-                <span class="metric-icon icon-red">
-                  <i class="bi bi-x-circle"></i>
-                </span>
-
-                <h2>Canceladas</h2>
-
-                <p class="metric-number">15</p>
-
-                <p class="metric-change negative">
-                  <i class="bi bi-arrow-down"></i>
-                  +2%
-
-                  <span> respecto al período anterior </span>
-                </p>
-              </article>
-            </div>
-
-            <!-- Prioritarias -->
-            <div class="col">
-              <article class="metric-card">
-                <span class="metric-icon icon-purple">
-                  <i class="bi bi-exclamation-circle"></i>
-                </span>
-
-                <h2>Prioritarias</h2>
-
-                <p class="metric-number">12</p>
-
-                <p class="metric-change neutral">
-                  <i class="bi bi-dash-lg"></i>
-                  0%
-
-                  <span> respecto al período anterior </span>
-                </p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <!-- Gráficos -->
-        <section class="row g-3 mb-3" aria-label="Gráficos de incidencias">
-          <!-- Incidencias por estado -->
-          <div class="col-12 col-xl-5">
-            <article class="panel-card h-100">
-              <h2>Incidencias por estado</h2>
-
-              <div
-                class="status-chart d-flex flex-column flex-md-row align-items-center justify-content-around gap-4"
-              >
-                <!-- Gráfico circular -->
-                <div class="donut-chart" aria-label="150 incidencias en total">
-                  <span>
-                    <strong>150</strong>
-                    total
-                  </span>
+          <div class="contenedor-tarjetas">
+            <!-- Tarjeta: Total -->
+            <div class="tarjeta-resumen tarjeta-total">
+              <div class="tarjeta-cabecera">
+                <div class="tarjeta-icono">
+                  <i class="bi bi-file-earmark-text"></i>
                 </div>
-
-                <!-- Referencias -->
-                <ul class="chart-legend list-unstyled mb-0 w-100">
-                  <li>
-                    <span class="legend-dot dot-pending"></span>
-                    Pendientes
-                    <b>23%</b>
-                    <small>(35)</small>
-                  </li>
-
-                  <li>
-                    <span class="legend-dot dot-assigned"></span>
-                    Asignadas
-                    <b>27%</b>
-                    <small>(40)</small>
-                  </li>
-
-                  <li>
-                    <span class="legend-dot dot-completed"></span>
-                    Finalizadas
-                    <b>40%</b>
-                    <small>(60)</small>
-                  </li>
-
-                  <li>
-                    <span class="legend-dot dot-cancelled"></span>
-                    Canceladas
-                    <b>10%</b>
-                    <small>(15)</small>
-                  </li>
-                </ul>
-              </div>
-            </article>
-          </div>
-
-          <!-- Incidencias por fecha -->
-          <div class="col-12 col-xl-7">
-            <article class="panel-card h-100">
-              <h2>Incidencias por fecha</h2>
-
-              <div
-                class="bar-chart"
-                role="img"
-                aria-label="Gráfico de barras de incidencias mensuales de enero a octubre"
-              >
-                <!-- Escala -->
-                <div class="chart-scale">
-                  <span>40</span>
-                  <span>30</span>
-                  <span>20</span>
-                  <span>10</span>
-                  <span>0</span>
-                </div>
-
-                <!-- Barras -->
-                <div class="bar-area">
-                  <div class="chart-grid"></div>
-
-                  <div class="bars">
-                    <span style="--height: 35%" data-month="Ene"></span>
-
-                    <span style="--height: 50%" data-month="Feb"></span>
-
-                    <span style="--height: 60%" data-month="Mar"></span>
-
-                    <span style="--height: 78%" data-month="Abr"></span>
-
-                    <span style="--height: 50%" data-month="May"></span>
-
-                    <span style="--height: 78%" data-month="Jun"></span>
-
-                    <span style="--height: 60%" data-month="Jul"></span>
-
-                    <span style="--height: 47%" data-month="Ago"></span>
-
-                    <span style="--height: 55%" data-month="Sep"></span>
-
-                    <span style="--height: 47%" data-month="Oct"></span>
-                  </div>
+                <div class="tarjeta-textos">
+                  <span class="tarjeta-titulo">Total</span>
+                  <span class="tarjeta-numero" id="count-total">0</span>
                 </div>
               </div>
-            </article>
+              <div class="tarjeta-pie">
+                <span class="bold tendencia-positiva">
+                  <i class="bi bi-graph-up-arrow"></i> --%
+                </span>
+                <span class="muted">vs mes pasado</span>
+              </div>
+            </div>
+
+            <!-- Tarjeta: Pendientes -->
+            <div class="tarjeta-resumen tarjeta-pendientes">
+              <div class="tarjeta-cabecera">
+                <div class="tarjeta-icono"><i class="bi bi-clock"></i></div>
+                <div class="tarjeta-textos">
+                  <span class="tarjeta-titulo">Pendientes</span>
+                  <span class="tarjeta-numero" id="count-pendientes">0</span>
+                </div>
+              </div>
+              <div class="tarjeta-pie">
+                <span class="bold tendencia-positiva">
+                  <i class="bi bi-graph-up-arrow"></i> --%
+                </span>
+                <span class="muted">vs mes pasado</span>
+              </div>
+            </div>
+
+            <!-- Tarjeta: Asignadas -->
+            <div class="tarjeta-resumen tarjeta-asignadas">
+              <div class="tarjeta-cabecera">
+                <div class="tarjeta-icono"><i class="bi bi-person"></i></div>
+                <div class="tarjeta-textos">
+                  <span class="tarjeta-titulo">Asignadas</span>
+                  <span class="tarjeta-numero" id="count-asignadas">0</span>
+                </div>
+              </div>
+              <div class="tarjeta-pie">
+                <span class="bold tendencia-positiva">
+                  <i class="bi bi-graph-up-arrow"></i> --%
+                </span>
+                <span class="muted">vs mes pasado</span>
+              </div>
+            </div>
+
+            <!-- Tarjeta: Finalizadas -->
+            <div class="tarjeta-resumen tarjeta-finalizadas">
+              <div class="tarjeta-cabecera">
+                <div class="tarjeta-icono">
+                  <i class="bi bi-check-circle"></i>
+                </div>
+                <div class="tarjeta-textos">
+                  <span class="tarjeta-titulo">Finalizadas</span>
+                  <span class="tarjeta-numero" id="count-finalizadas">0</span>
+                </div>
+              </div>
+              <div class="tarjeta-pie">
+                <span class="bold tendencia-positiva">
+                  <i class="bi bi-graph-up-arrow"></i> --%
+                </span>
+                <span class="muted">vs mes pasado</span>
+              </div>
+            </div>
+
+            <!-- Tarjeta: Canceladas -->
+            <div class="tarjeta-resumen tarjeta-canceladas">
+              <div class="tarjeta-cabecera">
+                <div class="tarjeta-icono"><i class="bi bi-x-circle"></i></div>
+                <div class="tarjeta-textos">
+                  <span class="tarjeta-titulo">Canceladas</span>
+                  <span class="tarjeta-numero" id="count-canceladas">0</span>
+                </div>
+              </div>
+              <div class="tarjeta-pie">
+                <span class="bold tendencia-negativa">
+                  <i class="bi bi-graph-down-arrow"></i> --%
+                </span>
+                <span class="muted">vs mes pasado</span>
+              </div>
+            </div>
           </div>
-        </section>
-
-        <!-- Últimas incidencias -->
-        <section class="panel-card table-panel" aria-labelledby="latest-title">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <h2 id="latest-title">Últimas incidencias</h2>
-
-            <a class="view-all" href="#incidencias">
-              Ver todas
-              <i class="bi bi-chevron-right"></i>
-            </a>
-          </div>
-
-          <div class="table-responsive">
-            <table class="table align-middle mb-0">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Artículo</th>
-                  <th>Descripción</th>
-                  <th>Estado</th>
-                  <th>Prioridad</th>
-                  <th>Fecha de creación</th>
-                  <th>Asignado a</th>
-                  <th class="text-center">Acciones</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <!-- Incidencia #001 -->
-                <tr>
-                  <td>#001</td>
-                  <td>Impresora</td>
-                  <td>No imprime correctamente</td>
-
-                  <td>
-                    <span
-                      class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle"
-                    >
-                      Pendiente
-                    </span>
-                  </td>
-
-                  <td>
-                    <span
-                      class="badge bg-danger-subtle text-danger border border-danger-subtle"
-                    >
-                      Alta
-                    </span>
-                  </td>
-
-                  <td>10/04/2026 09:32</td>
-
-                  <td>-</td>
-
-                  <td class="text-center">
-                    <button
-                      class="btn action-button"
-                      aria-label="Ver incidencia 001"
-                    >
-                      <i class="bi bi-eye"></i>
-                    </button>
-
-                    <button
-                      class="btn action-button"
-                      aria-label="Más opciones incidencia 001"
-                    >
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                  </td>
-                </tr>
-
-                <!-- Incidencia #002 -->
-                <tr>
-                  <td>#002</td>
-                  <td>Computadora</td>
-                  <td>Error en el sistema</td>
-
-                  <td>
-                    <span
-                      class="badge bg-primary-subtle text-primary border border-primary-subtle"
-                    >
-                      Asignada
-                    </span>
-                  </td>
-
-                  <td>
-                    <span
-                      class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle"
-                    >
-                      Media
-                    </span>
-                  </td>
-
-                  <td>08/04/2026 14:20</td>
-
-                  <td>Carlos López</td>
-
-                  <td class="text-center">
-                    <button
-                      class="btn action-button"
-                      aria-label="Ver incidencia 002"
-                    >
-                      <i class="bi bi-eye"></i>
-                    </button>
-
-                    <button
-                      class="btn action-button"
-                      aria-label="Más opciones incidencia 002"
-                    >
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                  </td>
-                </tr>
-
-                <!-- Incidencia #003 -->
-                <tr>
-                  <td>#003</td>
-                  <td>Silla</td>
-                  <td>Rota</td>
-
-                  <td>
-                    <span
-                      class="badge bg-success-subtle text-success border border-success-subtle"
-                    >
-                      Finalizada
-                    </span>
-                  </td>
-
-                  <td>
-                    <span
-                      class="badge bg-success-subtle text-success border border-success-subtle"
-                    >
-                      Baja
-                    </span>
-                  </td>
-
-                  <td>05/04/2026 11:15</td>
-
-                  <td>Ana Torres</td>
-
-                  <td class="text-center">
-                    <button
-                      class="btn action-button"
-                      aria-label="Ver incidencia 003"
-                    >
-                      <i class="bi bi-eye"></i>
-                    </button>
-
-                    <button
-                      class="btn action-button"
-                      aria-label="Más opciones incidencia 003"
-                    >
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                  </td>
-                </tr>
-
-                <!-- Incidencia #004 -->
-                <tr>
-                  <td>#004</td>
-                  <td>Proyector</td>
-                  <td>No enciende</td>
-
-                  <td>
-                    <span
-                      class="badge bg-danger-subtle text-danger border border-danger-subtle"
-                    >
-                      Cancelada
-                    </span>
-                  </td>
-
-                  <td>
-                    <span
-                      class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle"
-                    >
-                      Media
-                    </span>
-                  </td>
-
-                  <td>02/04/2026 16:45</td>
-
-                  <td>-</td>
-
-                  <td class="text-center">
-                    <button
-                      class="btn action-button"
-                      aria-label="Ver incidencia 004"
-                    >
-                      <i class="bi bi-eye"></i>
-                    </button>
-
-                    <button
-                      class="btn action-button"
-                      aria-label="Más opciones incidencia 004"
-                    >
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                  </td>
-                </tr>
-
-                <!-- Incidencia #005 -->
-                <tr>
-                  <td>#005</td>
-                  <td>Escritorio</td>
-                  <td>Daños en la superficie</td>
-
-                  <td>
-                    <span
-                      class="badge bg-primary-subtle text-primary border border-primary-subtle"
-                    >
-                      Asignada
-                    </span>
-                  </td>
-
-                  <td>
-                    <span
-                      class="badge bg-danger-subtle text-danger border border-danger-subtle"
-                    >
-                      Alta
-                    </span>
-                  </td>
-
-                  <td>01/04/2026 10:22</td>
-
-                  <td>Lucas Fernández</td>
-
-                  <td class="text-center">
-                    <button
-                      class="btn action-button"
-                      aria-label="Ver incidencia 005"
-                    >
-                      <i class="bi bi-eye"></i>
-                    </button>
-
-                    <button
-                      class="btn action-button"
-                      aria-label="Más opciones incidencia 005"
-                    >
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </section>
-    </main>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="../../main.js"></script>
+    <script type="module" src="../../js/director-dashboard.js"></script>
   </body>
 </html>
-```

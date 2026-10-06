@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (response.ok) {
             incidencias = await response.json();
             // Por defecto arranca fuera del modo historial, filtramos las resueltas (3)
-            renderizarTabla(incidencias.filter(inc => inc.id_estado !== 3));
+            renderizarTabla(incidencias.filter(inc => inc.id_estado != 3));
         } else {
             console.error('No se pudieron obtener las incidencias: ', response.status);
         }
@@ -162,19 +162,19 @@ function filtrarDatos(event) {
 
     const resultadosFiltrados = incidencias.filter(inc => {
         // Aseguramos que respete en qué modo estamos (Historial o Pendientes)
-        if (modoHistorial && inc.id_estado !== 3) return false;
-        if (!modoHistorial && inc.id_estado === 3) return false;
+        if (modoHistorial && inc.id_estado != 3) return false;
+        if (!modoHistorial && inc.id_estado == 3) return false;
 
-        // 1. Filtro de Texto (busca en artículo, en descripción o si es el número exacto de ID)
+        //Filtro de Texto (busca en artículo, en descripción o si es el número exacto de ID)
         const coincideTexto = textoFiltro === '' || 
             (inc.articulo_descripcion && inc.articulo_descripcion.toLowerCase().includes(textoFiltro)) ||
             (inc.descripcion_pedido && inc.descripcion_pedido.toLowerCase().includes(textoFiltro)) ||
             (inc.id_incidencia && inc.id_incidencia.toString() === textoFiltro);
             
-        // 2. Filtro de Estado
+        //Filtro de Estado
         const coincideEstado = estadoFiltro === '' || inc.id_estado.toString() === estadoFiltro;
         
-        // 3. Filtro de Prioridad
+        //Filtro de Prioridad
         const coincidePrioridad = prioridadFiltro === '' || inc.prioridad.toString() === prioridadFiltro;
 
         // Comprueba que la incidencia cumpla todas las condiciones seleccionadas
@@ -190,15 +190,15 @@ if (botonBuscar) {
     botonBuscar.addEventListener('click', filtrarDatos);
 }
 
-// NUEVO: AGREGAR LÓGICA PARA EL BOTÓN "MIS RESUELTAS" (HISTORIAL) 
-//como todavia no hay usuarios. muestra todo y solo cambia el estado del filtro a resueltas
+//el modo historial como todavia no hay usuarios. 
+// muestra todo y solo cambia el estado del filtro a resueltas
 const botonHistorial = document.getElementById('btn-historial-resueltas');
 
 if (botonHistorial) {
     botonHistorial.addEventListener('click', (event) => {
         event.preventDefault(); // Evita que se recargue la página si estuviera en un formulario
 
-        // Alternamos el modo
+        // Alterna el modo
         modoHistorial = !modoHistorial;
 
         if (modoHistorial) {
@@ -209,12 +209,12 @@ if (botonHistorial) {
             botonHistorial.innerHTML = 'Mis Resueltas';
         }
 
-        // Limpiamos los filtros visuales siempre que cambiamos de modo
+        // Limpia los filtros visuales siempre que cambiamos de modo
         document.getElementById('filtro-estado').value = '';
         document.getElementById('filtro-prioridad').value = '';
         document.getElementById('filtro-nro-articulo').value = '';
 
-        // Usamos la misma funcion de filtrarDatos porque ya sabe qué hacer gracias a la variable `modoHistorial`
+        //la misma funcion de filtrarDatos porque ya sabe qué hacer gracias a la variable `modoHistorial`
         filtrarDatos(event);
     });
 }

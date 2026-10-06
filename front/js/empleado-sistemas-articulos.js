@@ -59,6 +59,52 @@ function renderizarTabla(lista) {
     }
 }
 
-const botonCrear = document.getElementById('btn-buscar');
+// --- LOGICA DEL MODAL DE CREACION ---
+document.addEventListener('DOMContentLoaded', () => {
 
+    const modal = document.getElementById('modal-creacion');
+    const btnAbrirModal = document.getElementById('btn-abrir-creacion');
+    const btnCerrarModal = document.getElementById('btn-cerrar-modal');
+    const btnConfirmarCreacion = document.getElementById('btn-confirmar-creacion');
+
+    // 1. Abrir modal
+    if (btnAbrirModal) {
+        btnAbrirModal.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+    }
+
+    // 2. Cerrar modal
+    if (btnCerrarModal) {
+        btnCerrarModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
+
+    // 3. Confirmar creacion
+    if (btnConfirmarCreacion) {
+        btnConfirmarCreacion.addEventListener('click', () => {
+            const descripcion = document.getElementById('input-descripcion').value;
+            const idArea = document.getElementById('selector-area').value;
+            const idCategoria = document.getElementById('selector-categoria').value;
+            const activo = document.getElementById('selector-activo').value;
+
+            if (!descripcion || !idArea || !idCategoria) {
+                alert("Por favor, complete todos los campos obligatorios antes de continuar.");
+                return;
+            }
+
+            // Aquí se enviará el POST a la base de datos a futuro.
+            alert(`¡Éxito! El artículo "${descripcion}" fue registrado correctamente.`);
+            
+            // Limpiar inputs
+            document.getElementById('input-descripcion').value = '';
+            document.getElementById('selector-area').value = '';
+            document.getElementById('selector-categoria').value = '';
+            document.getElementById('selector-activo').value = '1';
+
+            modal.style.display = 'none';
+        });
+    }
+});
 

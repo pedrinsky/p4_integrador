@@ -1,25 +1,49 @@
 import { pool } from '../config/db.js';
 
-export const getArticulos = async (req, res) => {
-    try {
-        const query = `
-            SELECT 
-                a.id_articulo,
-                a.id_area,
-                a.id_categoria,
-                a.descripcion,
-                a.activo,
-                ar.descripcion as area_descripcion,
-                c.descripcion as categoria_descripcion
-            FROM articulos a
-            LEFT JOIN areas ar ON a.id_area = ar.id_area
-            LEFT JOIN categorias c ON a.id_categoria = c.id_categoria
-            ORDER BY a.id_articulo ASC;
-        `;
-        const result = await pool.query(query);
-        res.json(result.rows);
-    } catch (error) {
-        console.error('Error al obtener los articulos:', error);
-        res.status(500).json({ error: 'Error interno del servidor al obtener los articulos' });
+
+
+export class ArticulosController{
+    constructor({articulosService}){
+        this.articulosService = articulosService;
     }
-};
+
+    getAll = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.articulosService.getAll(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+
+    getByID = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.articulosService.getByID(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+
+    update = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.articulosService.update(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+
+    create = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.articulosService.create(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+
+    delete = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.articulosService.delete(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+}

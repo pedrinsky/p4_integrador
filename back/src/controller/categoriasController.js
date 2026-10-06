@@ -1,20 +1,49 @@
 import { pool } from '../config/db.js';
 
-export const getCategorias = async (req, res) => {
-    try {
-        const query = `
-            SELECT 
-                c.id_categoria,
-                c.descripcion,
-                c.activo,
-                c.descripcion as categoria_descripcion
-            FROM categorias c
-            ORDER BY c.id_categoria ASC;
-        `;
-        const result = await pool.query(query);
-        res.json(result.rows);
-    } catch (error) {
-        console.error('Error al obtener las categorias:', error);
-        res.status(500).json({ error: 'Error interno del servidor al obtener los articulos' });
+
+
+export class CategoriasController{
+    constructor({categoriasService}){
+        this.categoriasService = categoriasService;
     }
-};
+
+    getAll = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.categoriasService.getAll(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+
+    getByID = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.categoriasService.getByID(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+
+    update = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.categoriasService.update(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+
+    create = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.categoriasService.create(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+
+    delete = async (req, res) => {
+        console.log("Controller");
+        console.log(req.criteria);
+        const result = await this.categoriasService.delete(req.criteria);
+        console.log(result);
+        res.json(result);
+    }
+}

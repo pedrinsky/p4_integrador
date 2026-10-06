@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articulos</title>
-    <link rel="stylesheet" href="../../css/stylesis.css">
+    <link rel="stylesheet" href="../../css/style.css">
     </link>
 </head>
 
@@ -42,7 +42,8 @@
         </aside>
         <main class="cuerpo">
             <div class="tarjeta-contenedora" style="margin-bottom: 20px;">
-                <button class="btn-buscar">Crear artículo</button>
+                <!-- Asignamos ID local para que sea detectable desde JS -->
+                <button id="btn-abrir-creacion" class="btn-buscar">Crear artículo</button>
             </div>
 
             <div class="tabla-resultados">
@@ -65,7 +66,54 @@
         <script type="module" src="../../main.js"></script>
 
     </div>
+    <!-- MODAL DE CREACION -->
+    <div id="modal-creacion" class="modal-overlay" style="display: none;">
+        <div class="modal-contenido">
+            <div class="modal-cabecera">
+                <h3>Crear Nuevo Artículo</h3>
+                <button id="btn-cerrar-modal" class="btn-cerrar">&times;</button>
+            </div>
+            <div class="modal-cuerpo">
+                
+                <label for="input-descripcion">Descripción del Artículo:</label>
+                <input type="text" id="input-descripcion" class="selector-opcion" placeholder="Ej: Monitor 24 Pulgadas">
 
+                <label for="selector-area">Área responsable:</label>
+                <select id="selector-area" class="selector-opcion">
+                    <option value="">-- Seleccionar Área --</option>
+                    <option value="1">Legales</option>
+                    <option value="2">Personal</option>
+                    <option value="3">Sistemas</option>
+                    <option value="4">Hacienda</option>
+                    <option value="5">Finanzas</option>
+                    <option value="6">Salud y Accion Social</option>
+                    <option value="7">Desarrollo Urbano</option>
+                </select>
+
+                <label for="selector-categoria">Categoría específica:</label>
+                <select id="selector-categoria" class="selector-opcion">
+                    <option value="">-- Categoría --</option>
+                    <option value="1">Periférico</option>
+                    <option value="2">Notebooks</option>
+                    <option value="3">PC Escritorio</option>
+                    <option value="4">CPU</option>
+                    <option value="5">Almacenamiento</option>
+                    <option value="6">Equipos de Red</option>
+                    <option value="7">Otro</option>
+                </select>
+
+                <label for="selector-activo">Estado Inicial:</label>
+                <select name="activo" id="selector-activo" class="selector-empleado">
+                    <option value="1">Activo</option>
+                    <option value="0">Desactivado</option>
+                </select>
+
+            </div>
+            <div class="modal-pie">
+                <button id="btn-confirmar-creacion" class="btn-buscar">Añadir Artículo</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

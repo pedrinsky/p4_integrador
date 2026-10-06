@@ -1,0 +1,65 @@
+###GET de todas las incidencias. Se debe de pasar por query params:
+#order_column: La columna por la que se ordenara.
+#asc: "ASC", "asc", "desc", "DESC"
+#limit.
+#offset.
+
+GET http://localhost:3000/incidencias?order_column=id_incidencia&&direction=DESC&&limit=10&&offset=0
+
+
+###GET de todas las incidencias mas filtros:
+#por id_articulo
+
+GET http://localhost:3000/incidencias?order_column=id_incidencia&&direction=DESC&&limit=10&&offset=0&&id_articulo=1
+
+
+###por id_estado
+
+GET http://localhost:3000/incidencias?order_column=id_incidencia&&direction=DESC&&limit=10&&offset=0&&id_estado=1
+
+
+###por creado_por
+
+GET http://localhost:3000/incidencias?order_column=id_incidencia&&direction=DESC&&limit=10&&offset=0&&creado_por=4
+
+
+###por asignado_a
+
+GET http://localhost:3000/incidencias?order_column=id_incidencia&&direction=DESC&&limit=10&&offset=0&&asignado_a=2
+
+
+###por creado
+
+GET http://localhost:3000/incidencias?order_column=id_incidencia&&direction=DESC&&limit=10&&offset=0&&creado=2026-09-13
+
+
+###GET por id
+
+GET http://localhost:3000/incidencias/3
+
+###Actualizar incidencia por id
+#Se pasan por body los campos a cambiar
+#Por ahora da error enviar el body vacio...
+PATCH http://localhost:3000/incidencias/4
+Content-Type: application/json
+
+{
+    "prioridad": 2
+}
+
+
+###POST
+#Se pasan por body todos los valores (id_articulo, creado_por, descripcion_pedido)
+POST http://localhost:3000/incidencias
+Content-Type: application/json
+
+{
+    "id_articulo": 2,
+    "creado_por": 3,
+    "descripcion_pedido": "Se ve un rayon en la pantalla"
+}
+
+
+####DELETE
+#Se pasa el estado de la incidencia a cancelada, segun el id
+DELETE http://localhost:3000/incidencias/7

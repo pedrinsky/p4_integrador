@@ -13,7 +13,7 @@
 <body>
     <header class="top-header"> 
         <div class="logo-container">
-            <img class= "logo-muni-header" src="images/logo-muni-black.png" alt="Logo Municipalidad">
+            <img class= "logo-muni-header" src="images/logo-muni.png" alt="Logo Municipalidad">
         </div>
         <div class="open-menu">
             
@@ -23,7 +23,7 @@
         <aside class="lat-bar">
             <ul class="nav-list">
                 <li class="menu-item">
-                    <a href="#">Empleado Municipal</a>
+                    <a href="html/empleado-municipal/empleado-municipal.html">Empleado Municipal</a>
                     <!-- Lista flotante secundaria, al "hoverear" -->
                     <ul class="submenu">
                         <li><a href="html/empleado-municipal/empleado-municipal-articulos.html">Articulos</a></li>
@@ -31,7 +31,7 @@
                     </ul>
                 </li>
                 <li class="menu-item">
-                    <a href="#">Empleado Sistemas</a>
+                    <a href="html/empleado-sistemas/empleado-sistemas.html">Empleado Sistemas</a>
                     <ul class="submenu">
                         <li><a href="html/empleado-sistemas/empleado-sistemas-articulos.html">Articulos</a></li>
                         <li><a href="html/empleado-sistemas/empleado-sistemas-categorias.html">Categorias</a></li>
@@ -39,26 +39,37 @@
                     </ul>
                 </li>
                 <li class="menu-item">
-                    <a href="#">Director</a>
+                    <a href="html/director/director-sistemas-sistemas.html">Director</a>
                     <ul class="submenu">
                         <li><a href="html/director/director-sistemas-dashboard.html">Dashboard/Resumen</a></li>
                         <li><a href="html/director/director-sistemas-incidencias.html">Incidencias</a></li>
                     </ul>
                 </li>
-                <li class="menu-ppal">
-                    <a href="index.html">Menú Principal</a>
-                </li>
             </ul>
         </aside>
-        <main class="cuerpo">
-            <h1>Gestión de Incidencias</h1>
-            <h2>Sistema de gestión de incidencias del municipio</h2>
-            <hr>
-            <p>Iniciá sesión:</p>
-            <button href="#" type="button" class="btn btn-info">Iniciar sesión</button>
-            <p>Aun sin usuario? Creá tu cuenta:</p>
-            <button href="#" type="button" class="btn btn-info">Crear cuenta</button>
-
+        <main class="cuerpo login-contenedor">
+            <div class="contenido-tarjeta-blanca login-tarjeta">
+                <div class="login-cabecera">
+                    <h1 class="login-titulo">Gestión de Incidencias</h1>
+                    <p class="login-subtitulo">Sistema municipal. Ingresa tus credenciales.</p>
+                </div>
+                
+                <div class="filtro-grupo">
+                    <label class="login-label">Correo Electrónico</label>
+                    <input type="email" class="selector-opcion login-input" placeholder="ejemplo@muni.gob.ar">
+                </div>
+                
+                <div class="filtro-grupo">
+                    <label class="login-label">Contraseña</label>
+                    <input type="password" class="selector-opcion login-input" placeholder="••••••••">
+                </div>
+                
+                <button type="button" class="btn-buscar login-boton" onclick="window.location.href='#'">Ingresar</button>
+                
+                <div class="login-pie">
+                    <p class="login-pie-texto">¿Aún sin usuario? <a href="#" class="login-enlace">Creá tu cuenta</a></p>
+                </div>
+            </div>
         </main>
         <aside>
             

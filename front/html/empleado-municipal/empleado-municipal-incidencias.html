@@ -11,52 +11,93 @@
     <!-- <script defer src=" "></script> -->
 </head>
 <body>
-    <header class="top-header"> 
-        <div class="logo-container">
-            <img class= "logo-muni-header" src="../../images/logo-muni.png" alt="Logo Municipalidad">
+    <header class="top-header">
+        <div class="header-izq">
+            <button id="btn-menu" class="btn-barra">☰</button>
+            <img class="logo-muni-header" src="../../images/logo-muni.png" alt="Logo">
         </div>
-        <div class="open-menu">
-            
+        
+        <div class="perfil-usuario">
+            <div class="avatar-circulo">EM</div>
+            <div class="textos-usuario">
+                <span class="nombre-usuario"> Empleado Muni</span>
+                <span class="rol-usuario"> Empleado Municipal </span>
+            </div>
         </div>
     </header>
     <div class="main-layout">
         <aside class="lat-bar">
             <ul class="nav-list">
-                <li class="menu-item">
-                    <a href="#">Empleado Municipal</a>
-                    <!-- Lista flotante secundaria, al "hoverear" -->
-                    <ul class="submenu">
-                        <li><a href="src/pages/empleado-municipal/empleado-municipal-articulos.html">Articulos</a></li>
-                        <li><a href="src/pages/empleado-municipal/empleado-municipal-incidencias.html">Incidencias</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a href="#">Empleado Sistemas</a>
-                    <ul class="submenu">
-                        <li><a href="src/pages/empleado-sistemas/empleado-sistemas-articulos.html">Articulos</a></li>
-                        <li><a href="src/pages/empleado-sistemas/empleado-sistemas-categorias.html">Categorias</a></li>
-                        <li><a href="src/pages/empleado-sistemas/empleado-sistemas-incidencias.html">Incidencias</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a href="#">Director</a>
-                    <ul class="submenu">
-                        <li><a href="src/pages/director/director-sistemas-dashboard.html">Dashboard/Resumen</a></li>
-                        <li><a href="src/pages/director/director-sistemas-incidencias.html">Incidencias</a></li>
-                    </ul>
-                </li>
-                <li class="menu-ppal">
-                    <a href="../../../index.html">Menú Principal</a>
+                <ul class="menu-item">
+                    <a href="empleado-municipal-articulos.html"> Artículos</a>
+                </ul>
+                <ul class="menu-item active">
+                    <a href="empleado-municipal-incidencias.html"> Incidencias</a>
+                </ul>
+                <li class="menu-item logout-item">
+                    <a href="../../index.html"> Cerrar sesión</a>
                 </li>
             </ul>
         </aside>
         <main class="cuerpo">
-            <h1>Empleado Municipal Incidencias</h1>
+            <div class="tarjeta-contenedora" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <h1>Mis Incidencias</h1>
+                <button id="btn-crear-incidencia" class="btn-buscar">Crear Incidencia</button>
+            </div>
+
+            <div class="tabla-resultados">
+                <table class="tabla-incidencias">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Artículo</th>
+                            <th>Descripción</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                            <th class="col-accion text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-incidencias">
+                        <!-- Filas renderizadas por JS -->
+                    </tbody>
+                </table>
+            </div>
         </main>
+
+        <!-- MODAL DE CREACION -->
+        <div id="modal-crear-incidencia" class="modal-overlay" style="display: none;">
+            <div class="modal-contenido">
+                <div class="modal-cabecera">
+                    <h3>Crear Nueva Incidencia</h3>
+                    <button id="btn-cerrar-modal" class="btn-cerrar">&times;</button>
+                </div>
+                <div class="modal-cuerpo">
+                    <label for="selector-articulo">Artículo vinculado (Opcional):</label>
+                    <select id="selector-articulo" class="selector-opcion">
+                        <option value="">-- General (Ninguno) --</option>
+                    </select>
+
+                    <label for="input-desc">Descripción del problema:</label>
+                    <textarea id="input-desc" class="selector-opcion" style="height: 80px; resize: none; font-family: inherit;" placeholder="Detalle del problema..."></textarea>
+                    
+                    <label for="selector-prio">Prioridad Inicial:</label>
+                    <select id="selector-prio" class="selector-opcion">
+                        <option value="1">Baja</option>
+                        <option value="2">Media</option>
+                        <option value="3">Alta</option>
+                    </select>
+                </div>
+                <div class="modal-pie">
+                    <button id="btn-confirmar-creacion" class="btn-buscar">Guardar</button>
+                </div>
+            </div>
+        </div>
         <aside>
             
         </aside>
     </div>
     
+    <script src="../../js/empleado-municipal-incidencias.js"></script>
 </body>
 </html>
