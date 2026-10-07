@@ -23,5 +23,9 @@ export const createCategoriasRouter = ({categoriasService}) => {
 
     router.delete("/:id_categoria", deleteCategoriaTransform, categoriasController.delete);
 
+    router.put("/:id_categoria/reactivar", deleteCategoriaTransform, categoriasController.reactivar);
+
+    router.delete("/:id_categoria/definitivo", deleteCategoriaTransform, categoriasController.deleteDefinitivo);
+
     return router;
 }

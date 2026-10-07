@@ -44,7 +44,11 @@ export const getAllIncidenciasSchema = z.object({
     "offset": z.coerce
         .number()
         .int()
-        .nonnegative({message: "Offset debe ser un entero igual o mayor a 0"}).default(0)
+        .nonnegative({message: "Offset debe ser un entero igual o mayor a 0"}).default(0),
+    "page": z.coerce.number().optional(),
+    "estado": z.coerce.number().optional(),
+    "exclude_estado": z.coerce.number().optional(),
+    "search": z.string().optional()
 });
 
 export const getByIDIncidenciasSchema = z.object({

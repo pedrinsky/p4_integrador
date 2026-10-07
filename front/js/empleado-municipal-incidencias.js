@@ -1,17 +1,9 @@
+import { badgesEstado, badgesPrioridad, renderizarPaginacion } from './utils/ui-utils.js';
+
 let misIncidencias = [];
 
-const badgesEstado = {
-    1: '<span class="badge est-pendiente">Pendiente</span>',
-    2: '<span class="badge est-proceso">En Proceso</span>',
-    3: '<span class="badge est-resuelta">Resuelta</span>',
-    4: '<span class="badge est-cancelada" style="background-color: #6c757d;">Cancelada</span>'
-};
-
-const badgesPrioridad = {
-    1: '<span class="badge prio-baja">Baja</span>',
-    2: '<span class="badge prio-media">Media</span>',
-    3: '<span class="badge prio-alta">Alta</span>'
-};
+let paginaActual = 1;
+const limitePorPagina = 5;
 
 document.addEventListener('DOMContentLoaded', async () => {
     cargarIncidencias();
@@ -20,13 +12,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function cargarIncidencias() {
+    let url = `http://localhost:3000/api/incidencias?page=${window.paginaActual || 1}&limit=${limitePorPagina}`;
+    // Ocultar canceladas (estado 4) como lo hacía el viejo for-loop "if (inc.id_estado === 4) continue;"
+    url += '&exclude_estado=4';
+
     try {
-        const response = await fetch('http://localhost:3000/api/incidencias');
+        const response = await fetch(url);
         if (response.ok) {
-            const incidenciasTodas = await response.json();
-            // Filtro (simulación): Mostrar solo las coincidencias creadas por él.
-            misIncidencias = incidenciasTodas; 
-            renderizarTabla(misIncidencias);
+            const data = await response.json();
+            misIncidencias = data.incidencias; 
+            renderizarTabla(data.incidencias);
+            if (data.paginacion) {
+                renderizarPaginacion(data.paginacion, 'paginacionIncidencias', (pag) => {
+                    window.paginaActual = pag;
+                    cargarIncidencias();
+                });
+            }
         } else {
             console.error('Error al obtener incidencias:', response.status);
         }
@@ -41,6 +42,7 @@ async function loadArticulosForSelect() {
         if (response.ok) {
             const arts = await response.json();
             const select = document.getElementById('selector-articulo');
+            if (!select) return;
             for (let a of arts) {
                 const opt = document.createElement('option');
                 opt.value = a.id_articulo;
@@ -55,14 +57,10 @@ async function loadArticulosForSelect() {
 
 function renderizarTabla(incidencias) {
     const tbody = document.getElementById('tabla-incidencias');
+    if (!tbody) return;
     tbody.textContent = ''; 
 
     for (let inc of incidencias) {
-        // Ocultar de la vista las que estén canceladas
-        if (inc.id_estado === 4) {
-            continue;
-        }
-
         const row = document.createElement('tr');
 
         const tdId = document.createElement('td');
@@ -82,7 +80,6 @@ function renderizarTabla(incidencias) {
 
         const tdDescripcion = document.createElement('td');
         tdDescripcion.textContent = inc.descripcion_pedido;
-        // Removido el text-truncate para que salga tal cual
         row.appendChild(tdDescripcion);
 
         const tdPrioridad = document.createElement('td');
@@ -99,7 +96,7 @@ function renderizarTabla(incidencias) {
         if (inc.id_estado !== 3 && inc.id_estado !== 4) { // Si no esta resuelta ni cancelada
             const btnCancelar = document.createElement('button');
             btnCancelar.textContent = 'Cancelar';
-            btnCancelar.className = 'btn-buscar'; // Usa la clase que ordenó el user
+            btnCancelar.className = 'btn-buscar'; 
             btnCancelar.style.padding = '4px 8px';
             btnCancelar.onclick = () => cancelarIncidencia(inc.id_incidencia);
             tdAccion.appendChild(btnCancelar);
@@ -109,6 +106,8 @@ function renderizarTabla(incidencias) {
         tbody.appendChild(row);
     }
 }
+
+
 
 async function cancelarIncidencia(id_incidencia) {
     if (!confirm('¿Seguro que desea cancelar esta incidencia?')) return;
@@ -147,9 +146,13 @@ function configurarModal() {
 
     if (btnConfirmar) {
         btnConfirmar.addEventListener('click', async () => {
-            const descripcion_pedido = document.getElementById('input-desc').value;
-            const prioridad = document.getElementById('selector-prio').value;
-            const selectorArticulo = document.getElementById('selector-articulo').value;
+            const descArea = document.getElementById('input-desc');
+            const prioArea = document.getElementById('selector-prio');
+            const artArea = document.getElementById('selector-articulo');
+            
+            const descripcion_pedido = descArea ? descArea.value : '';
+            const prioridad = prioArea ? prioArea.value : 1;
+            const selectorArticulo = artArea ? artArea.value : '';
 
             if (!descripcion_pedido) {
                 alert("Por favor, describa el problema antes de guardar.");
@@ -172,11 +175,12 @@ function configurarModal() {
                 
                 if (response.ok) {
                     alert('Incidencia creada con éxito!');
-                    // Resetear inputs y cerrar modal
-                    document.getElementById('input-desc').value = '';
-                    document.getElementById('selector-prio').value = '1';
-                    document.getElementById('selector-articulo').value = '';
+                    if (descArea) descArea.value = '';
+                    if (prioArea) prioArea.value = '1';
+                    if (artArea) artArea.value = '';
                     modal.style.display = 'none';
+                    
+                    window.paginaActual = 1;
 
                     // Refrescar los datos
                     cargarIncidencias();

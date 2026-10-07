@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch('http://localhost:3000/api/articulos');
         if (response.ok) {
-            articulos = await response.json();
+            const data = await response.json();
+            articulos = data.articulos ? data.articulos : data;
             renderizarTabla(articulos);
         } else {
             console.error('No se pudieron obtener los articulos: ', response.status);
@@ -26,11 +27,11 @@ function renderizarTabla(lista) {
         row.appendChild(tdId);
 
         const tdArea = document.createElement('td');
-        tdArea.textContent = art.area_descripcion || ('ID ' + art.id_area);
+        tdArea.textContent = art.area || 'Desconocida';
         row.appendChild(tdArea);
 
         const tdCategoria = document.createElement('td');
-        tdCategoria.textContent = art.categoria_descripcion || ('ID ' + art.id_categoria);
+        tdCategoria.textContent = art.categoria || 'Desconocida';
         tdCategoria.className = 'text-truncate';
         tdCategoria.style.maxWidth = '50px';
         row.appendChild(tdCategoria);

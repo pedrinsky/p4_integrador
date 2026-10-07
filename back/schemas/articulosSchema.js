@@ -32,7 +32,8 @@ export const getAllArticulosSchema = z.object({
     "offset": z.coerce
         .number()
         .int()
-        .nonnegative({message: "Offset debe ser un entero igual o mayor a 0"}).default(0)
+        .nonnegative({message: "Offset debe ser un entero igual o mayor a 0"}).default(0),
+    "page": z.coerce.number().optional()
 });
 
 export const getByIDArticulosSchema = z.object({

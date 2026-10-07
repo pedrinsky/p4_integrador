@@ -24,5 +24,9 @@ export const createArticulosRouter = ({articulosService}) => {
 
     router.delete("/:id_articulo", deleteArticuloTransform, articulosController.delete);
 
+    router.put("/:id_articulo/reactivar", deleteArticuloTransform, articulosController.reactivar);
+
+    router.delete("/:id_articulo/definitivo", deleteArticuloTransform, articulosController.deleteDefinitivo);
+
     return router;
 }

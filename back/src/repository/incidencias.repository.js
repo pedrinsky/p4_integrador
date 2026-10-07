@@ -3,7 +3,55 @@ import { pool } from '../config/db.js';
 export class IncidenciasRepository {
     
     static async getAll(input = {}) {
-        const { order_column = 'id_incidencia', direction = 'ASC', limit = 100, offset = 0 } = input;
+        // Obtenemos los parámetros considerando la misma convención que categorías
+        const { order_column = 'id_incidencia', direction = 'ASC', limit = 10, page = 1, estado, prioridad, search } = input;
+        
+        const limitInt = parseInt(limit, 10);
+        const pageInt = parseInt(page, 10);
+        const offset = (pageInt - 1) * limitInt;
+
+        const params = [];
+        let whereClauses = [];
+
+        // Filtros (los pasamos del frontend a la DB)
+        if (estado && estado !== '') {
+            params.push(estado);
+            whereClauses.push(`i.id_estado = $${params.length}`);
+        } else if (input.exclude_estado && input.exclude_estado !== '') {
+            params.push(input.exclude_estado);
+            whereClauses.push(`i.id_estado != $${params.length}`);
+        }
+        
+        if (prioridad && prioridad !== '') {
+            params.push(prioridad);
+            whereClauses.push(`i.prioridad = $${params.length}`);
+        }
+
+        if (search && search !== '') {
+            params.push(`%${search}%`);
+            whereClauses.push(`(CAST(i.id_incidencia AS TEXT) = $${params.length} OR i.descripcion_pedido ILIKE $${params.length} OR a.descripcion ILIKE $${params.length})`);
+        }
+
+        const whereCondition = whereClauses.length > 0 ? `WHERE ` + whereClauses.join(' AND ') : '';
+
+        // 1. Contar el total de registros para paginación
+        const countQuery = `
+            SELECT COUNT(*) 
+            FROM incidencias i
+            LEFT JOIN articulos a ON i.id_articulo = a.id_articulo
+            ${whereCondition}
+        `;
+        const countResult = await pool.query(countQuery, params);
+        const totalRegistros = parseInt(countResult.rows[0].count, 10);
+        const totalPaginas = Math.ceil(totalRegistros / limitInt) || 1;
+
+        // 2. Traer los registros paginados
+        // Añadir los parámetros de limit y offset al final array de parámetros
+        params.push(limitInt);
+        const limitPos = params.length;
+        params.push(offset);
+        const offsetPos = params.length;
+
         const result = await pool.query(`
             SELECT 
                 i.id_incidencia,
@@ -16,10 +64,20 @@ export class IncidenciasRepository {
             FROM incidencias i
             LEFT JOIN articulos a ON i.id_articulo = a.id_articulo
             LEFT JOIN usuarios u ON i.creado_por = u.id_usuario
-            ORDER BY $1 ${direction === 'DESC' ? 'DESC' : 'ASC'}
-            LIMIT $2 OFFSET $3
-        `, [order_column, limit, offset]);
-        return result.rows;
+            ${whereCondition}
+            ORDER BY ${order_column} ${direction === 'DESC' ? 'DESC' : 'ASC'}
+            LIMIT $${limitPos} OFFSET $${offsetPos}
+        `, params);
+        
+        return {
+            incidencias: result.rows,
+            paginacion: {
+                totalRegistros,
+                totalPaginas,
+                paginaActual: pageInt,
+                limitePorPagina: limitInt
+            }
+        };
     }
 
     static async getByID(input) {

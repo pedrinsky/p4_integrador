@@ -46,4 +46,21 @@ export class CategoriasController{
         console.log(result);
         res.json(result);
     }
+
+    reactivar = async (req, res) => {
+        console.log("Controller reactivar");
+        const result = await this.categoriasService.reactivar(req.criteria);
+        res.json(result);
+    }
+
+    deleteDefinitivo = async (req, res) => {
+        console.log("Controller deleteDefinitivo");
+        try {
+            const result = await this.categoriasService.eliminarDefinitivo(req.criteria);
+            res.json(result);
+        } catch (error) {
+            console.error("Error al borrar definitivamente:", error);
+            res.status(500).json({ error: "No se puede borrar porque pertenece a artículos existentes." });
+        }
+    }
 }

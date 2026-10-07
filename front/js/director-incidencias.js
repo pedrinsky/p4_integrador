@@ -1,50 +1,23 @@
-let incidencias = []; // Almacena datos reales del servidor para poder filtrarlos después
+import { badgesEstado, badgesPrioridad, renderizarPaginacion } from './utils/ui-utils.js';
+
+let incidencias = [];
 let modoHistorial = false;
 
-const badgesEstado = {
-    1: '<span class="badge est-pendiente">Pendiente</span>',
-    2: '<span class="badge est-proceso">En Proceso</span>',
-    3: '<span class="badge est-resuelta">Resuelta</span>',
-    4: '<span class="badge est-cancelada">Cancelada</span>'
-};
+let paginaActual = 1;
+const limitePorPagina = 5;
 
-const badgesPrioridad = {
-    1: '<span class="badge prio-baja">Baja</span>',
-    2: '<span class="badge prio-media">Media</span>',
-    3: '<span class="badge prio-alta">Alta</span>'
-};
-
-
-// ESPERO A QUE LA PAGINA HTML SE DESCARGUE Y SE CONSTRUYA POR COMPLETO
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        // Pedimos los datos al backend en vez de un archivo local
-        const response = await fetch('http://localhost:3000/api/incidencias');
-        if (response.ok) {
-            incidencias = await response.json();
-            // Por defecto arranca fuera del modo historial, filtramos las resueltas (3)
-            renderizarTabla(incidencias.filter(inc => inc.id_estado != 3));
-        } else {
-            console.error('No se pudieron obtener las incidencias: ', response.status);
-        }
-    } catch (error) {
-        console.error('Hubo un error de conexión con el backend:', error);
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    filtrarDatos();
 });
 
 // FUNCIÓN PARA DIBUJAR LOS DATOS EN LA TABLA
 function renderizarTabla(listaIncidencias) {
-
     const tbody = document.getElementById('tabla-incidencias');
-
-    // LIMPIO LOS DATOS QUE PUEDA TENER LA TABLA
     tbody.textContent = '';
 
     for (let inc of listaIncidencias) {
-        // CREO UNA FILA PARA LA TABLA
         const row = document.createElement('tr');
 
-        // CREO CELDAS, ASIGNO VALORES Y AGREGO A LA FILA
         const tdId = document.createElement('td');
         tdId.textContent = inc.id_incidencia;
         row.appendChild(tdId);
@@ -93,6 +66,64 @@ function renderizarTabla(listaIncidencias) {
     }
 }
 
+
+
+
+async function filtrarDatos(event) {
+    if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+        if (event.target && event.target.id === 'btn-buscar') {
+            window.paginaActual = 1;
+        }
+    }
+    
+    let url = `http://localhost:3000/api/incidencias?page=${window.paginaActual || 1}&limit=${limitePorPagina}`;
+    
+    const textoFiltroArea = document.getElementById('filtro-nro-articulo');
+    if (textoFiltroArea) {
+        const textoFiltro = textoFiltroArea.value.trim();
+        if (textoFiltro) url += `&search=${encodeURIComponent(textoFiltro)}`;
+    }
+
+    const estadoFiltroArea = document.getElementById('filtro-estado');
+    if (estadoFiltroArea) {
+        let estadoFiltro = estadoFiltroArea.value;
+        if (modoHistorial) {
+            url += `&estado=3`;
+        } else {
+            if (estadoFiltro) {
+                url += `&estado=${estadoFiltro}`;
+            } else {
+                url += `&exclude_estado=3`;
+            }
+        }
+    }
+
+    const prioridadFiltroArea = document.getElementById('filtro-prioridad');
+    if (prioridadFiltroArea) {
+        const prioridadFiltro = prioridadFiltroArea.value;
+        if (prioridadFiltro) url += `&prioridad=${prioridadFiltro}`;
+    }
+
+    try {
+        const respuesta = await fetch(url);
+        if (respuesta.ok) {
+            const data = await respuesta.json();
+            incidencias = data.incidencias;
+            renderizarTabla(data.incidencias);
+            if (data.paginacion) {
+                renderizarPaginacion(data.paginacion, 'paginacionIncidencias', (pag) => {
+                    window.paginaActual = pag;
+                    filtrarDatos();
+                });
+            }
+        }
+    } catch(e) {
+        console.error("Error pidiendo datos:", e);
+    }
+}
+
+
 // --- LOGICA DEL MODAL DE ASIGNACION ---
 async function abrirModalAsignacion(id) {
     const modal = document.getElementById('modal-asignacion');
@@ -139,52 +170,21 @@ function confirmarAsignacion() {
     }
     
     const nombreEmpleado = selector.options[selector.selectedIndex].text;
-    
-    // Aquí a futuro se hará el fetch PUT a la base de datos
     alert(`¡Éxito! La incidencia #${idIncidencia} ha sido asignada a ${nombreEmpleado}.`);
     cerrarModalAsignacion();
 }
 
-// --- LOGICA DE FILTROS ---
+
 document.addEventListener('DOMContentLoaded', () => {
-    // BOTON BUSCAR
     const btnBuscar = document.getElementById('btn-buscar');
-    
-    function filtrarDatos(event) {
-        if (event && typeof event.preventDefault === 'function') {
-            event.preventDefault();
-        }
-        
-        const estado = document.getElementById('filtro-estado').value;
-        const prioridad = document.getElementById('filtro-prioridad').value;
-        const texto = document.getElementById('filtro-nro-articulo').value.toLowerCase();
-
-        const filtradas = incidencias.filter(inc => {
-            // Aseguramos que respete en qué modo estamos (Historial o Pendientes)
-            if (modoHistorial && inc.id_estado != 3) return false;
-            // SIEMPRE que no estemos en modo historial, ocultamos las resueltas (estado 3)
-            if (!modoHistorial && inc.id_estado == 3) return false;
-
-            if (estado && inc.id_estado != estado) return false;
-            if (prioridad && inc.prioridad != prioridad) return false;
-            if (texto && !inc.id_incidencia.toString().includes(texto) && !inc.articulo_descripcion.toLowerCase().includes(texto)) {
-                return false;
-            }
-            return true;
-        });
-        renderizarTabla(filtradas);
-    }
-
     if (btnBuscar) {
         btnBuscar.addEventListener('click', filtrarDatos);
     }
 
-    // BOTON INCIDENCIAS RESUELTAS (HISTORIAL)
     const btnResueltas = document.getElementById('btn-resueltas');
     if (btnResueltas) {
         btnResueltas.addEventListener('click', (event) => {
-            event.preventDefault(); // Evita recarga
-
+            event.preventDefault(); 
             modoHistorial = !modoHistorial;
 
             if (modoHistorial) {
@@ -195,16 +195,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnResueltas.innerHTML = 'Incidencias Resueltas';
             }
 
-            // Limpiamos los filtros visuales al cambiar de modo
-            document.getElementById('filtro-estado').value = '';
-            document.getElementById('filtro-prioridad').value = '';
-            document.getElementById('filtro-nro-articulo').value = '';
+            window.paginaActual = 1;
+
+            if(document.getElementById('filtro-estado')) document.getElementById('filtro-estado').value = '';
+            if(document.getElementById('filtro-prioridad')) document.getElementById('filtro-prioridad').value = '';
+            if(document.getElementById('filtro-nro-articulo')) document.getElementById('filtro-nro-articulo').value = '';
 
             filtrarDatos(event);
         });
     }
 
-    // BOTONES MODAL
     const btnCerrar = document.getElementById('btn-cerrar-modal');
     if(btnCerrar) btnCerrar.addEventListener('click', cerrarModalAsignacion);
 

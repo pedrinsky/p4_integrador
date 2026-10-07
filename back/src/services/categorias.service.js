@@ -1,102 +1,51 @@
-import {pool} from '../config/db.js';
+import { 
+    cargarCategorias, 
+    readCategoria, 
+    crearCategoria, 
+    editarCategoria, 
+    borrarCategoria,
+    reactivarCategoria,
+    borradoDefinitivoCategoria
+} from '../repository/categoria.repository.js';
 
-export class CategoriasService{
-    static async getAll(input){
-        console.log("Service");
-
-        const {id_categoria, descripcion, activo
-            , order_column, direction, limit, offset} = input;
-
-        const sql = `
-            SELECT id_categoria, descripcion, activo
-            FROM categorias
-            WHERE ($1::text IS NULL OR id_categoria = $1::int)
-            AND ($2::text IS NULL OR descripcion ILIKE '%' || $2::text || '%')
-            AND ($3::text IS NULL OR activo = $3::int)
-            ORDER BY $4 ${direction}
-            LIMIT $5 OFFSET $6;
-        `;
-        console.log(sql);
-
-        const {rows} = await pool.query(sql, [id_categoria ?? null, descripcion ?? null
-            , activo ?? null, order_column, limit, offset]);
-        
-        console.log(rows);
-
-        return rows;
+export class CategoriasService {
+    static async getAll(input) {
+        console.log("Service Categorias getAll");
+        const limitInt = parseInt(input.limit) || 10;
+        const pageInt = parseInt(input.page) || 1;
+        const offset = (pageInt - 1) * limitInt;
+        input.limit = limitInt;
+        input.offset = offset;
+        return await cargarCategorias(input);
     }
 
-    static async getByID(input){
-        const {id_categoria} = input;
-        console.log("Service");
-        console.log(id_categoria);
-        const sql = `
-            SELECT id_categoria, descripcion, activo
-            FROM categorias
-            WHERE id_categoria = $1;
-        `;
-
-        console.log(sql);
-
-        const {rows} = await pool.query(sql, [id_categoria]);
-        console.log(rows);
-        return rows;
-
+    static async getByID(input) {
+        console.log("Service Categorias getByID");
+        return await readCategoria(input.id_categoria);
     }
 
-    static async update(input){
-        console.log("service");
-        console.log(input);
-
-        const {id_categoria, descripcion} = input;
-        console.log(id_categoria);
-
-        const sql = `
-            UPDATE categorias
-            SET descripcion = $1
-            WHERE id_categoria = $2
-            RETURNING *;
-        `
-        console.log(sql);
-
-        const {rows} = await pool.query(sql, [descripcion, id_categoria]);
-        console.log(rows);
-        return rows;
+    static async update(input) {
+        console.log("Service Categorias update");
+        return await editarCategoria(input.id_categoria, { descripcion: input.descripcion });
     }
 
-    static async create(input){
-        console.log("Service");
-        const {descripcion, activo} = input;
-
-        const sql = `
-            INSERT INTO categorias(descripcion, activo)
-            VALUES ($1, $2)
-            RETURNING *;
-        `;
-        console.log(sql);
-        const {rows} = await pool.query(sql, [descripcion, activo]);
-        console.log(rows);
-        return rows;
+    static async create(input) {
+        console.log("Service Categorias create");
+        return await crearCategoria(input);
     }
 
-    static async delete(input){
-        console.log("Service");
+    static async delete(input) {
+        console.log("Service Categorias delete (soft)");
+        return await borrarCategoria(input.id_categoria);
+    }
 
-        const {id_categoria} = input;
-        console.log(id_categoria);
+    static async reactivar(input) {
+        console.log("Service Categorias reactivar");
+        return await reactivarCategoria(input.id_categoria);
+    }
 
-        const sql = `
-            UPDATE categorias
-            SET activo = 0
-            WHERE id_categoria = $1
-            RETURNING *;
-        `;
-        console.log(sql);
-
-        const {rows} = await pool.query(sql, [id_categoria]);
-        console.log(rows);
-
-        return rows;
-        
+    static async eliminarDefinitivo(input) {
+        console.log("Service Categorias eliminarDefinitivo (hard)");
+        return await borradoDefinitivoCategoria(input.id_categoria);
     }
 }

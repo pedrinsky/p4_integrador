@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>categorias</title>
+    <title>Categorias</title>
     <link rel="stylesheet" href="../../css/style.css">
     </link>
 </head>
-
 <body>
     <header class="top-header">
         <div class="header-izq">
@@ -16,13 +14,14 @@
             <img class="logo-muni-header" src="../../images/logo-muni.png" alt="Logo">
         </div>
         <div class="perfil-usuario">
-            <div class="avatar-circulo">algo</div>
+            <div class="avatar-circulo">P</div>
             <div class="textos-usuario">
                 <span class="nombre-usuario"> Probando que onda</span>
                 <span class="rol-usuario"> Empleado de Sistemas </span>
             </div>
         </div>
     </header>
+    
     <div class="main-layout">
         <aside class="lat-bar">
             <ul class="nav-list">
@@ -32,34 +31,82 @@
                 <ul class="menu-item">
                     <a href="empleado-sistemas-articulos.html"> Articulos</a>
                 </ul>
-                <ul class="menu-item  active">
+                <ul class="menu-item active">
                     <a href="empleado-sistemas-categorias.html"> Categorias</a>
                 </ul>
-                <li class="menu-item  logout-item">
+                <li class="menu-item logout-item">
                     <a href="../../index.html"> Cerrar sesión</a>
                 </li>
             </ul>
         </aside>
+
         <main class="cuerpo">
-            <h1>Categorias</h1>
-            <div class="tabla-resultados">
-                <table class="tabla-incidencias">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Descripción</th>
-                            <th scope="col">Activo</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-categorias">
-                    </tbody>
-                </table>
+            <div class="tarjeta-contenedora">
+                
+                <div class="container-filtro">
+                    <div class="filtro-grupo">
+                        <label for="filtroCategoria"> Buscar Categoría:</label>
+                        <input type="text" id="filtroCategoria" placeholder="Ej: Periféricos...">
+                    </div>
+                    <button type="button" id="btn-filtrar" class="btn-buscar">Buscar</button>
+                    <button type="button" id="btn-nueva-categoria" class="btn-buscar">+ Nueva Categoría</button>
+                    <button type="button" id="btn-papelera" class="btn-buscar" style="background-color: #6c757d; margin-left: auto;">Papelera</button>
+                </div>
+
+                <div class="tabla-resultados">
+                    <table class="tabla-incidencias">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col" style="text-align: center;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-categorias">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <nav aria-label="Navegación de páginas" class="contenedor-paginacion">
+                    <ul class="pagination" id="paginacionCategorias"></ul>
+                </nav>
             </div>
         </main>
+        
+        <!-- Modal nativo Crear/Editar -->
+        <div id="modalCategoria" class="modal-overlay" style="display: none;">
+            <div class="modal-contenido">
+                <div class="modal-cabecera">
+                    <h3 id="modalTitulo">Nueva Categoría</h3>
+                    <button type="button" id="btn-cerrar-modal" class="btn-cerrar">&times;</button>
+                </div>
+                <form id="form-modal-categoria">
+                    <div class="modal-cuerpo">
+                        <!-- Campo oculto para guardar la ID si estamos editando -->
+                        <input type="hidden" id="categoria-id">
+                        
+                        <label for="categoria-descripcion">Descripción:</label>
+                        <input 
+                            type="text" 
+                            class="selector-opcion" 
+                            id="categoria-descripcion" 
+                            required 
+                            placeholder="Ej: Periféricos, Servidores, etc."
+                        >
+                    </div>
+                    <div class="modal-pie">
+                        <button type="button" class="btn-buscar" id="btn-cancelar-modal" style="background-color: #6c757d;">Cancelar</button>
+                        <button type="submit" class="btn-buscar" id="btn-guardar-modal">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <aside></aside>
     </div>
-    <script src="../../js/empleado-sistemas-categorias.js"></script>
+
     <script type="module" src="../../main.js"></script>
+    <script type="module" src="../../js/empleado-sistemas-categorias.js"></script>
 
 </body>
-
 </html>

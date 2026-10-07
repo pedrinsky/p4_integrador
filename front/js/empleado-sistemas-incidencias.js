@@ -1,45 +1,19 @@
-let incidencias = []; // Almacena datos reales del servidor para poder filtrarlos después
+import { badgesEstado, badgesPrioridad, renderizarPaginacion } from './utils/ui-utils.js';
+
+let incidencias = []; 
 let modoHistorial = false;
 
-const badgesEstado = {
-    1: '<span class="badge est-pendiente">Pendiente</span>',
-    2: '<span class="badge est-proceso">En Proceso</span>',
-    3: '<span class="badge est-resuelta">Resuelta</span>',
-    4: '<span class="badge est-cancelada">Cancelada</span>'
-};
+let paginaActual = 1;
+const limitePorPagina = 5;
 
-const badgesPrioridad = {
-    1: '<span class="badge prio-baja">Baja</span>',
-    2: '<span class="badge prio-media">Media</span>',
-    3: '<span class="badge prio-alta">Alta</span>'
-};
-
-
-// ESPERO A QUE LA PAGINA HTML SE DESCARGUE Y SE CONSTRUYA POR COMPLETO
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        // Pedimos los datos al backend en vez de un archivo local
-        const response = await fetch('http://localhost:3000/api/incidencias');
-        if (response.ok) {
-            incidencias = await response.json();
-            // Por defecto arranca fuera del modo historial, filtramos las resueltas (3)
-            renderizarTabla(incidencias.filter(inc => inc.id_estado != 3));
-        } else {
-            console.error('No se pudieron obtener las incidencias: ', response.status);
-        }
-    } catch (error) {
-        console.error('Hubo un error de conexión con el backend:', error);
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    // Al cargar la página, traemos los datos de la primera página
+    filtrarDatos();
 });
-
 
 // FUNCIÓN PARA DIBUJAR LOS DATOS EN LA TABLA
 function renderizarTabla(incidencias) {
-
-
     const tbody = document.getElementById('tabla-incidencias');
-
-    // LIMPIO LOS DATOS QUE PUEDA TENER LA TABLA
     tbody.textContent = '';
 
     for (let inc of incidencias) {
@@ -72,10 +46,8 @@ function renderizarTabla(incidencias) {
         row.appendChild(tdPrioridad);
 
         const tdEstado = document.createElement('td');
-        tdEstado.textContent = inc.id_estado;
         tdEstado.innerHTML = badgesEstado[inc.id_estado];
         row.appendChild(tdEstado);
-
 
         const tdAcciones = document.createElement('td');
         const botonAccion = document.createElement('button');
@@ -102,11 +74,7 @@ function renderizarTabla(incidencias) {
                 });
                 if (respuesta.ok) {
                     alert('¡Incidencia ha vuelto a Pendiente!');
-                    // En vez de recargar la página entera (que resetea el modo), 
-                    // solo recargamos los datos para seguir en el mismo Historial
-                    const res = await fetch('http://localhost:3000/api/incidencias');
-                    incidencias = await res.json();
-                    filtrarDatos({ preventDefault: () => {} }); 
+                    filtrarDatos(); 
                 } else {
                     alert('Error al intentar reabrir la incidencia');
                 }
@@ -116,25 +84,17 @@ function renderizarTabla(incidencias) {
             botonAccion.textContent = 'Finalizar';
             
             botonAccion.addEventListener('click', async () => {
-                // Aparece la ventanita preguntando por una descripción
                 const descripcion = prompt("Ingrese una descripción o comentario para la resolución (opcional):", "");
-                
-                // Si el usuario presiona "Cancelar" en la ventanita, detenemos el proceso
                 if (descripcion === null) return;
 
                 const respuesta = await fetch(`http://localhost:3000/api/incidencias/${inc.id_incidencia}/finalizar`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json' 
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ descripcion_resolucion: descripcion })
                 });
                 if (respuesta.ok) {
                     alert('¡Incidencia finalizada con éxito!');
-                    // Idem, actualizamos los datos internamente
-                    const res = await fetch('http://localhost:3000/api/incidencias');
-                    incidencias = await res.json();
-                    filtrarDatos({ preventDefault: () => {} });
+                    filtrarDatos();
                 } else {
                     alert('Error al intentar finalizar la incidencia');
                 }
@@ -143,62 +103,70 @@ function renderizarTabla(incidencias) {
         
         tdAcciones.appendChild(botonAccion);
         row.appendChild(tdAcciones);
-
-        // AGREGO UNA FILA CON TODAS LA CELDAS A LA TABLA
         tbody.appendChild(row);
     }
 }
 
-const botonBuscar = document.getElementById('btn-buscar');
 
-function filtrarDatos(event) {
+
+
+async function filtrarDatos(event) {
     if (event && typeof event.preventDefault === 'function') {
-        event.preventDefault(); // Por si el boton está dentro de un form en el futuro
+        event.preventDefault(); 
+        // Si se apretó el boton buscar, reseteamos a la página 1
+        if (event.target && event.target.id === 'btn-buscar') window.paginaActual = 1;
     }
     
-    const textoFiltro = document.getElementById('filtro-nro-articulo').value.toLowerCase().trim();
-    const estadoFiltro = document.getElementById('filtro-estado').value;
-    const prioridadFiltro = document.getElementById('filtro-prioridad').value;
+    let url = `http://localhost:3000/api/incidencias?page=${window.paginaActual || 1}&limit=${limitePorPagina}`;
 
-    const resultadosFiltrados = incidencias.filter(inc => {
-        // Aseguramos que respete en qué modo estamos (Historial o Pendientes)
-        if (modoHistorial && inc.id_estado != 3) return false;
-        if (!modoHistorial && inc.id_estado == 3) return false;
+    const textoFiltro = document.getElementById('filtro-nro-articulo').value.trim();
+    if (textoFiltro) url += `&search=${encodeURIComponent(textoFiltro)}`;
 
-        //Filtro de Texto (busca en artículo, en descripción o si es el número exacto de ID)
-        const coincideTexto = textoFiltro === '' || 
-            (inc.articulo_descripcion && inc.articulo_descripcion.toLowerCase().includes(textoFiltro)) ||
-            (inc.descripcion_pedido && inc.descripcion_pedido.toLowerCase().includes(textoFiltro)) ||
-            (inc.id_incidencia && inc.id_incidencia.toString() === textoFiltro);
-            
-        //Filtro de Estado
-        const coincideEstado = estadoFiltro === '' || inc.id_estado.toString() === estadoFiltro;
-        
-        //Filtro de Prioridad
-        const coincidePrioridad = prioridadFiltro === '' || inc.prioridad.toString() === prioridadFiltro;
-
-        // Comprueba que la incidencia cumpla todas las condiciones seleccionadas
-        return coincideTexto && coincideEstado && coincidePrioridad;
-    });
+    let estadoFiltro = document.getElementById('filtro-estado').value;
     
-    // RENDERIZO LA TABLA CON LOS DATOS QUE QUEDARON FILTRADOS
-    renderizarTabla(resultadosFiltrados);
+    // Logica Historial vs Pendientes
+    if (modoHistorial) {
+        url += `&estado=3`;
+    } else {
+        if (estadoFiltro) {
+            url += `&estado=${estadoFiltro}`;
+        } else {
+            // Si no elige estado y estamos en Pendientes, omitir las resueltas(3)
+            url += `&exclude_estado=3`;
+        }
+    }
+
+    const prioridadFiltro = document.getElementById('filtro-prioridad').value;
+    if (prioridadFiltro) url += `&prioridad=${prioridadFiltro}`;
+
+    try {
+        const respuesta = await fetch(url);
+        if (respuesta.ok) {
+            const data = await respuesta.json();
+            incidencias = data.incidencias;
+            renderizarTabla(data.incidencias);
+            if (data.paginacion) {
+                renderizarPaginacion(data.paginacion, 'paginacionIncidencias', (pag) => {
+                    window.paginaActual = pag;
+                    filtrarDatos();
+                });
+            }
+        }
+    } catch(e) {
+        console.error("Error pidiendo datos:", e);
+    }
 }
 
-// REGISTRO LA FUNCIÓN DE FILTRADO PARA RESPONDER AL CLICK DEL BOTON
+const botonBuscar = document.getElementById('btn-buscar');
 if (botonBuscar) {
     botonBuscar.addEventListener('click', filtrarDatos);
 }
 
-//el modo historial como todavia no hay usuarios. 
-// muestra todo y solo cambia el estado del filtro a resueltas
 const botonHistorial = document.getElementById('btn-historial-resueltas');
-
 if (botonHistorial) {
     botonHistorial.addEventListener('click', (event) => {
-        event.preventDefault(); // Evita que se recargue la página si estuviera en un formulario
+        event.preventDefault(); 
 
-        // Alterna el modo
         modoHistorial = !modoHistorial;
 
         if (modoHistorial) {
@@ -209,12 +177,12 @@ if (botonHistorial) {
             botonHistorial.innerHTML = 'Mis Resueltas';
         }
 
-        // Limpia los filtros visuales siempre que cambiamos de modo
+        window.paginaActual = 1; 
+
         document.getElementById('filtro-estado').value = '';
         document.getElementById('filtro-prioridad').value = '';
         document.getElementById('filtro-nro-articulo').value = '';
 
-        //la misma funcion de filtrarDatos porque ya sabe qué hacer gracias a la variable `modoHistorial`
         filtrarDatos(event);
     });
-}
+}

@@ -16,7 +16,8 @@ export const getAllCategoriasSchema = z.object({
     "limit": z.coerce.number()
         .nonnegative({message: "limit debe ser mayor o igual a 0"}).default(100),
     "offset": z.coerce.number()
-        .nonnegative({message: "offset debe ser mayor o igual a 0"}).default(0)
+        .nonnegative({message: "offset debe ser mayor o igual a 0"}).default(0),
+    "page": z.coerce.number().optional()
 });
 
 export const getByIDCategoriasSchema = z.object({
