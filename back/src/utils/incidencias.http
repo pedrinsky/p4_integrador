@@ -40,11 +40,12 @@ GET http://localhost:3000/incidencias/3
 ###Actualizar incidencia por id
 #Se pasan por body los campos a cambiar
 #Por ahora da error enviar el body vacio...
-PATCH http://localhost:3000/incidencias/4
+PATCH http://localhost:3000/incidencias/12
 Content-Type: application/json
 
 {
-    "prioridad": 2
+    "prioridad": 3,
+    "id_estado": 4
 }
 
 
@@ -56,10 +57,12 @@ Content-Type: application/json
 {
     "id_articulo": 2,
     "creado_por": 3,
-    "descripcion_pedido": "Se ve un rayon en la pantalla"
+    "asignado_a": 1,
+    "prioridad": 2,
+    "descripcion_pedido": "Roto"
 }
 
 
 ####DELETE
 #Se pasa el estado de la incidencia a cancelada, segun el id
-DELETE http://localhost:3000/incidencias/7
+DELETE http://localhost:3000/incidencias/12

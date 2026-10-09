@@ -36,10 +36,10 @@ POST http://localhost:3000/categorias
 Content-Type: application/json
 
 {
-    "descripcion": "Prueba2",
+    "descripcion": "Prueba6",
     "activo": 1
 }
 
 ####DELETE
 #Se borra logicamente la categoria segun el id
-DELETE http://localhost:3000/categorias/16
+DELETE http://localhost:3000/categorias/19

@@ -52,10 +52,10 @@ Content-Type: application/json
 {
     "id_area": 2,
     "id_categoria": 9,
-    "descripcion": "Luces led",
+    "descripcion": "Luz",
     "activo": 1
 }
 
 ####DELETE
 #Se borra logicamente el articulo segun el id
-DELETE http://localhost:3000/articulos/4
+DELETE http://localhost:3000/articulos/8
