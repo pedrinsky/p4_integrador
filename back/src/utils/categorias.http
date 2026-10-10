@@ -36,7 +36,7 @@ POST http://localhost:3000/categorias
 Content-Type: application/json
 
 {
-    "descripcion": "Prueba6",
+    "descripcion": 7,
     "activo": 1
 }
 

@@ -55,7 +55,7 @@ POST http://localhost:3000/incidencias
 Content-Type: application/json
 
 {
-    "id_articulo": 2,
+    "id_articulo": 4,
     "creado_por": 3,
     "asignado_a": 1,
     "prioridad": 2,

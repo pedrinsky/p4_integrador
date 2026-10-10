@@ -29,6 +29,7 @@ export const updateTransform = (req, res, next) => {
     if(idSchema.error) res.status(400).json({error: JSON.parse(idSchema.error.message)});
     console.log(bodySchema.data);
     console.log(idSchema.data);
+    console.log(bodySchema.error);
     req.criteria = {
         ...idSchema.data,
         ...bodySchema.data};

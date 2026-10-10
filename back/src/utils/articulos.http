@@ -10,7 +10,7 @@ GET http://localhost:3000/articulos?order_column=id_area&&direction=DESC&&limit=
 ###GET de articulos, agregando filtros extra (id_area, id_categoria, descripcion)
 ###por area:
 
-GET http://localhost:3000/articulos?order_column=id_area&&direction=desc&&limit=10&&offset=0&&id_area=1
+GET http://localhost:3000/articulos?order_column=id_area&&direction=desc&&limit=10&&offset=0&&id_area=2
 
 ###Por categoria:
 
@@ -50,10 +50,10 @@ POST http://localhost:3000/articulos
 Content-Type: application/json
 
 {
-    "id_area": 2,
-    "id_categoria": 9,
-    "descripcion": "Luz",
-    "activo": 1
+    "id_area": 3,
+    "id_categoria": 5,
+    "descripcion": "noc2",
+    "activo": 0
 }
 
 ####DELETE
