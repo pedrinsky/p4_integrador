@@ -77,7 +77,7 @@ async function filtrarDatos(event) {
         }
     }
     
-    let url = `http://localhost:3000/api/incidencias?page=${window.paginaActual || 1}&limit=${limitePorPagina}`;
+    let url = `http://localhost:3000/api/incidencias?offset=${window.paginaActual || 1}&limit=${limitePorPagina}`;
     
     const textoFiltroArea = document.getElementById('filtro-nro-articulo');
     if (textoFiltroArea) {

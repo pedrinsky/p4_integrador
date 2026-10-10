@@ -1,0 +1,45 @@
+###GET de todas las categorias:
+#Se deben pasar:
+#order_column: columna por la que se ordenara;
+#direction: ASC o DESC;
+#limit,
+#offset
+
+GET http://localhost:3000/api/categorias?order_column=id_categoria&&direction=ASC&&limit=10&&offset=0
+
+###GET de categorias con filtros:
+#Por descripcion:
+GET http://localhost:3000/api/categorias?order_column=id_categoria&&direction=ASC&&limit=10&&offset=0&&descripcion=es
+
+###GET de categorias con filtros:
+#Por "activo":
+GET http://localhost:3000/api/categorias?order_column=id_categoria&&direction=ASC&&limit=10&&offset=0&&activo=1
+
+
+###GET por id
+GET http://localhost:3000/api/categorias/1
+
+
+###Actualizar categoria por id
+#Se pasan por body los campos a cambiar
+#Por ahora da error enviar el body vacio...
+PATCH http://localhost:3000/api/categorias/11
+Content-Type: application/json
+
+{
+    "descripcion": "Venta"
+}
+
+###POST
+#Se pasan por body todos los valores (descripcion y activo)
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+    "descripcion": 7,
+    "activo": 1
+}
+
+####DELETE
+#Se borra logicamente la categoria segun el id
+DELETE http://localhost:3000/api/categorias/19
