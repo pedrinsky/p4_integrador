@@ -1,20 +1,17 @@
-import { getAllCategoriasSchema, getByIDCategoriasSchema, updateCategoriasSchema
-    , createCategoriasSchema } 
-    from "../../schemas/categoriasSchema.js";
+import { getByIDUsuariosSchema, updateUsuariosSchema,
+    createUsuariosSchema} 
+    from "../schemas/usuarios-schema.js";
 
-export const getAllTransform = (req, res, next)  => {
-    const schema = getAllCategoriasSchema.safeParse(req.query)
+export const getAllUsuariosTransform = (req, res, next) => {
     console.log("Transformer");
-    if(schema.error) return res.status(400).json({error: JSON.parse(schema.error.message)});
-    console.log(schema.data);
-    req.criteria = schema.data;
+    req.criteria = {};
     next();
 }
 
-export const getByIDTransform = (req, res, next) => {
+export const getByIDUsuariosTransform = (req, res, next) => {
     console.log("Transformer");
     console.log(req.params);
-    const schema = getByIDCategoriasSchema.safeParse(req.params);
+    const schema = getByIDUsuariosSchema.safeParse(req.params);
     
     if(schema.error) return res.status(400).json({error: JSON.parse(schema.error.message)});
     console.log(schema.data);
@@ -22,10 +19,10 @@ export const getByIDTransform = (req, res, next) => {
     next();
 }
 
-export const updateTransform = (req, res, next) => {
+export const updateUsuariosTransform = (req, res, next) => {
     console.log("Transformer");
-    const bodySchema = updateCategoriasSchema.safeParse(req.body);
-    const idSchema = getByIDCategoriasSchema.safeParse(req.params);
+    const bodySchema = updateUsuariosSchema.safeParse(req.body);
+    const idSchema = getByIDUsuariosSchema.safeParse(req.params);
     if(bodySchema.error) return res.status(400).json({error: JSON.parse(bodySchema.error.message)});
     if(idSchema.error) return res.status(400).json({error: JSON.parse(idSchema.error.message)});
     console.log(bodySchema.data);
@@ -37,9 +34,9 @@ export const updateTransform = (req, res, next) => {
     next();
 }
 
-export const createTransform = (req, res, next) => {
+export const createUsuariosTransform = (req, res, next) => {
     console.log("Transformer");
-    const schema = createCategoriasSchema.safeParse(req.body);
+    const schema = createUsuariosSchema.safeParse(req.body);
     if(schema.error) return res.status(400).json({error: JSON.parse(schema.error.message)});
     console.log(schema.data);
     req.criteria = schema.data;
@@ -47,10 +44,10 @@ export const createTransform = (req, res, next) => {
     next();
 }
 
-export const deleteTransform = (req, res, next) => {
+export const deleteUsuariosTransform = (req, res, next) => {
     console.log("Transformer");
     console.log(req.params);
-    const schema = getByIDCategoriasSchema.safeParse(req.params);
+    const schema = getByIDUsuariosSchema.safeParse(req.params);
     
     if(schema.error) return res.status(400).json({error: JSON.parse(schema.error.message)});
     console.log(schema.data);

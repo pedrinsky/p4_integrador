@@ -1,0 +1,26 @@
+info:
+  name: Create
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:3000/api/incidencias
+  body:
+    type: json
+    data: |-
+      {
+          "id_articulo": 4,
+          "creado_por": 3,
+          "asignado_a": 1,
+          "prioridad": 2,
+          "descripcion_pedido": "Roto"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

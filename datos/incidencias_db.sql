@@ -1,5 +1,5 @@
 --
--- PostgreSQL database dump
+-- postgresQL database dump
 --
 
 -- Dumped from database version 16.15 (Debian 16.15-1.pgdg13+2)
@@ -24,7 +24,7 @@ SET row_security = off;
 -- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
 --
 
-CREATE SCHEMA if not exists public;
+CREATE SCHEMA IF NOT EXISTS public;
 
 
 ALTER SCHEMA public OWNER TO pg_database_owner;
@@ -616,5 +616,6 @@ ALTER TABLE ONLY public.usuarios
 -- Completed on 2026-09-16 17:46:02
 
 --
--- PostgreSQL database dump complete
+-- postgresQL database dump complete
 --
+

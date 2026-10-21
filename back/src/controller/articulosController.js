@@ -1,6 +1,4 @@
-import { pool } from '../config/db.js';
-
-
+import { ArticulosResponseDTO } from "../dto/articulos-dto.js";
 
 export class ArticulosController{
     constructor({articulosService}){
@@ -12,7 +10,25 @@ export class ArticulosController{
         console.log(req.criteria);
         const result = await this.articulosService.getAll(req.criteria);
         console.log(result);
-        res.json(result);
+
+        const limit = Number(req.criteria?.limit) || 5;
+        const totalRegistros = result.length > 0 && result[0].total_registros 
+            ? parseInt(result[0].total_registros, 10) 
+            : result.length;
+        const totalPaginas = Math.ceil(totalRegistros / limit) || 1;
+        const paginaActual = Number(req.criteria?.page) || (Math.floor(Number(req.criteria?.offset || 0) / limit) + 1);
+
+        const articulosDTO = result.map(articulo => new ArticulosResponseDTO(articulo));
+
+        res.json({
+            articulos: articulosDTO,
+            paginacion: {
+                totalPaginas,
+                paginaActual,
+                totalRegistros,
+                limitePorPagina: limit
+            }
+        });
     }
 
     getByID = async (req, res) => {
@@ -20,7 +36,7 @@ export class ArticulosController{
         console.log(req.criteria);
         const result = await this.articulosService.getByID(req.criteria);
         console.log(result);
-        res.json(result);
+        res.json(new ArticulosResponseDTO(result));
     }
 
     update = async (req, res) => {
@@ -28,7 +44,7 @@ export class ArticulosController{
         console.log(req.criteria);
         const result = await this.articulosService.update(req.criteria);
         console.log(result);
-        res.json(result);
+        res.json(new ArticulosResponseDTO(result));
     }
 
     create = async (req, res) => {
@@ -36,12 +52,13 @@ export class ArticulosController{
         console.log(req.criteria);
         const result = await this.articulosService.create(req.criteria);
         console.log(result);
-        res.json(result);
+        res.json(new ArticulosResponseDTO(result));
     }
 
     delete = async (req, res) => {
         const result = await this.articulosService.delete(req.criteria);
-        res.json(result);
+        console.log(result);
+        res.json(new ArticulosResponseDTO(result));
     }
 
     reactivar = async (req, res) => {

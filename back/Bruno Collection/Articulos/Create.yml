@@ -1,0 +1,25 @@
+info:
+  name: Create
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://localhost:3000/api/articulos
+  body:
+    type: json
+    data: |-
+      {
+          "id_area": 3,
+          "id_categoria": 5,
+          "descripcion": "noc2",
+          "activo": 0
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

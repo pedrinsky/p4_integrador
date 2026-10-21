@@ -4,7 +4,7 @@ import { getAllTransform as getAllCategoriasTransform
     , updateTransform as updateCategoriaTransform
     , createTransform as createCategoriaTransform
     , deleteTransform as deleteCategoriaTransform}
-    from '../src/middleware/categoriasTransformer.js';
+    from '../src/tranformers/categorias-transformer.js';
 
 import { CategoriasController } from '../src/controller/categoriasController.js';
 

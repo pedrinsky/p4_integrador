@@ -5,7 +5,7 @@ import { getAllTransform as getAllIncidenciasTransform
     , updateTransform as updateIncidenciaTransform
     , createTransform as createIncidenciaTransform
     , deleteTransform as deleteIncidenciaTransform }
-    from "../src/middleware/incidenciaTransformer.js";
+    from "../src/tranformers/incidencias-transformer.js";
 
 import { IncidenciasController } from "../src/controller/incidenciasController.js";
 

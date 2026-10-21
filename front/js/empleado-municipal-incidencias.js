@@ -1,4 +1,4 @@
-import { badgesEstado, badgesPrioridad, renderizarPaginacion } from './utils/ui-utils.js';
+import { badgesEstado, badgesPrioridad, insertarBadge, renderizarPaginacion } from './utils/ui-utils.js';
 
 let misIncidencias = [];
 
@@ -13,20 +13,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function cargarIncidencias() {
     let url = `http://localhost:3000/api/incidencias?page=${window.paginaActual || 1}&limit=${limitePorPagina}`;
-    // Ocultar canceladas (estado 4) como lo hacía el viejo for-loop "if (inc.id_estado === 4) continue;"
+    // Ocultar canceladas (estado 4)
     url += '&exclude_estado=4';
 
     try {
         const response = await fetch(url);
         if (response.ok) {
             const data = await response.json();
-            misIncidencias = data.incidencias; 
-            renderizarTabla(data.incidencias);
+            const listado = Array.isArray(data) ? data : (data.incidencias || []);
+            misIncidencias = listado; 
+            renderizarTabla(listado);
             if (data.paginacion) {
                 renderizarPaginacion(data.paginacion, 'paginacionIncidencias', (pag) => {
+                    paginaActual = pag;
                     window.paginaActual = pag;
                     cargarIncidencias();
                 });
+            } else {
+                const contenedor = document.getElementById('paginacionIncidencias');
+                if (contenedor) contenedor.textContent = '';
             }
         } else {
             console.error('Error al obtener incidencias:', response.status);
@@ -40,13 +45,16 @@ async function loadArticulosForSelect() {
     try {
         const response = await fetch('http://localhost:3000/api/articulos');
         if (response.ok) {
-            const arts = await response.json();
+            const data = await response.json();
+            const arts = Array.isArray(data) ? data : (data.articulos || []);
             const select = document.getElementById('selector-articulo');
             if (!select) return;
+            select.textContent = '';
             for (let a of arts) {
                 const opt = document.createElement('option');
-                opt.value = a.id_articulo;
-                opt.textContent = `${a.id_articulo} - ${a.descripcion}`;
+                const idArt = a.id_articulo ?? a.idArticulo;
+                opt.value = idArt;
+                opt.textContent = `${idArt} - ${a.descripcion}`;
                 select.appendChild(opt);
             }
         }
@@ -60,45 +68,60 @@ function renderizarTabla(incidencias) {
     if (!tbody) return;
     tbody.textContent = ''; 
 
+    if (!Array.isArray(incidencias) || incidencias.length === 0) {
+        const row = document.createElement('tr');
+        const tdVacio = document.createElement('td');
+        tdVacio.colSpan = 7;
+        tdVacio.style.textAlign = 'center';
+        tdVacio.textContent = 'No se encontraron incidencias.';
+        row.appendChild(tdVacio);
+        tbody.appendChild(row);
+        return;
+    }
+
     for (let inc of incidencias) {
         const row = document.createElement('tr');
+        const idInc = inc.id_incidencia ?? inc.idIncidencia;
 
         const tdId = document.createElement('td');
-        tdId.textContent = inc.id_incidencia;
+        tdId.textContent = idInc;
         row.appendChild(tdId);
 
         // Fecha (creado)
         const tdCreado = document.createElement('td');
-        tdCreado.textContent = inc.creado || 'N/A';
+        tdCreado.textContent = inc.creado ? new Date(inc.creado).toLocaleDateString() : 'N/A';
         row.appendChild(tdCreado);
 
         const tdArticulo = document.createElement('td');
-        tdArticulo.textContent = inc.articulo_descripcion || (inc.id_articulo ? 'ID '+inc.id_articulo : '-');
+        tdArticulo.textContent = inc.articulo_descripcion || inc.articulo || (inc.id_articulo ? 'ID '+inc.id_articulo : '-');
         tdArticulo.className = 'text-truncate';
-        tdArticulo.style.maxWidth = '100px';
+        tdArticulo.style.maxWidth = '180px';
         row.appendChild(tdArticulo);
 
         const tdDescripcion = document.createElement('td');
-        tdDescripcion.textContent = inc.descripcion_pedido;
+        tdDescripcion.textContent = inc.descripcion_pedido || inc.descripcionPedido || '-';
+        tdDescripcion.className = 'text-truncate';
+        tdDescripcion.style.maxWidth = '250px';
         row.appendChild(tdDescripcion);
 
         const tdPrioridad = document.createElement('td');
-        tdPrioridad.innerHTML = badgesPrioridad[inc.prioridad] || inc.prioridad;
+        insertarBadge(tdPrioridad, badgesPrioridad[inc.prioridad] ? badgesPrioridad[inc.prioridad]() : (inc.prioridad ?? '-'));
         row.appendChild(tdPrioridad);
 
         const tdEstado = document.createElement('td');
-        tdEstado.innerHTML = badgesEstado[inc.id_estado] || inc.id_estado;
+        const estKey = inc.id_estado ?? inc.estado;
+        insertarBadge(tdEstado, badgesEstado[estKey] ? badgesEstado[estKey]() : (inc.estado ?? inc.id_estado ?? '-'));
         row.appendChild(tdEstado);
 
         // Nueva columna Accion
         const tdAccion = document.createElement('td');
         tdAccion.className = 'text-center';
-        if (inc.id_estado !== 3 && inc.id_estado !== 4) { // Si no esta resuelta ni cancelada
+        if (inc.id_estado !== 3 && inc.id_estado !== 4 && inc.estado !== 'Resuelta' && inc.estado !== 'Cancelada') { // Si no esta resuelta ni cancelada
             const btnCancelar = document.createElement('button');
             btnCancelar.textContent = 'Cancelar';
             btnCancelar.className = 'btn-buscar'; 
             btnCancelar.style.padding = '4px 8px';
-            btnCancelar.onclick = () => cancelarIncidencia(inc.id_incidencia);
+            btnCancelar.onclick = () => cancelarIncidencia(idInc);
             tdAccion.appendChild(btnCancelar);
         }
         row.appendChild(tdAccion);
