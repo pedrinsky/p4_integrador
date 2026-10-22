@@ -4,9 +4,9 @@ import { getAllTransform as getAllTransformArticulos
     ,updateTransform as updateArticuloTransform
     ,createTransform as createArticuloTransform
     ,deleteTransform as deleteArticuloTransform} 
-    from '../src/tranformers/articulos-transformer.js';
+    from '../tranformers/articulos-transformer.js';
 
-import { ArticulosController } from "../src/controller/articulosController.js";
+import { ArticulosController } from "../controller/articulosController.js";
 
 export const createArticulosRouter = ({articulosService}) => {
     const router = Router();

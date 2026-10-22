@@ -1,15 +1,15 @@
 import express from 'express';
 import cors from 'cors';
-import { createArticulosRouter } from '../routes/articulos-routes.js';
+import { createArticulosRouter } from '../routers/articulosRouters.js';
 import { ArticulosService } from '../services/articulos-service.js';
-import { createCategoriasRouter } from '../routes/categorias-routes.js';
+import { createCategoriasRouter } from '../routers/categoriaRouters.js';
 import { CategoriasService } from "../services/categorias-service.js";
-import { createIncidenciasRouter } from '../routes/incidencias-routes.js';
+import { createIncidenciasRouter } from '../routers/incidenciasRouters.js';
 import { IncidenciasService } from '../services/incidencias-service.js';
 import rateLimit from 'express-rate-limit';
 import { UsersService } from '../services/users-services.js'
-import { createUser as createUsuariosRouter } from '../routes/usuarios-routes.js'
-import authRouter from '../routes/auth-routers.js'
+import { createUser as createUsuariosRouter } from '../routers/usuarios-routes.js'
+import authRouter from '../routers/auth-routers.js'
 
 const app = express();
 const port = 3000;

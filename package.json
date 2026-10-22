@@ -8,9 +8,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/web/index.js",
-    "server": "nodemon src/web/index.js",
-    "dev": "node src/app.js"
+    "start": "node back/src/web/index.js",
+    "server": "nodemon back/src/web/index.js",
+    "dev": "node back/src/web/index.js"
   },
   "devDependencies": {
     "nodemon": "^3.1.14",
