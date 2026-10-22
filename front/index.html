@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión Incidencias</title>
+    <link rel="icon" type="image" href="images/logo-muni-azul.png" />
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script type="module" src="js/login.js"></script>
+  </head>
+  <body>
+    <header class="top-header">
+      <div class="logo-container">
+        <img
+          class="logo-muni-header"
+          src="images/logo-muni.png"
+          alt="Logo Municipalidad"
+        />
+      </div>
+      <div class="open-menu"></div>
+    </header>
+    <div class="main-layout">
+      <main class="cuerpo login-contenedor">
+        <div class="contenido-tarjeta-blanca login-tarjeta">
+          <div class="login-cabecera">
+            <h1 class="login-titulo">Gestión de Incidencias</h1>
+            <p class="login-subtitulo">
+              Sistema municipal. Ingresa tus credenciales.
+            </p>
+          </div>
+
+          <div class="filtro-grupo">
+            <label class="login-label">Nombre de usuario</label>
+            <input
+              type="text"
+              id="input-usuario"
+              class="selector-opcion login-input"
+              placeholder="nombre@correo.com"
+            />
+          </div>
+
+          <div class="filtro-grupo">
+            <label class="login-label">Contraseña</label>
+            <input
+              type="password"
+              id="input-contrasenia"
+              class="selector-opcion login-input"
+              style="padding-left: 10px"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div
+            id="login-error"
+            style="
+              display: none;
+              color: #c0392b;
+              font-size: 0.9rem;
+              margin-bottom: 8px;
+            "
+          ></div>
+
+          <button type="button"id="btn-ingresar"class="btn-buscar login-boton">Ingresar</button>
+            
+          </div>
+        </div>
+      </main>
+      <aside></aside>
+    </div>
+  </body>
+</html>

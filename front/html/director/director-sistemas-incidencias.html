@@ -1,67 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>incidencias</title>
     <link rel="stylesheet" href="../../css/style.css">
-    <!-- Link al css de bootstrap -->
-    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
+    </link>
+    <script type="module" src="../../js/auth-guard.js"></script>
+    <link rel="icon" type="image" href="../../images/logo-muni-azul.png" />
 </head>
+
 <body>
     <header class="top-header">
-        <div class="logo-muni-header">
-            <img class= "logo-muni-header" src="../../../assets/logo-muni-black.png" alt="Logo">
+        <div class="header-izq">
+            <button id="btn-menu" class="btn-barra">☰</button>
+            <img class="logo-muni-header" src="../../images/logo-muni.png" alt="Logo">
+        </div>
+        
+        <div class="perfil-usuario">
+            <div class="avatar-circulo">algo</div>
+            <div class="textos-usuario">
+                <span class="nombre-usuario"> Probando que onda</span>
+                <span class="rol-usuario"> Director de Sistemas </span>
+            </div>
         </div>
     </header>
     <div class="main-layout">
-        <!-- Inicio  de la barra lateral -->
         <aside class="lat-bar">
             <ul class="nav-list">
-                <li class="menu-item">
-                    <a href="director-sistemas-dashboard.html">
-                        <i class="bi bi-pie-chart-fill"></i>
-                        Dashboard
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a class="activo">
-                        <i class="bi bi-journal-text"></i>
-                        incidencias
-                    </a>
-                </li>
-                <li class="menu-item" id="cerrar-sesion">
-                    <a href="../../../index.html">
-                        <i class="bi bi-box-arrow-in-left"></i>
-                        Cerrar sesion
-                    </a>
+                <ul class="menu-item  active">
+                    <a href="director-sistemas-incidencias.html"> Incidencias</a>
+                </ul>
+                <ul class="menu-item">
+                    <a href="director-sistemas-dashboard.html"> Dashboard</a>
+                </ul>
+                <li class="menu-item  logout-item">
+                    <a href="../../index.html"> Cerrar sesión</a>
                 </li>
             </ul>
         </aside>
-        <!-- Fin de la barra lateral -->
         <main class="cuerpo">
-            <!-- Inicio tabla de incidencias -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Creacion</th>
-                        <th scope="col">Creador</th>
-                        <th scope="col">Articulo</th>
-                        <th scope="col">Descripcion</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Prioridad</th>
-                        <th scope="col">Asignado</th>
-                        <th scope="col">Accion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            <!-- Fin tabla de incidencias -->
+            <div class="tarjeta-contenedora">
+                <div class="container-filtro">
+                    <div class="filtro-grupo">
+                        <label for="filtro-estado">Estado</label>
+                        <select id="filtro-estado"> 
+                            <option value="">Todos los Estados</option>
+                            <option value="1">Pendiente</option>
+                            <option value="2">En Proceso</option>
+                            <option value="4">Cancelada</option>
+                        </select>
+                    </div>
+                    <div class="filtro-grupo">
+                        <label for="filtro-prioridad">Prioridad</label>
+                        <select id="filtro-prioridad">
+                            <option value="">Todas las Prioridades</option>
+                            <option value="3">Alta</option>
+                            <option value="2">Media</option>
+                            <option value="1">Baja</option>
+                        </select>
+                    </div>
+                    <div class="filtro-grupo">
+                        <label for="filtro-nro-articulo"> Descripción</label>
+                        <input type="text" id="filtro-nro-articulo" placeholder="N° Incidencia o Artículo">
+                    </div>
+
+                    <button id="btn-buscar" class="btn-buscar">Buscar</button>
+                    
+                    <button id="btn-resueltas" class="btn-buscar" style="padding: 10px;">Incidencias Resueltas</button>
+                </div>
+
+                <div class="tabla-resultados">
+                    <table class="tabla-incidencias">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Artículo</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Prioridad</th>
+                                <th scope="col">Creado por</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-incidencias">
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+            <nav aria-label="Navegación de páginas" class="contenedor-paginacion">
+                <ul class="pagination" id="paginacionIncidencias"></ul>
+            </nav>
         </main>
     </div>
+
+    <!-- MODAL DE ASIGNACION -->
+    <div id="modal-asignacion" class="modal-overlay" style="display: none;">
+        <div class="modal-contenido">
+            <div class="modal-cabecera">
+                <h3>Asignar Incidencia #<span id="asignar-id-incidencia"></span></h3>
+                <button id="btn-cerrar-modal" class="btn-cerrar">&times;</button>
+            </div>
+            <div class="modal-cuerpo">
+                <label for="selector-empleado">Seleccione responsable:</label>
+                <select id="selector-empleado" class="selector-opcion">
+                    <option value="">-- Seleccione Empleado de Sistemas --</option>
+                </select>
+            </div>
+            <div class="modal-pie">
+                <button id="btn-confirmar-asignacion" class="btn-buscar">Confirmar Asignación</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../../main.js"></script>
+    <script type="module" src="../../js/director-incidencias.js"></script>
+
 </body>
 
 </html>

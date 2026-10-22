@@ -1,6 +1,6 @@
-import { IncidenciasRepository } from "../repository/incidencias-repository.js";
-import { IncidenciasEstadosRepository } from "../repository/incidencias-estados-repository.js";
-import { IncidenciasResponseDTO } from "../dto/incidencias-dto.js";
+import { IncidenciasRepository } from "../repository/incidencias.repository.js";
+import { IncidenciasEstadosRepository } from "../repository/incidencias-estados.repository.js";
+import { IncidenciasResponseDTO } from "../dto/incidencias.dto.js";
 
 export class IncidenciasService{
     static async getAll(input){

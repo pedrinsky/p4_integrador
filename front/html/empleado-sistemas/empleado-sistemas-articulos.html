@@ -1,70 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articulos</title>
     <link rel="stylesheet" href="../../css/style.css">
-    <!-- Link al css de bootstrap -->
-    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
+    </link>
+    <script type="module" src="../../js/auth-guard.js"></script>
+    <link rel="icon" type="image" href="../../images/logo-muni-azul.png" />
 </head>
+
 <body>
     <header class="top-header">
-        <div class="logo-muni-header">
-            <img class= "logo-muni-header" src="../../../assets/logo-muni-black.png" alt="Logo">
+        <div class="header-izq">
+            <button id="btn-menu" class="btn-barra">☰</button>
+            <img class="logo-muni-header" src="../../images/logo-muni.png" alt="Logo">
+        </div>
+        <div class="perfil-usuario">
+            <div class="avatar-circulo">algo</div>
+            <div class="textos-usuario">
+                <span class="nombre-usuario"> Probando que onda</span>
+                <span class="rol-usuario"> Empleado de Sistemas </span>
+            </div>
         </div>
     </header>
     <div class="main-layout">
-        <!-- Inicio  de la barra lateral -->
         <aside class="lat-bar">
             <ul class="nav-list">
-                <li class="menu-item">
-                    <a href="empleado-sistemas-incidencias.html">
-                        <i class="bi bi-journal-text"></i>
-                        Mis incidencias
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a class="activo">
-                        <i class="bi bi-pc-display"></i>
-                        Articulos
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="empleado-sistemas-categorias.html">
-                        <i class="bi bi-kanban-fill"></i>
-                        Categorias
-                    </a>
-                </li>
-                <li class="menu-item" id="cerrar-sesion">
-                    <a href="../../../index.html">
-                        <i class="bi bi-box-arrow-in-left"></i>
-                        Cerrar sesion
-                    </a>
+                <ul class="menu-item">
+                    <a href="empleado-sistemas-incidencias.html"> Incidencias asignadas</a>
+                </ul>
+                <ul class="menu-item active">
+                    <a href="empleado-sistemas-articulos.html"> Articulos</a>
+                </ul>
+                <ul class="menu-item">
+                    <a href="empleado-sistemas-categorias.html"> Categorias</a>
+                </ul>
+                <li class="menu-item logout-item">
+                    <a href="../../index.html"> Cerrar sesión</a>
                 </li>
             </ul>
         </aside>
-        <!-- Fin de la barra lateral -->
         <main class="cuerpo">
-            <!-- Inicio de tabla de articulos -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Categoria</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>                            
-                </tbody>
-            </table>
-            <!-- Fin de tabla de articulos -->
-            <button type="button" class="btn btn-primary agregar">
-                <i class="bi bi-plus-lg"></i>
-            </button>
-        </main>
+            <div class="tarjeta-contenedora">
+                <div class="container-filtro">
+                    <div class="filtro-grupo">
+                        <label for="filtro-descripcion"> Buscar Artículo:</label>
+                        <input type="text" id="filtro-descripcion" placeholder="Ej: Monitor...">
+                    </div>
+                    <button type="button" id="btn-filtrar" class="btn-buscar">Buscar</button>
+                    <button type="button" id="btn-abrir-creacion" class="btn-buscar" style="background-color: #5ca532;">+ Nuevo Artículo</button>
+                    <button type="button" id="btn-papelera" class="btn-buscar" style="background-color: #6c757d; margin-left: auto;">Papelera</button>
+                </div>
+
+            <div class="tabla-resultados">
+                <table class="tabla-incidencias">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Área</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col" style="text-align: center;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-articulos">
+                    </tbody>
+                </table>
+            </div>
+            <nav aria-label="Navegación de páginas" class="contenedor-paginacion">
+                <ul class="pagination" id="paginacionIncidencias"></ul>
+            </nav>
+        </main> 
+        <script type="module" src="../../js/empleado-sistemas-articulos.js"></script>
+        <script type="module" src="../../main.js"></script>
+
+    </div>
+    <!-- MODAL DE CREACION -->
+    <div id="modal-creacion" class="modal-overlay" style="display: none;">
+        <div class="modal-contenido">
+            <div class="modal-cabecera">
+                <h3 id="modalTitulo">Nuevo Artículo</h3>
+                <button id="btn-cerrar-modal" class="btn-cerrar">&times;</button>
+            </div>
+            <form id="form-modal-articulo">
+                <div class="modal-cuerpo">
+                    <!-- ID oculto para edición -->
+                    <input type="hidden" id="articulo-id">
+
+                    <label for="input-descripcion">Descripción del Artículo:</label>
+                <input type="text" id="input-descripcion" class="selector-opcion" placeholder="Ej: Monitor 24 Pulgadas">
+
+                <label for="selector-area">Área responsable:</label>
+                <select id="selector-area" class="selector-opcion">
+                    <option value="">-- Seleccionar Área --</option>
+                    <option value="1">Legales</option>
+                    <option value="2">Personal</option>
+                    <option value="3">Sistemas</option>
+                    <option value="4">Hacienda</option>
+                    <option value="5">Finanzas</option>
+                    <option value="6">Salud y Accion Social</option>
+                    <option value="7">Desarrollo Urbano</option>
+                </select>
+
+                <label for="selector-categoria">Categoría específica:</label>
+                <select id="selector-categoria" class="selector-opcion">
+                    <option value="">-- Categoría --</option>
+                </select>
+
+                <label for="selector-activo">Estado Inicial:</label>
+                <select name="activo" id="selector-activo" class="selector-empleado">
+                    <option value="1">Activo</option>
+                    <option value="0">Desactivado</option>
+                </select>
+
+                </div>
+                <div class="modal-pie">
+                    <button type="button" class="btn-buscar" id="btn-cancelar-modal" style="background-color: #6c757d; margin-right: 10px;">Cancelar</button>
+                    <button type="submit" id="btn-confirmar-creacion" class="btn-buscar">Añadir Artículo</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 

@@ -1,5 +1,5 @@
-import { ArticulosRepository } from "../repository/articulos-repository.js";
-import { ArticulosResponseDTO } from "../dto/articulos-dto.js";
+import { ArticulosRepository } from "../repository/articulos.repository.js";
+import { ArticulosResponseDTO } from "../dto/articulos.dto.js";
 
 export class ArticulosService{
 
