@@ -4,10 +4,10 @@ import { getAllTransform as getAllTransformArticulos
     ,updateTransform as updateArticuloTransform
     ,createTransform as createArticuloTransform
     ,deleteTransform as deleteArticuloTransform} 
-    from '../src/middleware/articulosTransformer.js';
+    from '../middleware/tranformers/articulos-transformer.js';
 
 // import { ArticulosService } from '../services/articulos-service.js';
-import { ArticulosController } from "../src/controller/articulosController.js";
+import { ArticulosController } from '../controller/articulos-controller.js';
 
 export const createArticulosRouter = ({articulosService}) => {
     const router = Router();
@@ -23,10 +23,6 @@ export const createArticulosRouter = ({articulosService}) => {
     router.post("/", createArticuloTransform, articulosController.create);
 
     router.delete("/:id_articulo", deleteArticuloTransform, articulosController.delete);
-
-    router.put("/:id_articulo/reactivar", deleteArticuloTransform, articulosController.reactivar);
-
-    router.delete("/:id_articulo/definitivo", deleteArticuloTransform, articulosController.deleteDefinitivo);
 
     return router;
 }

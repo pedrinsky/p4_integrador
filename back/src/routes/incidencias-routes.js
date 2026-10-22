@@ -5,9 +5,9 @@ import { getAllTransform as getAllIncidenciasTransform
     , updateTransform as updateIncidenciaTransform
     , createTransform as createIncidenciaTransform
     , deleteTransform as deleteIncidenciaTransform }
-    from "../src/middleware/incidenciaTransformer.js";
+    from "../middleware/tranformers/incidencias-transformer.js";
 
-import { IncidenciasController } from "../src/controller/incidenciasController.js";
+import { IncidenciasController } from "../controller/incidencias-controller.js";
 
 export const createIncidenciasRouter = ({incidenciasService}) => {
     const router = Router();
@@ -24,9 +24,5 @@ export const createIncidenciasRouter = ({incidenciasService}) => {
 
     router.delete("/:id_incidencia", deleteIncidenciaTransform, incidenciasController.delete);
 
-    // Legacy frontend support
-    router.put("/:id_incidencia/finalizar", incidenciasController.finalizar);
-    router.put("/:id_incidencia/reabrir", incidenciasController.reabrir);
-    
     return router;
 }

@@ -1,6 +1,5 @@
 import { getAllArticulosSchema, getByIDArticulosSchema
-    ,updateArticulosSchema    , createArticulosSchema } 
-    from "../../schemas/articulosSchema.js";
+    ,updateArticulosSchema, createArticulosSchema} from "../../schemas/articulos-schema.js";
 
 export const getAllTransform = (req, res, next) => {
     const schema = getAllArticulosSchema.safeParse(req.query)
@@ -30,6 +29,7 @@ export const updateTransform = (req, res, next) => {
     if(idSchema.error) res.status(400).json({error: JSON.parse(idSchema.error.message)});
     console.log(bodySchema.data);
     console.log(idSchema.data);
+    console.log(bodySchema.error);
     req.criteria = {
         ...idSchema.data,
         ...bodySchema.data};

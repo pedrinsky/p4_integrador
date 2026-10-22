@@ -1,6 +1,6 @@
 import { getAllIncidenciasSchema, getByIDIncidenciasSchema, updateIncidenciasSchema
     , createIncidenciasSchema} 
-    from "../../schemas/IncidenciasSchema.js";
+    from "../../schemas/incidencias-schema.js";
 
 export const getAllTransform = (req, res, next) => {
     const schema = getAllIncidenciasSchema.safeParse(req.query)

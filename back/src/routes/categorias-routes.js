@@ -4,9 +4,9 @@ import { getAllTransform as getAllCategoriasTransform
     , updateTransform as updateCategoriaTransform
     , createTransform as createCategoriaTransform
     , deleteTransform as deleteCategoriaTransform}
-    from '../src/middleware/categoriasTransformer.js';
+    from '../middleware/tranformers/categorias-transformer.js';
 
-import { CategoriasController } from '../src/controller/categoriasController.js';
+import { CategoriasController } from '../controller/categorias-controller.js';
 
 export const createCategoriasRouter = ({categoriasService}) => {
     const router = Router();
@@ -22,10 +22,6 @@ export const createCategoriasRouter = ({categoriasService}) => {
     router.post("/", createCategoriaTransform, categoriasController.create);
 
     router.delete("/:id_categoria", deleteCategoriaTransform, categoriasController.delete);
-
-    router.put("/:id_categoria/reactivar", deleteCategoriaTransform, categoriasController.reactivar);
-
-    router.delete("/:id_categoria/definitivo", deleteCategoriaTransform, categoriasController.deleteDefinitivo);
 
     return router;
 }
