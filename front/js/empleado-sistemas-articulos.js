@@ -90,7 +90,11 @@ async function cargarSelectorCategorias() {
             const data = await res.json();
             const listado = data.categorias || data;
             const selectCat = document.getElementById('selector-categoria');
-            selectCat.innerHTML = '<option value="">-- Categoría --</option>'; // Clean
+            selectCat.textContent = '';
+            const optDefault = document.createElement('option');
+            optDefault.value = '';
+            optDefault.textContent = '-- Categoría --';
+            selectCat.appendChild(optDefault);
             listado.forEach(c => {
                 const opt = document.createElement('option');
                 opt.value = c.id_categoria;
@@ -145,11 +149,23 @@ function renderizarTabla(lista) {
     if (!tbody) return;
     tbody.textContent = '';
 
+    if (!Array.isArray(lista) || lista.length === 0) {
+        const row = document.createElement('tr');
+        const tdVacio = document.createElement('td');
+        tdVacio.colSpan = 6;
+        tdVacio.style.textAlign = 'center';
+        tdVacio.textContent = 'No se encontraron artículos.';
+        row.appendChild(tdVacio);
+        tbody.appendChild(row);
+        return;
+    }
+
     for (let art of lista) {
         const row = document.createElement('tr');
+        const idArt = art.id_articulo ?? art.idArticulo;
 
         const tdId = document.createElement('td');
-        tdId.textContent = art.id_articulo;
+        tdId.textContent = idArt;
         row.appendChild(tdId);
 
         const tdArea = document.createElement('td');
@@ -163,15 +179,17 @@ function renderizarTabla(lista) {
         row.appendChild(tdCategoria);
 
         const tdDescripcion = document.createElement('td');
-        tdDescripcion.textContent = art.descripcion;
+        tdDescripcion.textContent = art.descripcion || '-';
         tdDescripcion.className = 'text-truncate';
         tdDescripcion.style.maxWidth = '250px';
         row.appendChild(tdDescripcion);
 
         const tdActivo = document.createElement('td');
-        tdActivo.innerHTML = art.activo === 1 
-            ? '<span class="badge est-resuelta">Sí</span>' 
-            : '<span class="badge est-cancelada">No</span>';
+        const badgeActivo = document.createElement('span');
+        const isActivo = art.activo === 1 || art.activo === true || art.activo === '1';
+        badgeActivo.className = isActivo ? 'badge est-resuelta' : 'badge est-cancelada';
+        badgeActivo.textContent = isActivo ? 'Sí' : 'No';
+        tdActivo.appendChild(badgeActivo);
         row.appendChild(tdActivo);
 
         // BOTONERA
@@ -187,7 +205,7 @@ function renderizarTabla(lista) {
             botonEditar.className = 'btn-buscar';
             botonEditar.style.padding = '4px 12px';
             botonEditar.addEventListener('click', () => {
-                editarArticulo(art.id_articulo);
+                editarArticulo(idArt);
             });
 
             const botonEliminar = document.createElement('button');
@@ -196,7 +214,7 @@ function renderizarTabla(lista) {
             botonEliminar.style.backgroundColor = '#6c757d'; 
             botonEliminar.style.padding = '4px 12px';
             botonEliminar.addEventListener('click', () => {
-                eliminarArticulo(art.id_articulo);
+                eliminarArticulo(idArt);
             });
 
             botonesContainer.appendChild(botonEditar);
@@ -208,7 +226,7 @@ function renderizarTabla(lista) {
             botonReactivar.style.backgroundColor = '#28a745';
             botonReactivar.style.padding = '4px 12px';
             botonReactivar.addEventListener('click', () => {
-                reactivarArticulo(art.id_articulo);
+                reactivarArticulo(idArt);
             });
 
             const botonDestruir = document.createElement('button');
@@ -217,7 +235,7 @@ function renderizarTabla(lista) {
             botonDestruir.style.backgroundColor = '#dc3545'; 
             botonDestruir.style.padding = '4px 12px';
             botonDestruir.addEventListener('click', () => {
-                borradoDefinitivo(art.id_articulo);
+                borradoDefinitivo(idArt);
             });
 
             botonesContainer.appendChild(botonReactivar);

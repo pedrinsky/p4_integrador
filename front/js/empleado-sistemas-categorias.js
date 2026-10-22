@@ -117,6 +117,17 @@ function renderizarTabla(categ) {
     if (!tbody) return;
     tbody.textContent = '';
 
+    if (!Array.isArray(categ) || categ.length === 0) {
+        const row = document.createElement('tr');
+        const tdVacio = document.createElement('td');
+        tdVacio.colSpan = 4;
+        tdVacio.style.textAlign = 'center';
+        tdVacio.textContent = 'No se encontraron categorías.';
+        row.appendChild(tdVacio);
+        tbody.appendChild(row);
+        return;
+    }
+
     for (let cat of categ) {
         const row = document.createElement('tr');
 
@@ -131,9 +142,10 @@ function renderizarTabla(categ) {
         row.appendChild(tdDescripcion);
 
         const tdActivo = document.createElement('td');
-        tdActivo.innerHTML = cat.activo === 1 
-            ? '<span class="badge est-resuelta">Sí</span>' 
-            : '<span class="badge est-cancelada">No</span>';
+        const badgeActivo = document.createElement('span');
+        badgeActivo.className = cat.activo == 1 ? 'badge est-resuelta' : 'badge est-cancelada';
+        badgeActivo.textContent = cat.activo == 1 ? 'Sí' : 'No';
+        tdActivo.appendChild(badgeActivo);
         row.appendChild(tdActivo);
 
         const tdAcciones = document.createElement('td');

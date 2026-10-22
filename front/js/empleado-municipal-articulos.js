@@ -17,13 +17,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function renderizarTabla(lista) {
     const tbody = document.getElementById('tabla-articulos');
+    if (!tbody) return;
     tbody.textContent = ''; // Limpiar tabla
+
+    if (!Array.isArray(lista) || lista.length === 0) {
+        const row = document.createElement('tr');
+        const tdVacio = document.createElement('td');
+        tdVacio.colSpan = 5;
+        tdVacio.style.textAlign = 'center';
+        tdVacio.textContent = 'No se encontraron artículos.';
+        row.appendChild(tdVacio);
+        tbody.appendChild(row);
+        return;
+    }
 
     for (let art of lista) {
         const row = document.createElement('tr');
+        const idArt = art.id_articulo ?? art.idArticulo;
 
         const tdId = document.createElement('td');
-        tdId.textContent = art.id_articulo;
+        tdId.textContent = idArt;
         row.appendChild(tdId);
 
         const tdArea = document.createElement('td');
@@ -33,18 +46,21 @@ function renderizarTabla(lista) {
         const tdCategoria = document.createElement('td');
         tdCategoria.textContent = art.categoria || 'Desconocida';
         tdCategoria.className = 'text-truncate';
-        tdCategoria.style.maxWidth = '50px';
+        tdCategoria.style.maxWidth = '150px';
         row.appendChild(tdCategoria);
 
         const tdDescripcion = document.createElement('td');
-        tdDescripcion.textContent = art.descripcion;
+        tdDescripcion.textContent = art.descripcion || '-';
         tdDescripcion.className = 'text-truncate';
-        tdDescripcion.style.maxWidth = '50px';
+        tdDescripcion.style.maxWidth = '250px';
         row.appendChild(tdDescripcion);
 
-        // Solo los estados activos
         const tdActivo = document.createElement('td');
-        tdActivo.innerHTML = art.activo === 1 ? '<span class="badge est-resuelta">Disponible</span>' : '<span class="badge est-cancelada">No disponible</span>';
+        const badgeActivo = document.createElement('span');
+        const isActivo = art.activo === 1 || art.activo === true || art.activo === '1';
+        badgeActivo.className = isActivo ? 'badge est-resuelta' : 'badge est-cancelada';
+        badgeActivo.textContent = isActivo ? 'Disponible' : 'No disponible';
+        tdActivo.appendChild(badgeActivo);
         row.appendChild(tdActivo);
 
         tbody.appendChild(row);

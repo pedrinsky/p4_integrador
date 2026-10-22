@@ -103,8 +103,6 @@ img.logo-muni-header {
   background-color: rgb(191, 192, 190) !important;
 }
 
-
-
 /* Submenu flotante */
 .submenu {
   position: absolute;
@@ -193,7 +191,6 @@ img.logo-muni-header {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   padding: 25px;
 }
-
 
 .container-filtro {
   display: flex;
@@ -327,16 +324,12 @@ img.logo-muni-header {
   /*barra de desplazamiento horizontal*/
 }
 
-
-
 /* agrupa el botón y el logo horizontalmente */
 .header-izq {
   display: flex;
   align-items: center;
   gap: 15px;
 }
-
-
 
 /* esta clase es la que agarra el javascript */
 .lat-bar.oculta {
@@ -638,7 +631,7 @@ que cae de arriba y pasa de estar casi transparenta a visible*/
   font-size: 26px;
   font-weight: 700;
   margin-bottom: 5px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .login-subtitulo {
@@ -662,22 +655,5 @@ que cae de arriba y pasa de estar casi transparenta a visible*/
   margin-top: 10px;
   height: 48px;
   font-size: 16px;
-  font-family: 'Inter', sans-serif;
-}
-
-.login-pie {
-  text-align: center;
-  margin-top: 5px;
-}
-
-.login-pie-texto {
-  font-size: 13px;
-  color: #555;
-  margin: 0;
-}
-
-.login-enlace {
-  color: #2e5f80;
-  font-weight: 600;
-  text-decoration: none;
+  font-family: "Inter", sans-serif;
 }

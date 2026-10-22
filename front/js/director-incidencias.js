@@ -1,4 +1,4 @@
-import { badgesEstado, badgesPrioridad, renderizarPaginacion } from './utils/ui-utils.js';
+import { badgesEstado, badgesPrioridad, insertarBadge, renderizarPaginacion } from './utils/ui-utils.js';
 
 let incidencias = [];
 let modoHistorial = false;
@@ -13,41 +13,55 @@ document.addEventListener('DOMContentLoaded', () => {
 // FUNCIÓN PARA DIBUJAR LOS DATOS EN LA TABLA
 function renderizarTabla(listaIncidencias) {
     const tbody = document.getElementById('tabla-incidencias');
+    if (!tbody) return;
     tbody.textContent = '';
+
+    if (!Array.isArray(listaIncidencias) || listaIncidencias.length === 0) {
+        const row = document.createElement('tr');
+        const tdVacio = document.createElement('td');
+        tdVacio.colSpan = 8;
+        tdVacio.style.textAlign = 'center';
+        tdVacio.textContent = 'No se encontraron incidencias.';
+        row.appendChild(tdVacio);
+        tbody.appendChild(row);
+        return;
+    }
 
     for (let inc of listaIncidencias) {
         const row = document.createElement('tr');
+        const idInc = inc.id_incidencia ?? inc.idIncidencia;
 
         const tdId = document.createElement('td');
-        tdId.textContent = inc.id_incidencia;
+        tdId.textContent = idInc;
         row.appendChild(tdId);
 
         const tdCreado = document.createElement('td');
-        tdCreado.textContent = inc.creado;
+        tdCreado.textContent = inc.creado ? new Date(inc.creado).toLocaleDateString() : '';
         row.appendChild(tdCreado);
 
         const tdArticulo = document.createElement('td');
-        tdArticulo.textContent = inc.articulo_descripcion;
+        tdArticulo.textContent = inc.articulo_descripcion || inc.articulo || '-';
         tdArticulo.className = 'text-truncate';
-        tdArticulo.style.maxWidth = '50px';
+        tdArticulo.style.maxWidth = '180px';
         row.appendChild(tdArticulo);
 
         const tdDescripcion = document.createElement('td');
-        tdDescripcion.textContent = inc.descripcion_pedido;
+        tdDescripcion.textContent = inc.descripcion_pedido || inc.descripcionPedido || '-';
         tdDescripcion.className = 'text-truncate';
-        tdDescripcion.style.maxWidth = '50px';
+        tdDescripcion.style.maxWidth = '250px';
         row.appendChild(tdDescripcion);
 
         const tdPrioridad = document.createElement('td');
-        tdPrioridad.innerHTML = badgesPrioridad[inc.prioridad];
+        insertarBadge(tdPrioridad, badgesPrioridad[inc.prioridad] ? badgesPrioridad[inc.prioridad]() : (inc.prioridad ?? '-'));
         row.appendChild(tdPrioridad);
 
         const tdCreadopor = document.createElement('td');
-        tdCreadopor.textContent = inc.creado_por;
+        tdCreadopor.textContent = inc.creado_por || inc.creadoPor || '-';
         row.appendChild(tdCreadopor);
 
         const tdEstado = document.createElement('td');
-        tdEstado.innerHTML = badgesEstado[inc.id_estado];
+        const estKey = inc.id_estado ?? inc.estado;
+        insertarBadge(tdEstado, badgesEstado[estKey] ? badgesEstado[estKey]() : (inc.estado ?? inc.id_estado ?? '-'));
         row.appendChild(tdEstado);
 
         const tdAcciones = document.createElement('td');
@@ -56,7 +70,7 @@ function renderizarTabla(listaIncidencias) {
         botonAccion.textContent = 'Asignar';
         
         botonAccion.addEventListener('click', () => {
-            abrirModalAsignacion(inc.id_incidencia);
+            abrirModalAsignacion(idInc);
         });
 
         tdAcciones.appendChild(botonAccion);
@@ -109,13 +123,18 @@ async function filtrarDatos(event) {
         const respuesta = await fetch(url);
         if (respuesta.ok) {
             const data = await respuesta.json();
-            incidencias = data.incidencias;
-            renderizarTabla(data.incidencias);
+            const listado = Array.isArray(data) ? data : (data.incidencias || []);
+            incidencias = listado;
+            renderizarTabla(listado);
             if (data.paginacion) {
                 renderizarPaginacion(data.paginacion, 'paginacionIncidencias', (pag) => {
+                    paginaActual = pag;
                     window.paginaActual = pag;
                     filtrarDatos();
                 });
+            } else {
+                const contenedor = document.getElementById('paginacionIncidencias');
+                if (contenedor) contenedor.textContent = '';
             }
         }
     } catch(e) {
@@ -134,20 +153,58 @@ async function abrirModalAsignacion(id) {
         spanId.textContent = id;
         
         if (selector) {
+            selector.textContent = '';
+            const optCargando = document.createElement('option');
+            optCargando.value = '';
+            optCargando.textContent = 'Cargando empleados de sistemas...';
+            selector.appendChild(optCargando);
+
             try {
-                const respuesta = await fetch('http://localhost:3000/api/usuarios/sistemas');
+                let respuesta = await fetch('http://localhost:3000/api/usuarios/sistemas');
+                let lista = [];
                 if (respuesta.ok) {
-                    const empleados = await respuesta.json();
-                    selector.innerHTML = '<option value="">-- Empleado de Sistemas --</option>';
-                    empleados.forEach(emp => {
+                    lista = await respuesta.json();
+                } else {
+                    // Fallback a /api/usuarios
+                    respuesta = await fetch('http://localhost:3000/api/usuarios');
+                    if (respuesta.ok) {
+                        lista = await respuesta.json();
+                    }
+                }
+
+                // Filtrar exclusivamente empleados con rol 2 (Empleado de Sistemas)
+                const empleadosSistemas = Array.isArray(lista)
+                    ? lista.filter(emp => Number(emp.rol) === 2)
+                    : [];
+
+                selector.textContent = '';
+                const optDefault = document.createElement('option');
+                optDefault.value = '';
+                optDefault.textContent = '-- Seleccione Empleado de Sistemas --';
+                selector.appendChild(optDefault);
+
+                if (empleadosSistemas.length === 0) {
+                    const optVacio = document.createElement('option');
+                    optVacio.value = '';
+                    optVacio.disabled = true;
+                    optVacio.textContent = 'No hay empleados de sistemas disponibles';
+                    selector.appendChild(optVacio);
+                } else {
+                    empleadosSistemas.forEach(emp => {
                         const opt = document.createElement('option');
                         opt.value = emp.id_usuario;
-                        opt.textContent = `${emp.nombres} ${emp.apellidos}`;
+                        const nombreCompleto = `${emp.nombres || ''} ${emp.apellidos || ''}`.trim() || emp.usuario;
+                        opt.textContent = `${nombreCompleto} (${emp.usuario || emp.email || 'Sistemas'})`;
                         selector.appendChild(opt);
                     });
                 }
             } catch (e) {
-                console.error('Error cargando empleados:', e);
+                console.error('Error cargando empleados de sistemas:', e);
+                selector.textContent = '';
+                const optError = document.createElement('option');
+                optError.value = '';
+                optError.textContent = 'Error al cargar empleados';
+                selector.appendChild(optError);
             }
         }
         
@@ -160,18 +217,48 @@ function cerrarModalAsignacion() {
     if(modal) modal.style.display = 'none';
 }
 
-function confirmarAsignacion() {
-    const idIncidencia = document.getElementById('asignar-id-incidencia').textContent;
+async function confirmarAsignacion() {
+    const spanId = document.getElementById('asignar-id-incidencia');
+    const idIncidencia = spanId ? spanId.textContent : null;
     const selector = document.getElementById('selector-empleado');
     
-    if(!selector.value) {
-        alert("Seleccione un empleado por favor.");
+    if (!idIncidencia) {
+        alert("No se encontró la incidencia a asignar.");
+        return;
+    }
+
+    if (!selector || !selector.value) {
+        alert("Seleccione un empleado de sistemas por favor.");
         return;
     }
     
+    const idEmpleado = parseInt(selector.value);
     const nombreEmpleado = selector.options[selector.selectedIndex].text;
-    alert(`¡Éxito! La incidencia #${idIncidencia} ha sido asignada a ${nombreEmpleado}.`);
-    cerrarModalAsignacion();
+
+    try {
+        const respuesta = await fetch(`http://localhost:3000/api/incidencias/${idIncidencia}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                asignado_a: idEmpleado,
+                id_estado: 2 // Cambia a estado "En Proceso"
+            })
+        });
+
+        if (respuesta.ok) {
+            alert(`¡Éxito! La incidencia #${idIncidencia} ha sido asignada a ${nombreEmpleado}.`);
+            cerrarModalAsignacion();
+            filtrarDatos();
+        } else {
+            const errorData = await respuesta.json().catch(() => ({}));
+            alert(`Error al asignar la incidencia: ${errorData.error || respuesta.statusText}`);
+        }
+    } catch (e) {
+        console.error('Error al realizar asignación:', e);
+        alert('Hubo un error de conexión al intentar asignar la incidencia.');
+    }
 }
 
 
@@ -189,10 +276,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (modoHistorial) {
                 btnResueltas.classList.add('historial-activo');
-                btnResueltas.innerHTML = 'Volver a Pendientes'; 
+                btnResueltas.textContent = 'Volver a Pendientes';
             } else {
                 btnResueltas.classList.remove('historial-activo');
-                btnResueltas.innerHTML = 'Incidencias Resueltas';
+                btnResueltas.textContent = 'Incidencias Resueltas';
             }
 
             window.paginaActual = 1;
