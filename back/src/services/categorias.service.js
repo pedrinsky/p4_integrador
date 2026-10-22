@@ -1,5 +1,5 @@
-import { CategoriasRepository } from "../repository/categorias-repository.js";
-import { CategoriaResponseDTO } from "../dto/categorias-dto.js";
+import { CategoriasRepository } from "../repository/categorias.repository.js";
+import { CategoriaResponseDTO } from "../dto/categorias.dto.js";
 
 export class CategoriasService{
     static async getAll(input){

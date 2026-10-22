@@ -1,6 +1,6 @@
 import { getAllCategoriasSchema, getByIDCategoriasSchema, updateCategoriasSchema
     , createCategoriasSchema}
-    from "../../schemas/categorias-schema.js";
+    from "../../schemas/categorias.schema.js";
 
 export const getAllTransform = (req, res, next)  => {
     const schema = getAllCategoriasSchema.safeParse(req.query)

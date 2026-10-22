@@ -1,11 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import { createArticulosRouter } from '../routes/articulos-routes.js';
-import { ArticulosService } from '../services/articulos-service.js';
-import { createCategoriasRouter } from '../routes/categorias-routes.js';
-import { CategoriasService } from "../services/categorias-service.js";
-import { createIncidenciasRouter } from '../routes/incidencias-routes.js';
-import { IncidenciasService } from '../services/incidencias-service.js';
+import { createArticulosRouter } from './src/routes/articulos.routes.js';
+import { createCategoriasRouter } from './src/routes/categorias.routes.js';
+import { createIncidenciasRouter } from './src/routes/incidencias.routes.js';
+
+import { ArticulosService } from './src/services/articulos.service.js';
+import { CategoriasService } from "./src/services/categorias.service.js";
+import { IncidenciasService } from './src/services/incidencias.service.js';
 
 const app = express();
 const port = 3000;

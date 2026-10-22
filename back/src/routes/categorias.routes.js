@@ -4,9 +4,9 @@ import { getAllTransform as getAllCategoriasTransform
     , updateTransform as updateCategoriaTransform
     , createTransform as createCategoriaTransform
     , deleteTransform as deleteCategoriaTransform}
-    from '../middleware/tranformers/categorias-transformer.js';
+    from '../middleware/tranformers/categorias.transformer.js';
 
-import { CategoriasController } from '../controller/categorias-controller.js';
+import { CategoriasController } from '../controller/categorias.controller.js';
 
 export const createCategoriasRouter = ({categoriasService}) => {
     const router = Router();

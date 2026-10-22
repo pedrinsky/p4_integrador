@@ -1,4 +1,4 @@
-import { IncidenciasEstadosRepository } from "../repository/incidencias-estados-repository.js";
+import { IncidenciasEstadosRepository } from "../repository/incidencias-estados.repository.js";
 
 export class IncidenciasEstadosService{
     static async create(input){
