@@ -1,6 +1,6 @@
 import { getByIDUsuariosSchema, updateUsuariosSchema,
     createUsuariosSchema} 
-    from "../schemas/usuarios-schema.js";
+    from "../schemas/usuarios.schemas.js";
 
 export const getAllUsuariosTransform = (req, res, next) => {
     console.log("Transformer");

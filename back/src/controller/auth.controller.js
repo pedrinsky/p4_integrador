@@ -1,11 +1,14 @@
-import { UsersService } from '../services/users-services.js';
+// import { UsersService } from '../services/users.service.js';
 
-class AuthController {
+export class AuthController {
+    constructor({usersService}){
+        this.usersService = usersService;
+    }
 
     login = async (req, res) => {
         try {
             const { usuario, contrasenia } = req.body;
-            const resultado = await UsersService.login(usuario, contrasenia);
+            const resultado = await this.usersService.login(usuario, contrasenia);
             return res.json(resultado);
         } catch (exc) {
             console.error(exc);
@@ -14,5 +17,3 @@ class AuthController {
     };
 
 }
-
-export default AuthController;

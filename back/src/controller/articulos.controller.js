@@ -1,4 +1,4 @@
-import { ArticulosResponseDTO } from "../dto/articulos-dto.js";
+import { ArticulosResponseDTO } from "../dto/articulos.dto.js";
 
 export class ArticulosController{
     constructor({articulosService}){

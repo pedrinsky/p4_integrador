@@ -1,5 +1,5 @@
-import { IncidenciasRepository } from "../repository/incidencias-repository.js";
-import { IncidenciasEstadosRepository } from "../repository/incidencias-estados-repository.js";
+import { IncidenciasRepository } from "../repository/incidencias.repository.js";
+import { IncidenciasEstadosRepository } from "../repository/incidencias-estados.repository.js";
 
 export class IncidenciasService{
     static async getAll(input){

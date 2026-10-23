@@ -5,9 +5,9 @@ import { getAllTransform as getAllIncidenciasTransform
     , updateTransform as updateIncidenciaTransform
     , createTransform as createIncidenciaTransform
     , deleteTransform as deleteIncidenciaTransform }
-    from "../tranformers/incidencias-transformer.js";
+    from "../tranforms/incidencias.transform.js";
 
-import { IncidenciasController } from "../controller/incidencias-controller.js";
+import { IncidenciasController } from "../controller/incidencias.controller.js";
 
 export const createIncidenciasRouter = ({incidenciasService}) => {
     const router = Router();

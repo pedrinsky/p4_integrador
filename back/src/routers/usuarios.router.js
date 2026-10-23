@@ -4,8 +4,8 @@ import { getAllUsuariosTransform
     , updateUsuariosTransform
     , createUsuariosTransform
     , deleteUsuariosTransform }
-    from "../tranformers/usuarios-transformer.js";
-import { UsuariosController } from "../controller/usuarios-controller.js";
+    from "../tranforms/usuarios.transform.js";
+import { UsuariosController } from "../controller/usuarios.controller.js";
 
 export const createUser = ({usuariosService}) => {
     const router = Router();

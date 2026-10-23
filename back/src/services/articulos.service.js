@@ -1,4 +1,4 @@
-import { ArticulosRepository } from "../repository/articulos-repository.js";
+import { ArticulosRepository } from "../repository/articulos.repository.js";
 
 export class ArticulosService{
 
