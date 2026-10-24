@@ -1,38 +1,31 @@
 import { IncidenciasRepository } from "../repository/incidencias.repository.js";
 import { IncidenciasEstadosRepository } from "../repository/incidencias-estados.repository.js";
-import { IncidenciasResponseDTO } from "../dto/incidencias.dto.js";
 
 export class IncidenciasService{
     static async getAll(input){
         console.log("Service");
-        const resultado = await IncidenciasRepository.getAll(input);
-        const incidencias = resultado.map(incidencia => new IncidenciasResponseDTO(incidencia));
-        return incidencias;
+        return await IncidenciasRepository.getAll(input);
     }
 
     static async getByID(input){
         console.log("Service");
-        const resultado = await IncidenciasRepository.getByID(input);
-        return new IncidenciasResponseDTO(resultado);
+        return await IncidenciasRepository.getByID(input);
     }
 
     static async update(input){
-        console.log("service");
+        console.log("Service");
         console.log(input.id_estado);
         const resultado = await IncidenciasRepository.update(input);
         if(resultado !== undefined && input.id_estado !== undefined){
             const estado = await IncidenciasEstadosRepository.create(resultado);
         }
-        const incidencia = await this.getByID(resultado);
-        
-        return incidencia;
+        return await this.getByID(resultado);
     }
 
     static async create(input){
         console.log("Service");
         const resultado = await IncidenciasRepository.create(input);
-        
-        return await this.getByID(resultado);
+        return await this.getByID(resultado.id_incidencia);
     }
 
     static async delete(input){
@@ -43,5 +36,4 @@ export class IncidenciasService{
         }
         return await this.getByID(resultado);
     }
-
 }

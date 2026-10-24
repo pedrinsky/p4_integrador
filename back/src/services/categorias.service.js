@@ -1,22 +1,18 @@
 import { CategoriasRepository } from "../repository/categorias.repository.js";
-import { CategoriaResponseDTO } from "../dto/categorias.dto.js";
 
 export class CategoriasService{
     static async getAll(input){
         console.log("Service");
-        const resultado  = await CategoriasRepository.getAll(input);
-        const categorias = resultado.map(categoria =>  new CategoriaResponseDTO(categoria));
-        return categorias;
+        return await CategoriasRepository.getAll(input);
     }
 
     static async getByID(input){
         console.log("Service");
-        const resultado = await CategoriasRepository.getByID(input);
-        return new CategoriaResponseDTO(resultado);
+        return await CategoriasRepository.getByID(input);
     }
 
     static async update(input){
-        console.log("service");
+        console.log("Service");
         const resultado = await CategoriasRepository.update(input);
         return await this.getByID(resultado);
     }
@@ -24,7 +20,7 @@ export class CategoriasService{
     static async create(input){
         console.log("Service");
         const resultado = await CategoriasRepository.create(input);
-        return await this.getByID(resultado);
+        return await this.getByID(resultado.id_categoria);
     }
 
     static async delete(input){

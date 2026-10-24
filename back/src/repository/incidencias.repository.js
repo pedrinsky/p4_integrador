@@ -6,20 +6,33 @@ export class IncidenciasRepository{
 
         const {id_incidencia, id_articulo, id_estado, creado_por, asignado_a
             , creado, prioridad, descripcion_pedido, descripcion_resolucion
-            , order_column, direction, limit, offset} = input;
+            , order_column = 'id_incidencia', direction = 'asc', limit = 5, offset = 0
+            , exclude_estado, search} = input;
+
+        const validColumns = {
+            id_incidencia: 'i.id_incidencia',
+            id_articulo: 'i.id_articulo',
+            id_estado: 'i.id_estado',
+            creado: 'i.creado',
+            prioridad: 'i.prioridad',
+            descripcion_pedido: 'i.descripcion_pedido'
+        };
+        const col = validColumns[order_column] || 'i.id_incidencia';
+        const dir = String(direction).toLowerCase() === 'desc' ? 'DESC' : 'ASC';
 
         const sql = `
-            SELECT i.id_incidencia, art.descripcion as articulo, e.descripcion as estado
+            SELECT i.id_incidencia, i.id_articulo, i.id_estado, art.descripcion as articulo, e.descripcion as estado
             , creador.usuario as creado_por, asignado.usuario as asignado_a
             , i.creado, i.prioridad, i.descripcion_pedido, i.descripcion_resolucion
+            , COUNT(*) OVER() as total_registros
             FROM incidencias i
-            INNER JOIN articulos art
+            LEFT JOIN articulos art
             ON i.id_articulo = art.id_articulo
-            INNER JOIN estados e
+            LEFT JOIN estados e
             ON i.id_estado = e.id_estado
-            INNER JOIN usuarios creador
+            LEFT JOIN usuarios creador
             ON i.creado_por = creador.id_usuario
-            INNER JOIN usuarios asignado
+            LEFT JOIN usuarios asignado
             ON i.asignado_a = asignado.id_usuario
 
             WHERE ($1::text IS NULL OR i.id_incidencia = $1::int)
@@ -31,15 +44,22 @@ export class IncidenciasRepository{
             AND ($7::text IS NULL OR i.prioridad = $7::int)
             AND ($8::text IS NULL OR i.descripcion_pedido ILIKE '%' || $8::text || '%')
             AND ($9::text IS NULL OR i.descripcion_resolucion ILIKE '%' || $9::text || '%')
-            ORDER BY $10 ${direction}
-            LIMIT $11 OFFSET $12;
+            AND ($10::text IS NULL OR i.id_estado != $10::int)
+            AND ($11::text IS NULL OR (
+                (CASE WHEN $11 ~ '^[0-9]+$' THEN i.id_incidencia = $11::int ELSE false END)
+                OR art.descripcion ILIKE '%' || $11::text || '%'
+                OR i.descripcion_pedido ILIKE '%' || $11::text || '%'
+            ))
+            ORDER BY ${col} ${dir}
+            LIMIT $12 OFFSET $13;
         `;
         console.log(sql);
 
         const {rows} = await pool.query(sql, [id_incidencia ?? null, id_articulo ?? null
             , id_estado ?? null, creado_por ?? null, asignado_a ?? null, creado ?? null
             , prioridad ?? null, descripcion_pedido ?? null, descripcion_resolucion ?? null
-            , order_column, limit, offset]);
+            , exclude_estado ?? null, search ?? null
+            , limit, offset]);
         
         console.log(rows);
 
@@ -52,17 +72,17 @@ export class IncidenciasRepository{
         const {id_incidencia} = input;
 
         const sql = `
-            SELECT i.id_incidencia, art.descripcion as articulo, e.descripcion as estado
+            SELECT i.id_incidencia, i.id_articulo, i.id_estado, art.descripcion as articulo, e.descripcion as estado
             , creador.usuario as creado_por, asignado.usuario as asignado_a
             , i.creado, i.prioridad, i.descripcion_pedido, i.descripcion_resolucion
             FROM incidencias i
-            INNER JOIN articulos art
+            LEFT JOIN articulos art
             ON i.id_articulo = art.id_articulo
-            INNER JOIN estados e
+            LEFT JOIN estados e
             ON i.id_estado = e.id_estado
-            INNER JOIN usuarios creador
+            LEFT JOIN usuarios creador
             ON i.creado_por = creador.id_usuario
-            INNER JOIN usuarios asignado
+            LEFT JOIN usuarios asignado
             ON i.asignado_a = asignado.id_usuario
             WHERE ($1::text IS NULL OR id_incidencia = $1::int);
         `;

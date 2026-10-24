@@ -3,7 +3,7 @@ import { pool } from "../config/db.js";
 export class ArticulosRepository{
 
     static async getAll(input){
-        console.log("Service");
+        console.log("Repository");
 
         const {id_articulo, id_area, id_categoria, descripcion
             , activo, order_column, direction, limit, offset} = input;
@@ -11,6 +11,7 @@ export class ArticulosRepository{
         const sql = `
             SELECT art.id_articulo, a.descripcion as area, c.descripcion as categoria
             , art.descripcion, art.activo
+            , COUNT(*) OVER() as total_registros
             FROM articulos art 
             INNER JOIN areas a
             ON art.id_area = a.id_area
@@ -37,7 +38,7 @@ export class ArticulosRepository{
 
     static async getByID(input){
         const {id_articulo} = input;
-        console.log("Service");
+        console.log("Repository");
         console.log(id_articulo);
         const sql = `
             SELECT art.id_articulo, a.descripcion as area, c.descripcion as categoria
@@ -59,7 +60,7 @@ export class ArticulosRepository{
     }
 
     static async update(input){
-        console.log("service");
+        console.log("Repository");
         console.log(input);
 
         const {id_articulo, ...entradas} = input;
@@ -88,7 +89,7 @@ export class ArticulosRepository{
     }
 
     static async create(input){
-        console.log("Service");
+        console.log("Repository");
         const {id_area, id_categoria, descripcion, activo} = input;
 
         const sql = `
@@ -103,7 +104,7 @@ export class ArticulosRepository{
     }
 
     static async delete(input){
-        console.log("Service");
+        console.log("Repository");
 
         const {id_articulo} = input;
         console.log(id_articulo);

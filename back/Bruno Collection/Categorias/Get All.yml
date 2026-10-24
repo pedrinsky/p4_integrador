@@ -1,0 +1,29 @@
+info:
+  name: Get All
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: http://localhost:3000/api/categorias?order_column=id_categoria&&direction=ASC&&limit=10&&offset=0
+  params:
+    - name: order_column
+      value: id_categoria
+      type: query
+    - name: direction
+      value: ASC
+      type: query
+    - name: limit
+      value: "10"
+      type: query
+    - name: offset
+      value: "0"
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

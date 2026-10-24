@@ -2,13 +2,13 @@ import {pool} from '../config/db.js';
 
 export class CategoriasRepository{
     static async getAll(input){
-        console.log("Service");
+        console.log("Repository");
 
         const {id_categoria, descripcion, activo
             , order_column, direction, limit, offset} = input;
 
         const sql = `
-            SELECT id_categoria, descripcion, activo
+            SELECT id_categoria, descripcion, activo, COUNT(*) OVER() as total_registros
             FROM categorias
             WHERE ($1::text IS NULL OR id_categoria = $1::int)
             AND ($2::text IS NULL OR descripcion ILIKE '%' || $2::text || '%')
@@ -28,7 +28,7 @@ export class CategoriasRepository{
 
     static async getByID(input){
         const {id_categoria} = input;
-        console.log("Service");
+        console.log("Repository");
         console.log(id_categoria);
         const sql = `
             SELECT id_categoria, descripcion, activo
@@ -45,7 +45,7 @@ export class CategoriasRepository{
     }
 
     static async update(input){
-        console.log("service");
+        console.log("Repository");
         console.log(input);
 
         const {id_categoria, descripcion} = input;
@@ -65,7 +65,7 @@ export class CategoriasRepository{
     }
 
     static async create(input){
-        console.log("Service");
+        console.log("Repository");
         const {descripcion, activo} = input;
 
         const sql = `
@@ -80,7 +80,7 @@ export class CategoriasRepository{
     }
 
     static async delete(input){
-        console.log("Service");
+        console.log("Repository");
 
         const {id_categoria} = input;
         console.log(id_categoria);
