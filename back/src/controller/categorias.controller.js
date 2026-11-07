@@ -19,10 +19,8 @@ export class CategoriasController{
         const totalPaginas = Math.ceil(totalRegistros / limit) || 1;
         const paginaActual = Number(req.criteria?.page) || (Math.floor(Number(req.criteria?.offset || 0) / limit) + 1);
 
-        const dtoCategorias = result.map(categoria => new CategoriaResponseDTO(categoria));
-
         res.json({
-            categorias: dtoCategorias,
+            categorias: result,
             paginacion: {
                 totalPaginas,
                 paginaActual,
@@ -37,7 +35,7 @@ export class CategoriasController{
         console.log(req.criteria);
         const result = await this.categoriasService.getByID(req.criteria);
         console.log(result);
-        res.json(new CategoriaResponseDTO(result));
+        res.json(result);
     }
 
     update = async (req, res) => {
@@ -45,7 +43,7 @@ export class CategoriasController{
         console.log(req.criteria);
         const result = await this.categoriasService.update(req.criteria);
         console.log(result);
-        res.json(new CategoriaResponseDTO(result));
+        res.json(result);
     }
 
     create = async (req, res) => {
@@ -53,7 +51,7 @@ export class CategoriasController{
         console.log(req.criteria);
         const result = await this.categoriasService.create(req.criteria);
         console.log(result);
-        res.json(new CategoriaResponseDTO(result));
+        res.json(result);
     }
 
     delete = async (req, res) => {
@@ -61,11 +59,11 @@ export class CategoriasController{
         console.log(req.criteria);
         const result = await this.categoriasService.delete(req.criteria);
         console.log(result);
-        res.json(new CategoriaResponseDTO(result));
+        res.json(result);
     }
 
     reactivar = async (req, res) => {
-        console.log("Controller reactivar");
+        console.log("Controller");
         const result = await this.categoriasService.reactivar(req.criteria);
         res.json(result);
     }

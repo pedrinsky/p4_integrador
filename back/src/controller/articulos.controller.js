@@ -18,10 +18,8 @@ export class ArticulosController{
         const totalPaginas = Math.ceil(totalRegistros / limit) || 1;
         const paginaActual = Number(req.criteria?.page) || (Math.floor(Number(req.criteria?.offset || 0) / limit) + 1);
 
-        const articulosDTO = result.map(articulo => new ArticulosResponseDTO(articulo));
-
         res.json({
-            articulos: articulosDTO,
+            articulos: result,
             paginacion: {
                 totalPaginas,
                 paginaActual,
@@ -36,7 +34,7 @@ export class ArticulosController{
         console.log(req.criteria);
         const result = await this.articulosService.getByID(req.criteria);
         console.log(result);
-        res.json(new ArticulosResponseDTO(result));
+        res.json(result);
     }
 
     update = async (req, res) => {
@@ -44,7 +42,7 @@ export class ArticulosController{
         console.log(req.criteria);
         const result = await this.articulosService.update(req.criteria);
         console.log(result);
-        res.json(new ArticulosResponseDTO(result));
+        res.json(result);
     }
 
     create = async (req, res) => {
@@ -52,17 +50,18 @@ export class ArticulosController{
         console.log(req.criteria);
         const result = await this.articulosService.create(req.criteria);
         console.log(result);
-        res.json(new ArticulosResponseDTO(result));
+        res.json(result);
     }
 
     delete = async (req, res) => {
         const result = await this.articulosService.delete(req.criteria);
         console.log(result);
-        res.json(new ArticulosResponseDTO(result));
+        res.json(result);
     }
 
     reactivar = async (req, res) => {
         const result = await this.articulosService.reactivar(req.criteria);
+        console.log(result);
         res.json(result);
     }
 

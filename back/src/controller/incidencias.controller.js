@@ -5,7 +5,9 @@ export class IncidenciasController {
 
     getAll = async (req, res) => {
         try {
+            console.log("Controller");
             const result = await this.incidenciasService.getAll(req.criteria || req.query);
+            console.log(result);
             res.json(result);
         } catch (error) {
            res.status(500).json({ error: error.message });
@@ -14,7 +16,9 @@ export class IncidenciasController {
 
     getByID = async (req, res) => {
         try {
+            console.log("Controller");
             const result = await this.incidenciasService.getByID(req.criteria);
+            console.log(result);
             res.json(result);
         } catch (error) {
            res.status(500).json({ error: error.message });
@@ -23,7 +27,9 @@ export class IncidenciasController {
 
     update = async (req, res) => {
         try {
+            console.log("Controller");
             const result = await this.incidenciasService.update(req.criteria);
+            console.log(result);
             res.json(result);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -32,7 +38,9 @@ export class IncidenciasController {
 
     create = async (req, res) => {
         try {
+            console.log("Controller");
             const result = await this.incidenciasService.create(req.criteria);
+            console.log(result);
             res.json(result);
         } catch (error) {
            res.status(500).json({ error: error.message });
@@ -41,15 +49,20 @@ export class IncidenciasController {
 
     delete = async (req, res) => {
         try {
+            console.log("Controller");
             const result = await this.incidenciasService.delete(req.criteria);
+            console.log(result);
             res.json(result);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     }
 
+    //Seguir aca
     finalizar = async (req, res) => {
         try {
+            console.log("Controller");
+            //<<Pasar a transform  
             const id_incidencia = req.params.id_incidencia;
             const { descripcion_resolucion } = req.body || {}; 
             await this.incidenciasService.update({ 
@@ -57,6 +70,7 @@ export class IncidenciasController {
                 id_estado: 3, 
                 descripcion_resolucion 
             });
+            //>>
             res.json({ message: 'Incidencia finalizada con éxito'});
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -66,11 +80,13 @@ export class IncidenciasController {
     reabrir = async (req, res) => {
         try {
             const id_incidencia = req.params.id_incidencia;
+            //<<Pasar a transform 
             await this.incidenciasService.update({ 
                 id_incidencia, 
                 id_estado: 1, 
                 descripcion_resolucion: null 
             });
+            //>>
             res.json({ message: 'Incidencia reabierta con éxito'});
         } catch (error) {
              res.status(500).json({ error: error.message });
