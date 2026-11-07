@@ -11,14 +11,17 @@ export function getToken() {
     return sessionStorage.getItem('token');
 }
 
-//Devuelve el usuario guardado en sessionStorage.
+//Devuelve el usuario guardado en sessionStorage o localStorage.
 export function getUsuario() {
-    const raw = sessionStorage.getItem('usuario');
+    const raw = sessionStorage.getItem('usuario') || localStorage.getItem('usuarioLogueado');
     return raw ? JSON.parse(raw) : null;
 }
 
-//Cierra la sesión, borra sessionStorage y redirige al login
+//Cierra la sesión, borra storage y redirige al login
 export function logout() {
     sessionStorage.clear();
-    window.location.replace('/index.html');
+    localStorage.removeItem('usuarioLogueado');
+    const profundidad = window.location.pathname.split('/').filter(Boolean).length;
+    const rutaLogin = '../'.repeat(Math.max(profundidad - 1, 1)) + 'index.html';
+    window.location.replace(rutaLogin);
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empleado Municipal</title>
+    <title>Director de Sistemas</title>
     <link rel="stylesheet" href="../../css/style.css">
     </link>
     <link rel="icon" type="image" href="../../images/logo-muni-azul.png" />
@@ -17,9 +17,9 @@
         </div>
         
         <div class="perfil-usuario">
-            <div class="avatar-circulo">DS</div>
+            <div id="avatar" class="avatar-circulo">DS</div>
             <div class="textos-usuario">
-                <span class="nombre-usuario"> direc sis </span>
+                <span id="nombre-de-usuario" class="nombre-usuario"> direc sis </span>
                 <span class="rol-usuario"> Director de Sistemas </span>
             </div>
         </div>
@@ -40,9 +40,10 @@
             </ul>
         </aside>
         <main class="cuerpo">
-            <h1>Bienvenido, -nombre de usuario-</h1>
+            <h1 id="saludo">Bienvenido, -nombre de usuario-</h1>
             <p>Selecciona una opción del menú lateral.</p>
         </main>
     </div>
+    <script type="module" src="../../main.js"></script>
 </body>
 </html>
