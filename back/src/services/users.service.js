@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import User from "../repository/users.repository.js";
 import jwt from 'jsonwebtoken';
+import { UsuariosResponseDTO } from '../dto/usuarios.dto.js';
 
 export class UsersService {
 
@@ -23,12 +24,16 @@ export class UsersService {
 
     static async getAll() {
         const usuarios = await User.findAll(); 
-        return this.removeContrasenia(usuarios);
+        // return this.removeContrasenia(usuarios);
+        const result = await this.removeContrasenia(usuarios);
+        return result.map(usuario => new UsuariosResponseDTO(usuario));
     }
 
     static async getById(id) {
         const usuario = await User.getById(id);
-        return this.removeContrasenia(usuario);
+        // return this.removeContrasenia(usuario);
+        const result = await this.removeContrasenia(usuario);
+        return new UsuariosResponseDTO(result);
     }
 
     static async create(datos) {
@@ -43,7 +48,9 @@ export class UsersService {
         };
 
         const usuarioCreado = await User.create(usuario_nuevo);
-        return this.removeContrasenia(usuarioCreado);
+        // return this.removeContrasenia(usuarioCreado);
+        const result = await this.removeContrasenia(usuarioCreado);
+        return new UsuariosResponseDTO(result);
     }
 
     static async update(id, datos) {
@@ -59,7 +66,9 @@ export class UsersService {
         }
 
         const usuarioActualizado = await User.update(id, usuario_nuevo);
-        return this.removeContrasenia(usuarioActualizado);
+        // return this.removeContrasenia(usuarioActualizado);
+        const result = await this.removeContrasenia(usuarioActualizado);
+        return new UsuariosResponseDTO(result)
     }
 
     static async getByID(input) {

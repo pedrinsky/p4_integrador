@@ -17,7 +17,8 @@ export const getAllTransform = (req, res, next) => {
 
     const offset = (page - 1) * limit;
 
-    req.criteria = { ...filtros, order_column, direction, limit, offset };
+    // req.criteria = { ...filtros, order_column, direction, limit, offset };
+    req.dto = { ...filtros, order_column, direction, limit, offset };
     next();
 }
 
@@ -28,7 +29,8 @@ export const getByIDTransform = (req, res, next) => {
     
     if(schema.error) res.status(400).json({error: JSON.parse(schema.error.message)});
     console.log(schema.data);
-    req.criteria = schema.data;
+    // req.criteria = schema.data;
+    req.dto = schema.data;
     next();
 }
 
@@ -40,10 +42,13 @@ export const updateTransform = (req, res, next) => {
     if(idSchema.error) res.status(400).json({error: JSON.parse(idSchema.error.message)});
     console.log(bodySchema.data);
     console.log(idSchema.data);
-    req.criteria = {
+    // req.criteria = {
+    //     ...idSchema.data,
+    //     ...bodySchema.data};
+    req.dto = {
         ...idSchema.data,
         ...bodySchema.data};
-    console.log(req.criteria);
+    console.log(req.dto);
     next();
 }
 
@@ -52,8 +57,9 @@ export const createTransform = (req, res, next) => {
     const schema = createArticulosSchema.safeParse(req.body);
     if(schema.error) res.status(400).json({error: JSON.parse(schema.error.message)});
     console.log(schema.data);
-    req.criteria = schema.data;
-    console.log(req.criteria);
+    // req.criteria = schema.data;
+    req.dto = schema.data;
+    console.log(req.dto);
     next();
 }
 
@@ -64,6 +70,7 @@ export const deleteTransform = (req, res, next) => {
     
     if(schema.error) res.status(400).json({error: JSON.parse(schema.error.message)});
     console.log(schema.data);
-    req.criteria = schema.data;
+    // req.criteria = schema.data;
+    req.dto = schema.data;
     next();
 }

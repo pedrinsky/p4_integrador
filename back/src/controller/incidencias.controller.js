@@ -6,7 +6,7 @@ export class IncidenciasController {
     getAll = async (req, res) => {
         try {
             console.log("Controller");
-            const result = await this.incidenciasService.getAll(req.criteria || req.query);
+            const result = await this.incidenciasService.getAll(req.dto || req.query);
             console.log(result);
             res.json(result);
         } catch (error) {
@@ -17,7 +17,7 @@ export class IncidenciasController {
     getByID = async (req, res) => {
         try {
             console.log("Controller");
-            const result = await this.incidenciasService.getByID(req.criteria);
+            const result = await this.incidenciasService.getByID(req.dto);
             console.log(result);
             res.json(result);
         } catch (error) {
@@ -28,7 +28,7 @@ export class IncidenciasController {
     update = async (req, res) => {
         try {
             console.log("Controller");
-            const result = await this.incidenciasService.update(req.criteria);
+            const result = await this.incidenciasService.update(req.dto);
             console.log(result);
             res.json(result);
         } catch (error) {
@@ -39,7 +39,7 @@ export class IncidenciasController {
     create = async (req, res) => {
         try {
             console.log("Controller");
-            const result = await this.incidenciasService.create(req.criteria);
+            const result = await this.incidenciasService.create(req.dto);
             console.log(result);
             res.json(result);
         } catch (error) {
@@ -50,7 +50,7 @@ export class IncidenciasController {
     delete = async (req, res) => {
         try {
             console.log("Controller");
-            const result = await this.incidenciasService.delete(req.criteria);
+            const result = await this.incidenciasService.delete(req.dto);
             console.log(result);
             res.json(result);
         } catch (error) {

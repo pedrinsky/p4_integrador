@@ -4,7 +4,8 @@ import { getByIDUsuariosSchema, updateUsuariosSchema,
 
 export const getAllUsuariosTransform = (req, res, next) => {
     console.log("Transformer");
-    req.criteria = {};
+    // req.criteria = {};
+    req.dto = {};
     next();
 }
 
@@ -15,7 +16,8 @@ export const getByIDUsuariosTransform = (req, res, next) => {
     
     if(schema.error) return res.status(400).json({error: JSON.parse(schema.error.message)});
     console.log(schema.data);
-    req.criteria = schema.data;
+    // req.criteria = schema.data;
+    req.dto = schema.data;
     next();
 }
 
@@ -27,10 +29,13 @@ export const updateUsuariosTransform = (req, res, next) => {
     if(idSchema.error) return res.status(400).json({error: JSON.parse(idSchema.error.message)});
     console.log(bodySchema.data);
     console.log(idSchema.data);
-    req.criteria = {
+    // req.criteria = {
+    //     ...idSchema.data,
+    //     ...bodySchema.data};
+    req.dto = {
         ...idSchema.data,
         ...bodySchema.data};
-    console.log(req.criteria);
+    console.log(req.dto);
     next();
 }
 
@@ -39,8 +44,9 @@ export const createUsuariosTransform = (req, res, next) => {
     const schema = createUsuariosSchema.safeParse(req.body);
     if(schema.error) return res.status(400).json({error: JSON.parse(schema.error.message)});
     console.log(schema.data);
-    req.criteria = schema.data;
-    console.log(req.criteria);
+    // req.criteria = schema.data;
+    req.dto = schema.data;
+    console.log(req.dto);
     next();
 }
 
@@ -51,6 +57,7 @@ export const deleteUsuariosTransform = (req, res, next) => {
     
     if(schema.error) return res.status(400).json({error: JSON.parse(schema.error.message)});
     console.log(schema.data);
-    req.criteria = schema.data;
+    // req.criteria = schema.data;
+    req.dto = schema.data;
     next();
 }
