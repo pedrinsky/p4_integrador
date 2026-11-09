@@ -84,11 +84,11 @@ btnIngresar.addEventListener('click', async () => {
 function redirigirSegunRol(usuario) {
     const rol = String(usuario?.rol);
     if (rol === '1') {
-        window.location.href = 'html/director/director-sistemas-sistemas.html';
+        window.location.href = 'html/director/director-sistemas-dashboard.html';
     } else if (rol === '3') {
-        window.location.href = 'html/empleado-sistemas/empleado-sistemas.html';
+        window.location.href = 'html/empleado-sistemas/empleado-sistemas-incidencias.html';
     } else {
-        window.location.href = 'html/empleado-municipal/empleado-municipal.html';
+        window.location.href = 'html/empleado-municipal/empleado-municipal-incidencias.html';
     }
 }
 

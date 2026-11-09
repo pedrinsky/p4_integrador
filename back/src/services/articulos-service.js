@@ -29,4 +29,15 @@ export class ArticulosService{
         const resultado = await ArticulosRepository.delete(input);
         return await this.getByID(resultado);
     }
+
+    static async reactivar(input){
+        console.log("Service");
+        const resultado = await ArticulosRepository.reactivar(input);
+        return await this.getByID(resultado);
+    }
+
+    static async eliminarDefinitivo(input){
+        console.log("Service");
+        return await ArticulosRepository.eliminarDefinitivo(input);
+    }
 }

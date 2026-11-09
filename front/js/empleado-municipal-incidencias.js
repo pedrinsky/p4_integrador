@@ -43,13 +43,18 @@ async function cargarIncidencias() {
 
 async function loadArticulosForSelect() {
     try {
-        const response = await fetch('http://localhost:3000/api/articulos');
+        const response = await fetch('http://localhost:3000/api/articulos?limit=100&activo=1');
         if (response.ok) {
             const data = await response.json();
             const arts = Array.isArray(data) ? data : (data.articulos || []);
             const select = document.getElementById('selector-articulo');
             if (!select) return;
             select.textContent = '';
+            // Re-agregar la opción por defecto "ninguno"
+            const optDefault = document.createElement('option');
+            optDefault.value = '';
+            optDefault.textContent = '-- General (Ninguno) --';
+            select.appendChild(optDefault);
             for (let a of arts) {
                 const opt = document.createElement('option');
                 const idArt = a.id_articulo ?? a.idArticulo;
@@ -177,16 +182,19 @@ function configurarModal() {
             const prioridad = prioArea ? prioArea.value : 1;
             const selectorArticulo = artArea ? artArea.value : '';
 
+            const usuarioGuardado = localStorage.getItem('usuarioLogueado');
+            // Lo convierte a objeto de JavaScript (o un objeto vacío si no existe)
+            const usuarioObj = usuarioGuardado ? JSON.parse(usuarioGuardado) : {};
+
             if (!descripcion_pedido) {
                 alert("Por favor, describa el problema antes de guardar.");
                 return;
             }
 
             const bodyRequerido = {
-                id_articulo: selectorArticulo ? parseInt(selectorArticulo) : null,
                 descripcion_pedido: descripcion_pedido,
                 prioridad: parseInt(prioridad),
-                id_estado: 1 // Empieza en PENDIENTE por convención
+                creado_por: usuarioObj.id_usuario || usuarioOBJ.id || 1,
             };
 
             try {
@@ -198,6 +206,7 @@ function configurarModal() {
                 
                 if (response.ok) {
                     alert('Incidencia creada con éxito!');
+                    //limpiar campos del modal
                     if (descArea) descArea.value = '';
                     if (prioArea) prioArea.value = '1';
                     if (artArea) artArea.value = '';

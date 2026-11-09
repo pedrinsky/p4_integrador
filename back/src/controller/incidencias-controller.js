@@ -1,3 +1,5 @@
+import {IncidenciasResponseDTO} from  "../dto/incidencias-dto.js";
+
 export class IncidenciasController {
     constructor({ incidenciasService }) {
         this.incidenciasService = incidenciasService;
@@ -6,7 +8,24 @@ export class IncidenciasController {
     getAll = async (req, res) => {
         try {
             const result = await this.incidenciasService.getAll(req.criteria || req.query);
-            res.json(result);
+            const limit = Number(req.criteria?.limit) || 5;
+                    const totalRegistros = result.length > 0 && result[0].total_registros 
+                        ? parseInt(result[0].total_registros, 10) 
+                        : result.length;
+                    const totalPaginas = Math.ceil(totalRegistros / limit) || 1;
+                    const paginaActual = Number(req.criteria?.page) || (Math.floor(Number(req.criteria?.offset || 0) / limit) + 1);
+            
+                    const incidenciaDTO = result.map(incidencia => new IncidenciasResponseDTO(incidencia));
+            
+                    res.json({
+                        incidencias: incidenciaDTO,
+                        paginacion: {
+                            totalPaginas,
+                            paginaActual,
+                            totalRegistros,
+                            limitePorPagina: limit
+                        }
+                    });
         } catch (error) {
            res.status(500).json({ error: error.message });
         }
@@ -15,7 +34,7 @@ export class IncidenciasController {
     getByID = async (req, res) => {
         try {
             const result = await this.incidenciasService.getByID(req.criteria);
-            res.json(result);
+            res.json(result ? new IncidenciasResponseDTO(result) : null);
         } catch (error) {
            res.status(500).json({ error: error.message });
         }

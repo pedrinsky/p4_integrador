@@ -126,7 +126,7 @@ export class IncidenciasRepository{
 
     static async create(input){
         console.log("Repository");
-        const {id_articulo, creado_por, asignado_a, prioridad, descripcion_pedido} = input;
+        const {id_articulo = null, creado_por = null, asignado_a = null, prioridad, descripcion_pedido} = input;
 
         const sql = `
             INSERT INTO incidencias(id_articulo, id_estado, creado_por, asignado_a, prioridad, creado, descripcion_pedido, descripcion_resolucion)

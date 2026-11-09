@@ -14,6 +14,15 @@ import authRouter from '../routers/auth-routers.js'
 const app = express();
 const port = 3000;
 
+//limite para que un bot no baje la pagina al hacer miles de solicitudes por seg
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, //ventana de 15 minutos
+    max: 100,                  //máximo 100 requests por IP en esa ventana
+    message: { error: 'Demasiadas solicitudes, intente más tarde.' }
+});
+
+app.use('/api', limiter); //aplica a las rutas /api
+
 //middlewares globales
 app.use(cors());
 app.use(express.json());
@@ -39,20 +48,4 @@ app.use("/api", authRouter);
 //arranque
 app.listen(port, () => {
   console.log(`API Incidencias escuchando en ${port}`);
-});
-
-//limite para que un bot no baje la pagina al hacer miles de solicitudes por seg
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, //ventana de 15 minutos
-    max: 100,                  //máximo 100 requests por IP en esa ventana
-    message: { error: 'Demasiadas solicitudes, intente más tarde.' }
-});
-
-app.use('/api', limiter); //aplica a las rutas /api
-
-//Manejador global de errores (siempre al final)
-app.use((err, req, res, next) => {
-  console.error(`[ERROR] ${err.message}`);
-  const status = err.status || 500;
-  res.status(status).json({ error: err.message || 'Error interno del servidor' });
 });

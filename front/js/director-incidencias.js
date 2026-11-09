@@ -36,11 +36,11 @@ function renderizarTabla(listaIncidencias) {
         row.appendChild(tdId);
 
         const tdCreado = document.createElement('td');
-        tdCreado.textContent = inc.creado ? new Date(inc.creado).toLocaleDateString() : '';
+        tdCreado.textContent = inc.creado ? new Date(inc.creado).toLocaleDateString() : '-';
         row.appendChild(tdCreado);
 
         const tdArticulo = document.createElement('td');
-        tdArticulo.textContent = inc.articulo_descripcion || inc.articulo || '-';
+        tdArticulo.textContent = inc.articulo || inc.articulo_descripcion || (inc.id_articulo ? 'ID ' + inc.id_articulo : '-');
         tdArticulo.className = 'text-truncate';
         tdArticulo.style.maxWidth = '180px';
         row.appendChild(tdArticulo);
