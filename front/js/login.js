@@ -33,12 +33,35 @@ btnIngresar.addEventListener('click', async () => {
             return;
         }
 
-        // Guardar el token y datos del usuario en sessionStorage
+        // Calcular iniciales a partir de nombres y apellidos
+        const nombres = (data.usuario?.nombres || data.usuario?.nombre || '').trim();
+        const apellidos = (data.usuario?.apellidos || data.usuario?.apellido || '').trim();
+        let iniciales = '';
+
+        if (nombres && apellidos) {
+            iniciales = `${nombres[0]}${apellidos[0]}`.toUpperCase();
+        } else if (nombres) {
+            iniciales = nombres.slice(0, 2).toUpperCase();
+        } else if (data.usuario?.usuario) {
+            iniciales = data.usuario.usuario.slice(0, 2).toUpperCase();
+        } else {
+            iniciales = 'US';
+        }
+
+        const usuarioCompleto = {
+            ...data.usuario,
+            nombre: nombres,
+            apellido: apellidos,
+            iniciales
+        };
+
+        // Guardar el token y datos del usuario en sessionStorage y localStorage
         sessionStorage.setItem('token', data.token);
-        sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
+        sessionStorage.setItem('usuario', JSON.stringify(usuarioCompleto));
+        localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioCompleto));
 
         // Redirigir según el rol
-        redirigirSegunRol(data.usuario);
+        redirigirSegunRol(usuarioCompleto);
 
     } catch (err) {
         console.error(err);
@@ -49,14 +72,23 @@ btnIngresar.addEventListener('click', async () => {
     }
 });
 
+// Permitir presionar Enter en los campos de login
+[inputUsuario, inputContrasenia].forEach(input => {
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            btnIngresar.click();
+        }
+    });
+});
+
 function redirigirSegunRol(usuario) {
     const rol = String(usuario?.rol);
     if (rol === '1') {
-        window.location.href = 'html/director/director-sistemas-sistemas.html';
+        window.location.href = 'html/director/director-sistemas-dashboard.html';
     } else if (rol === '3') {
-        window.location.href = 'html/empleado-sistemas/empleado-sistemas.html';
+        window.location.href = 'html/empleado-sistemas/empleado-sistemas-incidencias.html';
     } else {
-        window.location.href = 'html/empleado-municipal/empleado-municipal.html';
+        window.location.href = 'html/empleado-municipal/empleado-municipal-incidencias.html';
     }
 }
 

@@ -128,7 +128,7 @@ async function cargarArticulos(pagina = paginaActual) {
                 articulos = data.articulos;
                 renderizarTabla(data.articulos);
                 if (data.paginacion) {
-                    renderizarPaginacion(data.paginacion, 'paginacionIncidencias', (pag) => {
+                    renderizarPaginacion(data.paginacion, 'paginacionArticulos', (pag) => {
                         cargarArticulos(pag);
                     });
                 }

@@ -26,9 +26,11 @@
       </div>
 
       <div class="perfil-usuario">
-        <div class="avatar-circulo">algo</div>
+        <div id="avatar" class="avatar-circulo">algo</div>
         <div class="textos-usuario">
-          <span class="nombre-usuario"> Probando que onda</span>
+          <span id="nombre-de-usuario" class="nombre-usuario">
+            Probando que onda</span
+          >
           <span class="rol-usuario"> Director de Sistemas </span>
         </div>
       </div>
@@ -42,7 +44,6 @@
           <ul class="menu-item active">
             <a href="director-sistemas-dashboard.html"> Dashboard</a>
           </ul>
-
           <li class="menu-item logout-item">
             <a href="../../index.html"> Cerrar sesión</a>
           </li>
@@ -50,9 +51,14 @@
       </aside>
       <main class="cuerpo">
         <div class="tarjeta-contenedora">
-          <h1 class="titulo-dashboard">
-            Resumen de estado de las incidencias del sistema.
-          </h1>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+            <h1 id="saludo" class="titulo-dashboard" style="margin: 0;">
+              Bienvenido, -nombre de usuario-
+            </h1>
+            <button id="btn-descargar-pdf" class="btn-buscar" style="background-color: #dc3545; color: #fff; padding: 9px 18px; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 0.95rem; box-shadow: 0 2px 4px rgba(220, 53, 69, 0.25);">
+              <i class="bi bi-file-earmark-pdf-fill"></i> Exportar Reporte PDF
+            </button>
+          </div>
 
           <div class="contenedor-tarjetas">
             <!-- Tarjeta: Total -->
@@ -144,6 +150,50 @@
               </div>
             </div>
           </div>
+
+          <!-- SECCIÓN: INCIDENCIAS PRIORITARIAS -->
+          <div style="margin-top: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <h2 style="font-size: 1.3rem; color: #2c3e50; margin: 0;">
+                Incidencias Prioritarias (Urgentes)
+              </h2>
+              <a href="director-sistemas-incidencias.html" class="btn-buscar" style="text-decoration: none; padding: 6px 14px; font-size: 0.9rem;">
+                Ver Todas <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+            <div class="tabla-contenedor">
+              <table class="tabla-incidencias">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Artículo</th>
+                    <th>Solicitante</th>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Prioridad</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="tabla-prioritarias">
+                  <tr>
+                    <td colspan="8" style="text-align: center;">Cargando incidencias prioritarias...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SECCIÓN: TOTALES POR FECHA RECIENTE -->
+          <div style="margin-top: 30px;">
+            <h2 style="font-size: 1.3rem; color: #2c3e50; margin-bottom: 15px;">
+              Incidencias por Fecha Reciente
+            </h2>
+            <div id="contenedor-fechas" style="display: flex; gap: 15px; flex-wrap: wrap;">
+              <!-- Se puebla dinámicamente -->
+            </div>
+          </div>
+
         </div>
       </main>
     </div>

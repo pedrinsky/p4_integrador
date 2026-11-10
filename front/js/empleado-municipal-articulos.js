@@ -1,19 +1,40 @@
-let articulos = [];
+import { renderizarPaginacion } from './utils/ui-utils.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
+let articulos = [];
+let paginaActual = 1;
+const limitePorPagina = 5;
+
+document.addEventListener('DOMContentLoaded', () => {
+    cargarArticulos(1);
+});
+
+async function cargarArticulos(pagina = paginaActual) {
+    paginaActual = pagina;
+    const url = `http://localhost:3000/api/articulos?page=${paginaActual}&limit=${limitePorPagina}`;
+
     try {
-        const response = await fetch('http://localhost:3000/api/articulos');
+        const response = await fetch(url);
         if (response.ok) {
             const data = await response.json();
-            articulos = data.articulos ? data.articulos : data;
-            renderizarTabla(articulos);
+            const listado = Array.isArray(data) ? data : (data.articulos || []);
+            articulos = listado;
+            renderizarTabla(listado);
+
+            if (data.paginacion) {
+                renderizarPaginacion(data.paginacion, 'paginacionIncidencias', (pag) => {
+                    cargarArticulos(pag);
+                });
+            } else {
+                const contenedor = document.getElementById('paginacionIncidencias');
+                if (contenedor) contenedor.textContent = '';
+            }
         } else {
-            console.error('No se pudieron obtener los articulos: ', response.status);
+            console.error('No se pudieron obtener los artículos: ', response.status);
         }
     } catch (error) {
         console.error('Hubo un error de conexión con el backend:', error);
     }
-});
+}
 
 function renderizarTabla(lista) {
     const tbody = document.getElementById('tabla-articulos');
@@ -57,7 +78,7 @@ function renderizarTabla(lista) {
 
         const tdActivo = document.createElement('td');
         const badgeActivo = document.createElement('span');
-        const isActivo = art.activo === 1 || art.activo === true || art.activo === '1';
+        const isActivo = art.activo === 1 || art.activo === true || art.activo === '1' || String(art.activo) === '1';
         badgeActivo.className = isActivo ? 'badge est-resuelta' : 'badge est-cancelada';
         badgeActivo.textContent = isActivo ? 'Disponible' : 'No disponible';
         tdActivo.appendChild(badgeActivo);

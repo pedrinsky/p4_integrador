@@ -38,7 +38,7 @@ export const badgesEstado = {
     'Pendiente': () => crearBadge('Pendiente',  'est-pendiente'),
     'En Proceso': () => crearBadge('En Proceso', 'est-proceso'),
     'Resuelta': () => crearBadge('Resuelta',   'est-resuelta'),
-    'Resuela': () => crearBadge('Resuelta',   'est-resuelta'),
+    'Resuelta': () => crearBadge('Resuelta',   'est-resuelta'),
     'Cancelada': () => crearBadge('Cancelada',  'est-cancelada')
 };
 

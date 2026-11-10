@@ -19,9 +19,9 @@
         </div>
         
         <div class="perfil-usuario">
-            <div class="avatar-circulo">algo</div>
+            <div id="avatar" class="avatar-circulo">algo</div>
             <div class="textos-usuario">
-                <span class="nombre-usuario"> Probando que onda</span>
+                <span id="nombre-de-usuario" class="nombre-usuario"> Probando que onda</span>
                 <span class="rol-usuario"> Empleado de Sistemas </span>
             </div>
         </div>
@@ -41,9 +41,11 @@
                 <li class="menu-item  logout-item">
                     <a href="../../index.html"> Cerrar sesión</a>
                 </li>
+                
             </ul>
         </aside>
         <main class="cuerpo">
+            <h1 id="saludo">Bienvenido, -nombre de usuario-</h1>
             <div class="tarjeta-contenedora">
                 <div style="padding: 10px;"> 
                     <button id="btn-historial-resueltas" class="btn-buscar">Mis Resueltas</button>
@@ -96,8 +98,8 @@
                     </table>
                 </div>
                 <nav aria-label="Navegación de páginas" class="contenedor-paginacion">
-                <ul class="pagination" id="paginacionIncidencias"></ul>
-            </nav>
+                    <ul class="pagination" id="paginacionIncidencias"></ul>
+                </nav>
             </div>
         </main>
     </div>
