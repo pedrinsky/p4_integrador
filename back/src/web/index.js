@@ -15,16 +15,25 @@ import { UsersService } from '../services/users.service.js';
 import { limiter } from '../middleware/limiter.js';
 import morgan from 'morgan';
 import { corsOption } from '../cors/cors.options.js';
+import cookieParser from 'cookie-parser';
+
+import authenticate from '../middleware/authenticate.js';
 
 const app = express();
 const port = 3000;
 
 //middlewares globales
 app.use(cors(corsOption));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
 app.use('/api', limiter); //aplica a las rutas /api
+
+//AUTH
+app.use("/api", authRouter);
+
+app.use(authenticate);
 
 app.get('/api', (req, res) => {
     res.send('Working');
@@ -41,8 +50,6 @@ app.use("/api/incidencias", createIncidenciasRouter({incidenciasService : Incide
 //USUARIOS
 app.use("/api/usuarios", createUsuariosRouter({usuariosService: UsersService}))
 
-//AUTH
-app.use("/api", authRouter);
 
 //Manejador global de errores (siempre al final)
 app.use((err, req, res, next) => {

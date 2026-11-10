@@ -8,14 +8,16 @@ import { getAllTransform as getAllTransformArticulos
 
 import { ArticulosController } from "../controller/articulos.controller.js";
 
+import authenticate from '../middleware/authenticate.js';
+
 export const createArticulosRouter = ({articulosService}) => {
     const router = Router();
     console.log("Router");
     const articulosController = new ArticulosController({articulosService : articulosService});
 
-    router.get("/", getAllTransformArticulos, articulosController.getAll);
+    router.get("/", [authenticate, getAllTransformArticulos], articulosController.getAll);
 
-    router.get("/:id_articulo", getByIDArticuloTransform, articulosController.getByID);
+    router.get("/:id_articulo", [authenticate, getByIDArticuloTransform], articulosController.getByID);
 
     router.patch("/:id_articulo", updateArticuloTransform, articulosController.update);
 

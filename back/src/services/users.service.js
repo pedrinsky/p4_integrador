@@ -22,15 +22,17 @@ export class UsersService {
         return null;
     }
 
-    static async getAll() {
-        const usuarios = await User.findAll(); 
+    static async getAll(input) {
+        console.log("Service");
+        const usuarios = await User.getAll(input); 
         // return this.removeContrasenia(usuarios);
-        const result = await this.removeContrasenia(usuarios);
+        // const result = await this.removeContrasenia(usuarios);
         return result.map(usuario => new UsuariosResponseDTO(usuario));
     }
 
     static async getById(id) {
-        const usuario = await User.getById(id);
+        console.log("Service");
+        const usuario = await User.getByID(id);
         // return this.removeContrasenia(usuario);
         const result = await this.removeContrasenia(usuario);
         return new UsuariosResponseDTO(result);
@@ -71,45 +73,38 @@ export class UsersService {
         return new UsuariosResponseDTO(result)
     }
 
-    static async getByID(input) {
-        return this.getById(input);
-    }
-
     static async delete(input) {
         return this.remove(input);
     }
-
-    static async login(nombre_usuario, contrasenia) {
+    //Entradas: usuario, contrasenia
+    //Salidas: token, refresh_token, datos_usuario_noContrasenia
+    //Crear DTO para formatear datos del usuario
+    static async login(input) {
         // Buscar el usuario
-        const usuarios = await User.getByUsername(nombre_usuario);
-        if (!usuarios || usuarios.length === 0) {
-            throw new Error('Usuario o contraseña incorrectos');
+        const { usuario, contrasenia } = input;
+        const usuario_log = await User.findByUsernamePassword({ usuario, contrasenia });
+        if (!usuario_log || usuario_log.length === 0) {
+            return undefined;
         }
 
-        const usuario = usuarios[0];
+        return usuario_log;
 
-        // Comparar el hash de la contraseña recibida
-        const contraseniaHash = crypto.createHash('sha256').update(contrasenia).digest('hex');
-        if (usuario.contrasenia !== contraseniaHash) {
-            throw new Error('Usuario o contraseña incorrectos');
-        }
+        // // Crear el token JWT
+        // const token = jwt.sign(
+        //     { 
+        //         id_usuario: usuario_log.id_usuario, 
+        //         usuario: usuario_log.usuario, 
+        //         nombre_usuario: usuario_log.usuario,
+        //         rol: usuario_log.rol 
+        //     },
+        //     process.env.JWT_SECRET,
+        //     { expiresIn: '2h' }
+        // );
 
-        // Crear el token JWT
-        const token = jwt.sign(
-            { 
-                id_usuario: usuario.id_usuario, 
-                usuario: usuario.usuario, 
-                nombre_usuario: usuario.usuario,
-                rol: usuario.rol 
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: '2h' }
-        );
-
-        return {
-            token,
-            // Reutilizo la función auxiliar para limpiar los datos del usuario en el login
-            usuario: this.removeContrasenia(usuario) 
-        };
+        // return {
+        //     token,
+        //     // Reutilizo la función auxiliar para limpiar los datos del usuario en el login
+        //     usuario: this.removeContrasenia(usuario_log) 
+        // };
     }
 }
