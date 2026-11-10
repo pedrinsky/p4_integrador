@@ -17,7 +17,9 @@ async function cargarIncidencias() {
     url += '&exclude_estado=4';
 
     try {
-        const response = await fetch(url);
+        const token = sessionStorage.getItem('token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const response = await fetch(url, { headers });
         if (response.ok) {
             const data = await response.json();
             const listado = Array.isArray(data) ? data : (data.incidencias || []);
@@ -121,17 +123,54 @@ function renderizarTabla(incidencias) {
         // Nueva columna Accion
         const tdAccion = document.createElement('td');
         tdAccion.className = 'text-center';
-        if (inc.id_estado !== 3 && inc.id_estado !== 4 && inc.estado !== 'Resuelta' && inc.estado !== 'Cancelada') { // Si no esta resuelta ni cancelada
+        const esResuelta = inc.id_estado === 3 || inc.estado === 'Resuelta';
+        const esCancelada = inc.id_estado === 4 || inc.estado === 'Cancelada';
+
+        if (!esResuelta && !esCancelada) {
             const btnCancelar = document.createElement('button');
             btnCancelar.textContent = 'Cancelar';
             btnCancelar.className = 'btn-buscar'; 
             btnCancelar.style.padding = '4px 8px';
             btnCancelar.onclick = () => cancelarIncidencia(idInc);
             tdAccion.appendChild(btnCancelar);
+        } else if (esResuelta) {
+            // Empleado municipal puede solicitar reabrir la incidencia resuelta
+            const btnReabrir = document.createElement('button');
+            btnReabrir.textContent = 'Solicitar Reapertura';
+            btnReabrir.className = 'btn-buscar';
+            btnReabrir.style.backgroundColor = '#fd7e14';
+            btnReabrir.style.color = '#ffffff';
+            btnReabrir.style.padding = '4px 10px';
+            btnReabrir.style.fontSize = '0.85rem';
+            btnReabrir.title = 'Solicitar reapertura de la incidencia para revisión técnica';
+            btnReabrir.onclick = () => solicitarReapertura(idInc);
+            tdAccion.appendChild(btnReabrir);
         }
         row.appendChild(tdAccion);
 
         tbody.appendChild(row);
+    }
+}
+
+async function solicitarReapertura(id_incidencia) {
+    if (!confirm(`¿Desea solicitar la reapertura de la incidencia #${id_incidencia}? Se notificará al técnico a cargo.`)) return;
+    try {
+        const token = sessionStorage.getItem('token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const res = await fetch(`http://localhost:3000/api/incidencias/${id_incidencia}/solicitar-reapertura`, {
+            method: 'PUT',
+            headers
+        });
+        if (res.ok) {
+            alert('¡Solicitud enviada! El técnico asignado ha recibido la notificación y revisará la reapertura.');
+            cargarIncidencias();
+        } else {
+            const data = await res.json().catch(() => ({}));
+            alert(`No se pudo enviar la solicitud: ${data.error || res.statusText}`);
+        }
+    } catch (e) {
+        console.error('Error al solicitar reapertura:', e);
+        alert('Error de conexión al solicitar reapertura.');
     }
 }
 
@@ -140,8 +179,11 @@ function renderizarTabla(incidencias) {
 async function cancelarIncidencia(id_incidencia) {
     if (!confirm('¿Seguro que desea cancelar esta incidencia?')) return;
     try {
+        const token = sessionStorage.getItem('token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
         const res = await fetch('http://localhost:3000/api/incidencias/' + id_incidencia, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers
         });
         if (res.ok) {
             alert('Incidencia cancelada con éxito');
@@ -192,15 +234,28 @@ function configurarModal() {
             }
 
             const bodyRequerido = {
-                descripcion_pedido: descripcion_pedido,
-                prioridad: parseInt(prioridad),
-                creado_por: usuarioObj.id_usuario || usuarioOBJ.id || 1,
+                descripcion_pedido: descripcion_pedido.trim(),
+                prioridad: parseInt(prioridad, 10) || 1,
             };
 
+            const idArticuloNum = parseInt(selectorArticulo, 10);
+            if (!isNaN(idArticuloNum) && idArticuloNum > 0) {
+                bodyRequerido.id_articulo = idArticuloNum;
+            }
+
+            const idCreador = parseInt(usuarioObj.id_usuario || usuarioObj.id, 10);
+            if (!isNaN(idCreador) && idCreador > 0) {
+                bodyRequerido.creado_por = idCreador;
+            }
+
             try {
+                const token = sessionStorage.getItem('token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
                 const response = await fetch('http://localhost:3000/api/incidencias', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers,
                     body: JSON.stringify(bodyRequerido)
                 });
                 

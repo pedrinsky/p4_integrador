@@ -1,4 +1,5 @@
 import { Router } from "express";
+import authenticate from "../middleware/authenticate.js";
 
 import { getAllTransform as getAllIncidenciasTransform
     , getByIDTransform as getByIDIncidenciaTransform
@@ -14,19 +15,24 @@ export const createIncidenciasRouter = ({incidenciasService}) => {
     console.log("Router");
     const incidenciasController = new IncidenciasController({incidenciasService: incidenciasService});
 
-    router.get("/", getAllIncidenciasTransform, incidenciasController.getAll);
+    router.get("/", authenticate, getAllIncidenciasTransform, incidenciasController.getAll);
 
-    router.get("/:id_incidencia", getByIDIncidenciaTransform, incidenciasController.getByID);
+    router.get("/dashboard/metrics", authenticate, incidenciasController.getDashboardMetrics);
 
-    router.patch("/:id_incidencia", updateIncidenciaTransform, incidenciasController.update);
+    router.get("/reporte/pdf", authenticate, incidenciasController.generarReportePDF);
 
-    router.post("/", createIncidenciaTransform, incidenciasController.create);
+    router.get("/:id_incidencia", authenticate, getByIDIncidenciaTransform, incidenciasController.getByID);
 
-    router.delete("/:id_incidencia", deleteIncidenciaTransform, incidenciasController.delete);
+    router.patch("/:id_incidencia", authenticate, updateIncidenciaTransform, incidenciasController.update);
+
+    router.post("/", authenticate, createIncidenciaTransform, incidenciasController.create);
+
+    router.delete("/:id_incidencia", authenticate, deleteIncidenciaTransform, incidenciasController.delete);
 
     // Legacy frontend support
-    router.put("/:id_incidencia/finalizar", incidenciasController.finalizar);
-    router.put("/:id_incidencia/reabrir", incidenciasController.reabrir);
+    router.put("/:id_incidencia/finalizar", authenticate, incidenciasController.finalizar);
+    router.put("/:id_incidencia/solicitar-reapertura", authenticate, incidenciasController.solicitarReapertura);
+    router.put("/:id_incidencia/reabrir", authenticate, incidenciasController.reabrir);
     
     return router;
 }

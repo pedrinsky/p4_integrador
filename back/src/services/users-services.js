@@ -26,6 +26,11 @@ export class UsersService {
         return this.removeContrasenia(usuarios);
     }
 
+    static async getSistemas() {
+        const usuarios = await User.getSistemas();
+        return this.removeContrasenia(usuarios);
+    }
+
     static async getById(id) {
         const usuario = await User.getById(id);
         return this.removeContrasenia(usuario);

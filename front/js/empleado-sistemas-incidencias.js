@@ -65,7 +65,7 @@ function renderizarTabla(incidencias) {
         botonAccion.className = 'btn-accion';
 
         const isCancelada = inc.id_estado === 4 || inc.estado === 'Cancelada';
-        const isResuelta = inc.id_estado === 3 || inc.estado === 'Resuelta' || inc.estado === 'Resuela';
+        const isResuelta = inc.id_estado === 3 || inc.estado === 'Resuelta' || inc.estado === 'Resuelta';
 
         if (isCancelada) {
             // Cancelada -> bloqueado
@@ -83,8 +83,10 @@ function renderizarTabla(incidencias) {
                 const confirmar = confirm('¿Estás seguro de que deseas reabrir esta incidencia y devolverla a Pendiente?');
                 if (!confirmar) return;
 
+                const token = sessionStorage.getItem('token');
                 const respuesta = await fetch(`http://localhost:3000/api/incidencias/${idInc}/reabrir`, {
-                    method: 'PUT'
+                    method: 'PUT',
+                    headers: token ? { 'Authorization': `Bearer ${token}` } : {}
                 });
                 if (respuesta.ok) {
                     alert('¡Incidencia ha vuelto a Pendiente!');
@@ -101,9 +103,13 @@ function renderizarTabla(incidencias) {
                 const descripcion = prompt("Ingrese una descripción o comentario para la resolución (opcional):", "");
                 if (descripcion === null) return;
 
+                const token = sessionStorage.getItem('token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
                 const respuesta = await fetch(`http://localhost:3000/api/incidencias/${idInc}/finalizar`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers,
                     body: JSON.stringify({ descripcion_resolucion: descripcion })
                 });
                 if (respuesta.ok) {
@@ -163,7 +169,9 @@ async function filtrarDatos(event) {
     if (prioridadFiltro) url += `&prioridad=${prioridadFiltro}`;
 
     try {
-        const respuesta = await fetch(url);
+        const token = sessionStorage.getItem('token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const respuesta = await fetch(url, { headers });
         if (respuesta.ok) {
             const data = await respuesta.json();
             const listado = Array.isArray(data) ? data : (data.incidencias || []);

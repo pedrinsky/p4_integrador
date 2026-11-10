@@ -22,7 +22,8 @@ export class IncidenciasRepository{
 
         const sql = `
             SELECT i.id_incidencia, i.id_articulo, i.id_estado, art.descripcion as articulo, e.descripcion as estado
-            , creador.usuario as creado_por, asignado.usuario as asignado_a
+            , i.creado_por as id_creador, creador.usuario as creado_por
+            , i.asignado_a as id_asignado, asignado.usuario as asignado_a
             , i.creado, i.prioridad, i.descripcion_pedido, i.descripcion_resolucion
             , COUNT(*) OVER() as total_registros
             FROM incidencias i
@@ -69,11 +70,14 @@ export class IncidenciasRepository{
     static async getByID(input){
         console.log("Repository");
 
-        const {id_incidencia} = input;
+        const id_incidencia = typeof input === 'object' && input !== null
+            ? (input.id_incidencia ?? input.id)
+            : input;
 
         const sql = `
             SELECT i.id_incidencia, i.id_articulo, i.id_estado, art.descripcion as articulo, e.descripcion as estado
-            , creador.usuario as creado_por, asignado.usuario as asignado_a
+            , i.creado_por as id_creador, creador.usuario as creado_por
+            , i.asignado_a as id_asignado, asignado.usuario as asignado_a
             , i.creado, i.prioridad, i.descripcion_pedido, i.descripcion_resolucion
             FROM incidencias i
             LEFT JOIN articulos art
@@ -158,5 +162,56 @@ export class IncidenciasRepository{
 
         return rows[0];
         
+    }
+
+    static async getDashboardMetrics() {
+        console.log("Repository getDashboardMetrics");
+        
+        // 1. Totales según estado
+        const sqlTotales = `
+            SELECT 
+                COUNT(*)::int as total,
+                COUNT(CASE WHEN id_estado = 1 THEN 1 END)::int as pendientes,
+                COUNT(CASE WHEN id_estado = 2 THEN 1 END)::int as asignadas,
+                COUNT(CASE WHEN id_estado = 3 THEN 1 END)::int as finalizadas,
+                COUNT(CASE WHEN id_estado = 4 THEN 1 END)::int as canceladas
+            FROM incidencias;
+        `;
+
+        // 2. Incidencias prioritarias activas (prioridad 3 y pendientes/en proceso)
+        const sqlPrioritarias = `
+            SELECT i.id_incidencia, i.id_articulo, art.descripcion as articulo, e.descripcion as estado, i.id_estado,
+                   creador.usuario as creado_por, asignado.usuario as asignado_a,
+                   i.creado, i.prioridad, i.descripcion_pedido
+            FROM incidencias i
+            LEFT JOIN articulos art ON i.id_articulo = art.id_articulo
+            LEFT JOIN estados e ON i.id_estado = e.id_estado
+            LEFT JOIN usuarios creador ON i.creado_por = creador.id_usuario
+            LEFT JOIN usuarios asignado ON i.asignado_a = asignado.id_usuario
+            WHERE i.prioridad = 3 AND i.id_estado NOT IN (3, 4)
+            ORDER BY i.creado DESC
+            LIMIT 5;
+        `;
+
+        // 3. Totales por fecha (últimas fechas con registros)
+        const sqlPorFecha = `
+            SELECT TO_CHAR(creado, 'YYYY-MM-DD') as fecha, COUNT(*)::int as total
+            FROM incidencias
+            GROUP BY TO_CHAR(creado, 'YYYY-MM-DD')
+            ORDER BY fecha DESC
+            LIMIT 7;
+        `;
+
+        const [totalesRes, prioritariasRes, porFechaRes] = await Promise.all([
+            pool.query(sqlTotales),
+            pool.query(sqlPrioritarias),
+            pool.query(sqlPorFecha)
+        ]);
+
+        return {
+            totales: totalesRes.rows[0] || { total: 0, pendientes: 0, asignadas: 0, finalizadas: 0, canceladas: 0 },
+            prioritarias: prioritariasRes.rows || [],
+            porFecha: porFechaRes.rows || []
+        };
     }
 }

@@ -16,6 +16,15 @@ export class User {
         return rows;
     }
 
+    static async getSistemas() {
+        const sql = `SELECT id_usuario, id_area, nombres, apellidos, usuario, avatar, rol, activo 
+                     FROM usuarios 
+                     WHERE rol = 3 AND activo = 1
+                     ORDER BY nombres ASC, apellidos ASC;`;
+        const { rows } = await pool.query(sql);
+        return rows;
+    }
+
     static async findAll() {
         return this.getAll();
     }

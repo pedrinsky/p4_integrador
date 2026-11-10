@@ -111,4 +111,8 @@ export const createIncidenciasSchema = BaseIncidenciasSchema.pick({
     "asignado_a": true,
     "prioridad": true,
     "descripcion_pedido": true,
+}).partial({
+    "id_articulo": true,
+    "creado_por": true,
+    "asignado_a": true,
 });

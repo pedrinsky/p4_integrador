@@ -58,14 +58,46 @@ export const updateTransform = (req, res, next) => {
 }
 
 export const createTransform = (req, res, next) => {
-    console.log("Transformer");
-    const schema = createIncidenciasSchema.safeParse(req.body);
-    if(schema.error) res.status(400).json({error: JSON.parse(schema.error.message)});
-    console.log(schema.data);
+    console.log("Transformer create");
+    const body = { ...req.body };
+
+    // Sanitización: si id_articulo no es un número válido > 0, se elimina para no disparar NaN
+    const idArt = Number(body.id_articulo);
+    if (!isNaN(idArt) && idArt > 0) {
+        body.id_articulo = idArt;
+    } else {
+        delete body.id_articulo;
+    }
+
+    // Sanitización de creado_por y asignado_a
+    const creadoPor = Number(body.creado_por);
+    if (!isNaN(creadoPor) && creadoPor > 0) {
+        body.creado_por = creadoPor;
+    } else {
+        delete body.creado_por;
+    }
+
+    const asignadoA = Number(body.asignado_a);
+    if (!isNaN(asignadoA) && asignadoA > 0) {
+        body.asignado_a = asignadoA;
+    } else {
+        delete body.asignado_a;
+    }
+
+    // Prioridad por defecto 1 si no es válida
+    const prioridad = Number(body.prioridad);
+    body.prioridad = !isNaN(prioridad) ? prioridad : 1;
+
+    delete body.id_estado;
+
+    const schema = createIncidenciasSchema.safeParse(body);
+    if (schema.error) {
+        return res.status(400).json({ error: JSON.parse(schema.error.message) });
+    }
+
     req.criteria = schema.data;
-    console.log(req.criteria);
     next();
-}
+};
 
 export const deleteTransform = (req, res, next) => {
     console.log("Transformer");

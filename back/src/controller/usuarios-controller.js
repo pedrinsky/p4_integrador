@@ -14,10 +14,13 @@ export class UsuariosController{
     }
 
     getSistemas = async (req, res) => {
-        console.log("Controller");
-        const result = await this.usuariosService.getAll();
-        const empleadosSistemas = result.filter(u => Number(u.rol) === 2 && u.activo === 1);
-        res.json(empleadosSistemas.map(u => new UsuariosResponseDTO(u)));
+        try {
+            console.log("Controller getSistemas");
+            const result = await this.usuariosService.getSistemas();
+            res.json(result.map(u => new UsuariosResponseDTO(u)));
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     }
 
     getByID = async (req, res) => {
