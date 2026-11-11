@@ -14,18 +14,21 @@ export class CategoriasService{
     static async update(input){
         console.log("Service");
         const resultado = await CategoriasRepository.update(input);
+        console.log(resultado);
         return await this.getByID(resultado);
     }
 
     static async create(input){
         console.log("Service");
         const resultado = await CategoriasRepository.create(input);
-        return await this.getByID(resultado.id_categoria);
+        console.log(resultado)
+        return await this.getByID(resultado);
     }
 
     static async delete(input){
         console.log("Service");
         const resultado = await CategoriasRepository.delete(input);
+        console.log(resultado);
         return await this.getByID(resultado);
     }
 }

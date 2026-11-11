@@ -89,7 +89,13 @@ async function cargarCategorias(pagina = paginaActual) {
     }
 
     try {
-        const response = await fetch(url);
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+    
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}`}
+        });
         if (response.ok) {
             const data = await response.json();
             if (data.categorias) {
@@ -219,7 +225,12 @@ function crearCategoria() {
 
 async function editarCategoria(id) {
     try {
-        const res = await fetch(`${URL_API_CATEGORIAS}/${id}`);
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        const res = await fetch(`${URL_API_CATEGORIAS}/${id}`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}`}
+        });
         if (!res.ok) throw new Error(`Error al leer categoría: ${res.status}`);
 
         const data = await res.json();
@@ -260,9 +271,12 @@ async function guardarCategoria(e) {
     }
 
     try {
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        
         const res = await fetch(url, {
             method: method,
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify(bodyPayload)
         });
 
@@ -293,8 +307,12 @@ async function eliminarCategoria(id) {
     if (!confirmar) return;
 
     try {
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        
         const res = await fetch(`${URL_API_CATEGORIAS}/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}`}
         });
 
         if (!res.ok) throw new Error(`Error en el servidor: ${res.status}`);
@@ -310,8 +328,12 @@ async function reactivarCategoria(id) {
     if (!confirmar) return;
 
     try {
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        
         const res = await fetch(`${URL_API_CATEGORIAS}/${id}/reactivar`, {
-            method: 'PUT'
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}`}
         });
         if (!res.ok) throw new Error(`Error en el servidor: ${res.status}`);
         await cargarCategorias(paginaActual);
@@ -326,8 +348,12 @@ async function borradoDefinitivo(id) {
     if (!confirmar) return;
 
     try {
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        
         const res = await fetch(`${URL_API_CATEGORIAS}/${id}/definitivo`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}`}
         });
         
         if (!res.ok) {

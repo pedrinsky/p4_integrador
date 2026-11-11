@@ -13,6 +13,7 @@ import { UsersService } from '../services/users-services.js'
 import { createUser as createUsuariosRouter } from '../routers/usuarios-routes.js'
 import authRouter from '../routers/auth-routers.js'
 import { createNotificacionesRouter } from '../routers/notificacionesRouters.js'
+import authenticate from '../middleware/authenticate.js';
 
 const app = express();
 const port = 3000;
@@ -37,6 +38,11 @@ app.use(express.json());
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+//AUTH
+app.use("/api", authRouter);
+
+app.use(authenticate);
+
 app.get('/api', (req, res) => {
     res.send('Working');
 });
@@ -55,8 +61,6 @@ app.use("/api/usuarios", createUsuariosRouter({usuariosService: UsersService}))
 //NOTIFICACIONES
 app.use("/api/notificaciones", createNotificacionesRouter());
 
-//AUTH
-app.use("/api", authRouter);
 
 //arranque
 app.listen(port, () => {

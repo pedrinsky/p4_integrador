@@ -13,7 +13,12 @@ async function cargarArticulos(pagina = paginaActual) {
     const url = `http://localhost:3000/api/articulos?page=${paginaActual}&limit=${limitePorPagina}`;
 
     try {
-        const response = await fetch(url);
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}`}
+        });
         if (response.ok) {
             const data = await response.json();
             const listado = Array.isArray(data) ? data : (data.articulos || []);

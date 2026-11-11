@@ -45,7 +45,12 @@ async function cargarIncidencias() {
 
 async function loadArticulosForSelect() {
     try {
-        const response = await fetch('http://localhost:3000/api/articulos?limit=100&activo=1');
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        const response = await fetch('http://localhost:3000/api/articulos?limit=100&activo=1', {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}`}
+        });
         if (response.ok) {
             const data = await response.json();
             const arts = Array.isArray(data) ? data : (data.articulos || []);

@@ -85,7 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function cargarSelectorCategorias() {
     try {
-        const res = await fetch(`${URL_API_CATEGORIAS}?limit=100`);
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        const res = await fetch(`${URL_API_CATEGORIAS}?limit=100`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}`}
+        });
         if (res.ok) {
             const data = await res.json();
             const listado = data.categorias || data;
@@ -121,7 +126,12 @@ async function cargarArticulos(pagina = paginaActual) {
     }
 
     try {
-        const response = await fetch(url);
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}`}
+        });
         if (response.ok) {
             const data = await response.json();
             if (data.articulos) {
@@ -253,7 +263,11 @@ function renderizarTabla(lista) {
 
 async function editarArticulo(id) {
     try {
-        const res = await fetch(`${URL_API_ARTICULOS}/${id}`);
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        const res = await fetch(`${URL_API_ARTICULOS}/${id}`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}`}});
         if (!res.ok) throw new Error(`Error al leer artículo: ${res.status}`);
 
         const data = await res.json();
@@ -310,9 +324,12 @@ async function guardarArticulo(e) {
     };
 
     try {
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        
         const res = await fetch(url, {
             method: method,
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify(bodyPayload)
         });
 
@@ -341,8 +358,12 @@ async function eliminarArticulo(id) {
     if (!confirmar) return;
 
     try {
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        
         const res = await fetch(`${URL_API_ARTICULOS}/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}`}
         });
 
         if (!res.ok) throw new Error(`Error en el servidor: ${res.status}`);
@@ -358,8 +379,11 @@ async function reactivarArticulo(id) {
     if (!confirmar) return;
 
     try {
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
         const res = await fetch(`${URL_API_ARTICULOS}/${id}/reactivar`, {
-            method: 'PUT'
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}`}
         });
         if (!res.ok) throw new Error(`Error en el servidor: ${res.status}`);
         await cargarArticulos(paginaActual);
@@ -374,8 +398,11 @@ async function borradoDefinitivo(id) {
     if (!confirmar) return;
 
     try {
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
         const res = await fetch(`${URL_API_ARTICULOS}/${id}/definitivo`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}`}
         });
         
         if (!res.ok) {

@@ -81,7 +81,8 @@ export const createTransform = (req, res, next) => {
     if (!isNaN(asignadoA) && asignadoA > 0) {
         body.asignado_a = asignadoA;
     } else {
-        delete body.asignado_a;
+        // delete body.asignado_a;
+        body.asignado_a = "";
     }
 
     // Prioridad por defecto 1 si no es válida
