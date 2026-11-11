@@ -1,4 +1,4 @@
-import { UsuariosResponseDTO } from "../dto/usuarios-dto.js";
+import { UsuariosResponseDTO } from "../dto/usuarios.dto.js";
 
 export class UsuariosController{
     constructor({usuariosService}){

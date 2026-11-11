@@ -1,8 +1,8 @@
-import { IncidenciasRepository } from "../repository/incidencias-repository.js";
-import { IncidenciasEstadosRepository } from "../repository/incidencias-estados-repository.js";
-import { User } from "../repository/users-repository.js";
-import { MailService } from "./mail-service.js";
-import { NotificacionesService } from "./notificaciones-service.js";
+import { IncidenciasRepository } from "../repository/incidencias.repository.js";
+import { IncidenciasEstadosRepository } from "../repository/incidencias-estados.repository.js";
+import { User } from "../repository/users.repository.js";
+import { MailService } from "./mail.service.js";
+import { NotificacionesService } from "./notificaciones.service.js";
 
 export class IncidenciasService{
     static async getAll(input){

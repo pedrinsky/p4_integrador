@@ -1,4 +1,4 @@
-import { NotificacionesRepository } from "../repository/notificaciones-repository.js";
+import { NotificacionesRepository } from "../repository/notificaciones.repository.js";
 
 export class NotificacionesService {
     static async obtenerPorUsuario(id_usuario) {

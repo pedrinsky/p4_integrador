@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import User from "../repository/users-repository.js";
+import User from "../repository/users.repository.js";
 import jwt from 'jsonwebtoken';
 
 export class UsersService {

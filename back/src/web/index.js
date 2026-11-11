@@ -2,17 +2,21 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import { swaggerUi, swaggerDocs } from '../config/swagger.js';
-import { createArticulosRouter } from '../routers/articulosRouters.js';
-import { ArticulosService } from '../services/articulos-service.js';
-import { createCategoriasRouter } from '../routers/categoriaRouters.js';
-import { CategoriasService } from "../services/categorias-service.js";
-import { createIncidenciasRouter } from '../routers/incidenciasRouters.js';
-import { IncidenciasService } from '../services/incidencias-service.js';
+
+import { createArticulosRouter } from '../routers/articulos.router.js';
+import { createCategoriasRouter } from '../routers/categorias.router.js';
+import { createIncidenciasRouter } from '../routers/incidencias.router.js';
+import { createUser as createUsuariosRouter } from '../routers/usuarios.router.js';
+import { createNotificacionesRouter } from '../routers/notificaciones.router.js'
+import authRouter from '../routers/auth.router.js'
+
+import { ArticulosService } from '../services/articulos.service.js';
+import { CategoriasService } from "../services/categorias.service.js";
+import { IncidenciasService } from '../services/incidencias.service.js';
+import { UsersService } from '../services/users.service.js';
+
 import rateLimit from 'express-rate-limit';
-import { UsersService } from '../services/users-services.js'
-import { createUser as createUsuariosRouter } from '../routers/usuarios-routes.js'
-import authRouter from '../routers/auth-routers.js'
-import { createNotificacionesRouter } from '../routers/notificacionesRouters.js'
+
 import authenticate from '../middleware/authenticate.js';
 
 const app = express();

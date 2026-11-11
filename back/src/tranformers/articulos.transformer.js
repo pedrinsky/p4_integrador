@@ -1,5 +1,5 @@
 import { getAllArticulosSchema, getByIDArticulosSchema
-    ,updateArticulosSchema, createArticulosSchema} from "../schemas/articulos-schema.js";
+    ,updateArticulosSchema, createArticulosSchema} from "../schemas/articulos.schemas.js";
 
 export const getAllTransform = (req, res, next) => {
     const schema = getAllArticulosSchema.safeParse(req.query);

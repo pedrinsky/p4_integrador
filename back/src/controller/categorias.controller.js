@@ -1,4 +1,4 @@
-import { CategoriaResponseDTO } from "../dto/categorias-dto.js";
+import { CategoriaResponseDTO } from "../dto/categorias.dto.js";
 
 
 export class CategoriasController{

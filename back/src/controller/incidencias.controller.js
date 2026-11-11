@@ -1,6 +1,6 @@
-import {IncidenciasResponseDTO} from  "../dto/incidencias-dto.js";
-import { PdfService } from "../services/pdf-service.js";
-import { NotificacionesService } from "../services/notificaciones-service.js";
+import {IncidenciasResponseDTO} from  "../dto/incidencias.dto.js";
+import { PdfService } from "../services/pdf.service.js";
+import { NotificacionesService } from "../services/notificaciones.service.js";
 
 export class IncidenciasController {
     constructor({ incidenciasService }) {

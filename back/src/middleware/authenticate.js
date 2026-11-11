@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { UsersService } from '../services/users-services.js';
+import { UsersService } from '../services/users.service.js';
 
 // Valida el token Bearer y deja el usuario en req.user
 const authenticate = async (req, res, next) => {

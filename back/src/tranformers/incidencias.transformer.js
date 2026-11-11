@@ -1,7 +1,7 @@
 import { json } from "zod";
 import { getAllIncidenciasSchema, getByIDIncidenciasSchema, updateIncidenciasSchema
     , createIncidenciasSchema} 
-    from "../schemas/incidencias-schema.js";
+    from "../schemas/incidencias.schemas.js";
 
 export const getAllTransform = (req, res, next) => {
     const schema = getAllIncidenciasSchema.safeParse(req.query);

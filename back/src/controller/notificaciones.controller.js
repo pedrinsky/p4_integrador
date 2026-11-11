@@ -1,4 +1,4 @@
-import { NotificacionesService } from "../services/notificaciones-service.js";
+import { NotificacionesService } from "../services/notificaciones.service.js";
 
 export class NotificacionesController {
     static async getPorUsuario(req, res) {
