@@ -9,7 +9,6 @@ import { UsuariosController } from "../controller/usuarios-controller.js";
 
 export const createUser = ({usuariosService}) => {
     const router = Router();
-    console.log("Router");
     const usuariosController = new UsuariosController({usuariosService: usuariosService});
 
     router.get("/", getAllUsuariosTransform, usuariosController.getAll);

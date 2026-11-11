@@ -9,7 +9,7 @@ class AuthController {
             return res.json(resultado);
         } catch (exc) {
             console.error(exc);
-            return res.status(400).json({ message: exc.message || 'Error interno' });
+            return res.status(500).json({ message: exc.message || 'Error interno' });
         }
     };
 

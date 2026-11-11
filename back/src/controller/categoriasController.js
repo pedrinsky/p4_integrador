@@ -7,71 +7,83 @@ export class CategoriasController{
     }
 
     getAll = async (req, res) => {
-        console.log("Controller");
-        console.log(req.criteria);
-        const result = await this.categoriasService.getAll(req.criteria);
-        console.log(result);
+        try{
+            const result = await this.categoriasService.getAll(req.criteria);
 
-        const limit = Number(req.criteria?.limit) || 5;
-        const totalRegistros = result.length > 0 && result[0].total_registros 
-            ? parseInt(result[0].total_registros, 10) 
-            : result.length;
-        const totalPaginas = Math.ceil(totalRegistros / limit) || 1;
-        const paginaActual = Number(req.criteria?.page) || (Math.floor(Number(req.criteria?.offset || 0) / limit) + 1);
+            const limit = Number(req.criteria?.limit) || 5;
+            const totalRegistros = result.length > 0 && result[0].total_registros 
+                ? parseInt(result[0].total_registros, 10) 
+                : result.length;
+            const totalPaginas = Math.ceil(totalRegistros / limit) || 1;
+            const paginaActual = Number(req.criteria?.page) || (Math.floor(Number(req.criteria?.offset || 0) / limit) + 1);
 
-        const dtoCategorias = result.map(categoria => new CategoriaResponseDTO(categoria));
+            const dtoCategorias = result.map(categoria => new CategoriaResponseDTO(categoria));
 
-        res.json({
-            categorias: dtoCategorias,
-            paginacion: {
-                totalPaginas,
-                paginaActual,
-                totalRegistros,
-                limitePorPagina: limit
-            }
-        });
+            return res.json({
+                categorias: dtoCategorias,
+                paginacion: {
+                    totalPaginas,
+                    paginaActual,
+                    totalRegistros,
+                    limitePorPagina: limit
+                }
+            });
+        }catch(err){
+            res.status(500).json({ message: "Error interno" });
+        }
+        
     }
 
     getByID = async (req, res) => {
-        console.log("Controller");
-        console.log(req.criteria);
-        const result = await this.categoriasService.getByID(req.criteria);
-        console.log(result);
-        res.json(new CategoriaResponseDTO(result));
+        try{
+            const result = await this.categoriasService.getByID(req.criteria);
+            return res.json(new CategoriaResponseDTO(result));
+        }catch(err){
+            res.status(500).json({ message: "Error interno" });
+        }
+        
     }
 
     update = async (req, res) => {
-        console.log("Controller");
-        console.log(req.criteria);
-        const result = await this.categoriasService.update(req.criteria);
-        console.log(result);
-        res.json(new CategoriaResponseDTO(result));
+        try{
+            const result = await this.categoriasService.update(req.criteria);
+            return res.json(new CategoriaResponseDTO(result));
+        }catch(err){
+            res.status(500).json({ message: "Error interno" });
+        }
+        
     }
 
     create = async (req, res) => {
-        console.log("Controller");
-        console.log(req.criteria);
-        const result = await this.categoriasService.create(req.criteria);
-        console.log(result);
-        res.json(new CategoriaResponseDTO(result));
+        try{
+            const result = await this.categoriasService.create(req.criteria);
+            return res.json(new CategoriaResponseDTO(result));
+        }catch(err){
+            res.status(500).json({ message: "Error interno" });
+        }
+        
     }
 
     delete = async (req, res) => {
-        console.log("Controller");
-        console.log(req.criteria);
-        const result = await this.categoriasService.delete(req.criteria);
-        console.log(result);
-        res.json(new CategoriaResponseDTO(result));
+        try{
+            const result = await this.categoriasService.delete(req.criteria);
+            return res.json(new CategoriaResponseDTO(result));
+        }catch(err){
+            res.status(500).json({ message: "Error interno" });
+        }
+        
     }
 
     reactivar = async (req, res) => {
-        console.log("Controller reactivar");
-        const result = await this.categoriasService.reactivar(req.criteria);
-        res.json(result);
+        try{
+            const result = await this.categoriasService.reactivar(req.criteria);
+            return res.json(result);
+        }catch(err){
+            res.status(500).json({ message: "Error interno" });
+        }
     }
 
     deleteDefinitivo = async (req, res) => {
-        console.log("Controller deleteDefinitivo");
         try {
             const result = await this.categoriasService.eliminarDefinitivo(req.criteria);
             res.json(result);

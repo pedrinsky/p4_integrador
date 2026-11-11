@@ -2,7 +2,6 @@ import { pool } from "../config/db.js";
 
 export class IncidenciasRepository{
     static async getAll(input){
-        console.log("Repository");
 
         const {id_incidencia, id_articulo, id_estado, creado_por, asignado_a
             , creado, prioridad, descripcion_pedido, descripcion_resolucion
@@ -54,21 +53,17 @@ export class IncidenciasRepository{
             ORDER BY ${col} ${dir}
             LIMIT $12 OFFSET $13;
         `;
-        console.log(sql);
 
         const {rows} = await pool.query(sql, [id_incidencia ?? null, id_articulo ?? null
             , id_estado ?? null, creado_por ?? null, asignado_a ?? null, creado ?? null
             , prioridad ?? null, descripcion_pedido ?? null, descripcion_resolucion ?? null
             , exclude_estado ?? null, search ?? null
             , limit, offset]);
-        
-        console.log(rows);
 
         return rows;
     }
 
     static async getByID(input){
-        console.log("Repository");
 
         const id_incidencia = typeof input === 'object' && input !== null
             ? (input.id_incidencia ?? input.id)
@@ -90,22 +85,15 @@ export class IncidenciasRepository{
             ON i.asignado_a = asignado.id_usuario
             WHERE ($1::text IS NULL OR id_incidencia = $1::int);
         `;
-        console.log(sql);
 
         const {rows} = await pool.query(sql, [id_incidencia]);
-        
-        console.log(rows);
 
         return rows[0];
     }
 
     static async update(input){
-        console.log("Repository");
-        console.log(input);
 
         const {id_incidencia, ...entradas} = input;
-        console.log(id_incidencia);
-        console.log(entradas);
 
         const cambios = [];
         const valores = [id_incidencia];
@@ -119,17 +107,13 @@ export class IncidenciasRepository{
             SET ${cambios.join(", ")}
             WHERE id_incidencia = $1
             RETURNING *;
-        `
-        console.log(sql);
-        console.log(valores);
+        `;
 
         const {rows} = await pool.query(sql, valores);
-        console.log(rows);
         return rows[0];
     }
 
     static async create(input){
-        console.log("Repository");
         const {id_articulo = null, creado_por = null, asignado_a = null, prioridad, descripcion_pedido} = input;
 
         const sql = `
@@ -137,17 +121,13 @@ export class IncidenciasRepository{
             VALUES ($1, 1, $2, $3, $4, NOW()::TIMESTAMPTZ, $5, '')
             RETURNING *;
         `;
-        console.log(sql);
         const {rows} = await pool.query(sql, [id_articulo, creado_por, asignado_a, prioridad, descripcion_pedido]);
-        console.log(rows);
         return rows[0];
     }
 
     static async delete(input){
-        console.log("Repository");
 
         const {id_incidencia} = input;
-        console.log(id_incidencia);
 
         const sql = `
             UPDATE incidencias
@@ -155,17 +135,14 @@ export class IncidenciasRepository{
             WHERE id_incidencia = $1
             RETURNING *;
         `;
-        console.log(sql);
 
         const {rows} = await pool.query(sql, [id_incidencia]);
-        console.log(rows);
 
         return rows[0];
         
     }
 
     static async getDashboardMetrics() {
-        console.log("Repository getDashboardMetrics");
         
         // 1. Totales según estado
         const sqlTotales = `

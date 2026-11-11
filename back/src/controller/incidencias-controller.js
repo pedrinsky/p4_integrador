@@ -38,7 +38,7 @@ export class IncidenciasController {
     
             const incidenciaDTO = result.map(incidencia => new IncidenciasResponseDTO(incidencia));
     
-            res.json({
+            return res.json({
                 incidencias: incidenciaDTO,
                 paginacion: {
                     totalPaginas,
@@ -48,23 +48,23 @@ export class IncidenciasController {
                 }
             });
         } catch (error) {
-           res.status(500).json({ error: error.message });
+            res.status(500).json({ message: "Error interno" });
         }
     }
 
     getByID = async (req, res) => {
         try {
             const result = await this.incidenciasService.getByID(req.criteria);
-            res.json(result ? new IncidenciasResponseDTO(result) : null);
+            return res.json(result ? new IncidenciasResponseDTO(result) : null);
         } catch (error) {
-           res.status(500).json({ error: error.message });
+           res.status(500).json({ message: "Error interno" });
         }
     }
 
     update = async (req, res) => {
         try {
             const result = await this.incidenciasService.update(req.criteria);
-            res.json(result);
+            return res.json(result);
         } catch (error) {
             const status = error.statusCode || 400;
             res.status(status).json({ error: error.message });
@@ -88,7 +88,7 @@ export class IncidenciasController {
         } catch (error) {
             console.error("Error en IncidenciasController.create:", error);
             if (!res.headersSent) {
-                return res.status(500).json({ error: error.message });
+                return res.status(500).json({ message: "Error interno" });
             }
         }
     }
@@ -96,9 +96,9 @@ export class IncidenciasController {
     delete = async (req, res) => {
         try {
             const result = await this.incidenciasService.delete(req.criteria);
-            res.json(result);
+            return res.json(result);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            return res.status(500).json({ message: "Error interno" });
         }
     }
 
@@ -111,9 +111,9 @@ export class IncidenciasController {
                 id_estado: 3, 
                 descripcion_resolucion 
             });
-            res.json({ message: 'Incidencia finalizada con éxito'});
+            return res.json({ message: 'Incidencia finalizada con éxito'});
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            return res.status(500).json({ message: "Error interno" });
         }
     }
 
@@ -142,7 +142,7 @@ export class IncidenciasController {
             return res.json({ message: "Solicitud de reapertura enviada al técnico a cargo." });
         } catch (error) {
             console.error("Error en solicitarReapertura:", error);
-            return res.status(500).json({ error: error.message });
+            return res.status(500).json({ message: "Error interno" });
         }
     }
 
@@ -158,18 +158,18 @@ export class IncidenciasController {
                 descripcion_resolucion: null 
             });
 
-            res.json({ message: 'Incidencia reabierta con éxito'});
+            return res.json({ message: 'Incidencia reabierta con éxito'});
         } catch (error) {
-             res.status(500).json({ error: error.message });
+            res.status(500).json({ message: "Error interno" });
         }
     }
 
     getDashboardMetrics = async (req, res) => {
         try {
             const metrics = await this.incidenciasService.getDashboardMetrics();
-            res.json(metrics);
+            return res.json(metrics);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ message: "Error interno" });
         }
     }
 

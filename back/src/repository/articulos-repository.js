@@ -3,7 +3,6 @@ import { pool } from "../config/db.js";
 export class ArticulosRepository{
 
     static async getAll(input = {}){
-        console.log("Repository");
 
         const {id_articulo, id_area, id_categoria, descripcion
             , activo, order_column = 'id_articulo', direction = 'asc', limit = 5, offset = 0} = input;
@@ -37,20 +36,16 @@ export class ArticulosRepository{
             ORDER BY ${col} ${dir}
             LIMIT $6 OFFSET $7;
         `;
-        console.log(sql);
 
         const {rows} = await pool.query(sql, [id_articulo ?? null, id_area ?? null
             , id_categoria ?? null, descripcion ?? null, activo ?? null
             , limit, offset]);
-        
-        console.log(rows);
 
         return rows;
     }
 
     static async getByID(input){
         const id = typeof input === 'object' && input !== null ? (input.id_articulo ?? input.id) : input;
-        console.log("Repository getByID", id);
         const sql = `
             SELECT art.id_articulo, art.id_area, a.descripcion as area, art.id_categoria, c.descripcion as categoria
             , art.descripcion, art.activo
@@ -62,21 +57,13 @@ export class ArticulosRepository{
             WHERE art.id_articulo = $1;
         `;
 
-        console.log(sql);
-
         const {rows} = await pool.query(sql, [id]);
-        console.log(rows);
         return rows[0];
 
     }
 
     static async update(input){
-        console.log("Repository");
-        console.log(input);
-
         const {id_articulo, ...entradas} = input;
-        console.log(id_articulo);
-        console.log(entradas);
 
         const cambios = [];
         const valores = [id_articulo];
@@ -91,16 +78,11 @@ export class ArticulosRepository{
             WHERE id_articulo = $1
             RETURNING *;
         `
-        console.log(sql);
-        console.log(valores);
-
         const {rows} = await pool.query(sql, valores);
-        console.log(rows);
         return rows[0];
     }
 
     static async create(input){
-        console.log("Repository");
         const {id_area, id_categoria, descripcion, activo} = input;
 
         const sql = `
@@ -108,17 +90,13 @@ export class ArticulosRepository{
             VALUES ($1, $2, $3, $4)
             RETURNING *;
         `;
-        console.log(sql);
         const {rows} = await pool.query(sql, [id_area, id_categoria, descripcion, activo]);
-        console.log(rows);
         return rows[0];
     }
 
     static async delete(input){
-        console.log("Repository");
 
         const {id_articulo} = input;
-        console.log(id_articulo);
 
         const sql = `
             UPDATE articulos
@@ -126,17 +104,14 @@ export class ArticulosRepository{
             WHERE id_articulo = $1
             RETURNING *;
         `;
-        console.log(sql);
 
         const {rows} = await pool.query(sql, [id_articulo]);
-        console.log(rows);
 
         return rows[0];
         
     }
 
     static async reactivar(input){
-        console.log("Repository reactivar");
         const id = typeof input === 'object' && input !== null ? (input.id_articulo ?? input.id) : input;
 
         const sql = `
@@ -150,7 +125,6 @@ export class ArticulosRepository{
     }
 
     static async eliminarDefinitivo(input){
-        console.log("Repository eliminarDefinitivo");
         const id = typeof input === 'object' && input !== null ? (input.id_articulo ?? input.id) : input;
 
         const sql = `

@@ -10,7 +10,6 @@ import { CategoriasController } from '../controller/categoriasController.js';
 
 export const createCategoriasRouter = ({categoriasService}) => {
     const router = Router();
-    console.log("Router");
     const categoriasController = new CategoriasController({categoriasService : categoriasService});
 
     router.get("/", getAllCategoriasTransform, categoriasController.getAll);

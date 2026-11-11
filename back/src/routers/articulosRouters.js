@@ -10,7 +10,6 @@ import { ArticulosController } from "../controller/articulosController.js";
 
 export const createArticulosRouter = ({articulosService}) => {
     const router = Router();
-    console.log("Router");
     const articulosController = new ArticulosController({articulosService : articulosService});
 
     router.get("/", getAllTransformArticulos, articulosController.getAll);

@@ -1,5 +1,4 @@
 import { Router } from "express";
-import authenticate from "../middleware/authenticate.js";
 
 import { getAllTransform as getAllIncidenciasTransform
     , getByIDTransform as getByIDIncidenciaTransform
@@ -12,27 +11,26 @@ import { IncidenciasController } from "../controller/incidencias-controller.js";
 
 export const createIncidenciasRouter = ({incidenciasService}) => {
     const router = Router();
-    console.log("Router");
     const incidenciasController = new IncidenciasController({incidenciasService: incidenciasService});
 
-    router.get("/", authenticate, getAllIncidenciasTransform, incidenciasController.getAll);
+    router.get("/", getAllIncidenciasTransform, incidenciasController.getAll);
 
-    router.get("/dashboard/metrics", authenticate, incidenciasController.getDashboardMetrics);
+    router.get("/dashboard/metrics", incidenciasController.getDashboardMetrics);
 
-    router.get("/reporte/pdf", authenticate, incidenciasController.generarReportePDF);
+    router.get("/reporte/pdf", incidenciasController.generarReportePDF);
 
-    router.get("/:id_incidencia", authenticate, getByIDIncidenciaTransform, incidenciasController.getByID);
+    router.get("/:id_incidencia", getByIDIncidenciaTransform, incidenciasController.getByID);
 
-    router.patch("/:id_incidencia", authenticate, updateIncidenciaTransform, incidenciasController.update);
+    router.patch("/:id_incidencia", updateIncidenciaTransform, incidenciasController.update);
 
-    router.post("/", authenticate, createIncidenciaTransform, incidenciasController.create);
+    router.post("/", createIncidenciaTransform, incidenciasController.create);
 
-    router.delete("/:id_incidencia", authenticate, deleteIncidenciaTransform, incidenciasController.delete);
+    router.delete("/:id_incidencia", deleteIncidenciaTransform, incidenciasController.delete);
 
     // Legacy frontend support
-    router.put("/:id_incidencia/finalizar", authenticate, incidenciasController.finalizar);
-    router.put("/:id_incidencia/solicitar-reapertura", authenticate, incidenciasController.solicitarReapertura);
-    router.put("/:id_incidencia/reabrir", authenticate, incidenciasController.reabrir);
+    router.put("/:id_incidencia/finalizar", incidenciasController.finalizar);
+    router.put("/:id_incidencia/solicitar-reapertura", incidenciasController.solicitarReapertura);
+    router.put("/:id_incidencia/reabrir", incidenciasController.reabrir);
     
     return router;
 }
